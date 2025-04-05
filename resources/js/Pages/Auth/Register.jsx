@@ -10,10 +10,40 @@ import {
     SelectTrigger,
     SelectValue,
 } from "@/components/ui/select";
+import { router } from "@inertiajs/react";
+import { Loader2 } from "lucide-react";
 import { useState } from "react";
 
 export default function Register() {
+    const [formData, setFormData] = useState({
+        firstname: "",
+        middlename: "",
+        lastname: "",
+        institute: "",
+        organization: "",
+        studentId: "",
+        email: "",
+        password: "",
+        password_confirmation: "",
+    });
     const [errors, setErrors] = useState({});
+    const [processing, setProcessing] = useState(false);
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        setProcessing(true);
+
+        try {
+            const res = await axios.post("/register", formData);
+            if (res.data.status === "registered") {
+                router.visit("/login"); //change to dashboard controller
+            }
+        } catch (err) {
+            setErrors(err.response.data.errors);
+        } finally {
+            setProcessing(false);
+        }
+    };
 
     return (
         <div className="grid min-h-svh lg:grid-cols-2">
@@ -40,7 +70,10 @@ export default function Register() {
                 </div>
                 <div className="flex flex-1 items-center justify-center">
                     <div className="w-full max-w-md rounded-lg border bg-white p-6 shadow-md">
-                        <form className="flex flex-col gap-6">
+                        <form
+                            onSubmit={handleSubmit}
+                            className="flex flex-col gap-6"
+                        >
                             <div className="flex flex-col items-center gap-2 text-center">
                                 <h1 className="text-2xl font-bold">
                                     Create a new account
@@ -56,19 +89,49 @@ export default function Register() {
                                     <Label htmlFor="firstname">
                                         First Name
                                     </Label>
-                                    <Input id="firstname" type="text" />
+                                    <Input
+                                        id="firstname"
+                                        type="text"
+                                        value={formData.firstname}
+                                        onChange={(e) => {
+                                            setFormData({
+                                                ...formData,
+                                                firstname: e.target.value,
+                                            });
+                                        }}
+                                    />
                                     <InputError message={errors.firstname} />
                                 </div>
                                 <div className="grid gap-2">
                                     <Label htmlFor="middlename">
                                         Middle Name (Optional)
                                     </Label>
-                                    <Input id="middlename" type="text" />
+                                    <Input
+                                        id="middlename"
+                                        type="text"
+                                        value={formData.middlename}
+                                        onChange={(e) => {
+                                            setFormData({
+                                                ...formData,
+                                                middlename: e.target.value,
+                                            });
+                                        }}
+                                    />
                                     <InputError message={errors.middlename} />
                                 </div>
                                 <div className="grid gap-2">
                                     <Label htmlFor="lastname">Last Name</Label>
-                                    <Input id="lastname" type="text" />
+                                    <Input
+                                        id="lastname"
+                                        type="text"
+                                        value={formData.lastname}
+                                        onChange={(e) => {
+                                            setFormData({
+                                                ...formData,
+                                                lastname: e.target.value,
+                                            });
+                                        }}
+                                    />
                                     <InputError message={errors.lastname} />
                                 </div>
                                 <div className="flex gap-2">
@@ -76,7 +139,16 @@ export default function Register() {
                                         <Label htmlFor="institute">
                                             Institute
                                         </Label>
-                                        <Select name="institute">
+                                        <Select
+                                            name="institute"
+                                            onValueChange={(value) =>
+                                                setFormData({
+                                                    ...formData,
+                                                    institute: String(value),
+                                                })
+                                            }
+                                            value={String(formData.institute)}
+                                        >
                                             <SelectTrigger className="w-full">
                                                 <SelectValue />
                                             </SelectTrigger>
@@ -100,7 +172,18 @@ export default function Register() {
                                         <Label htmlFor="organization">
                                             Organization
                                         </Label>
-                                        <Select name="organization">
+                                        <Select
+                                            name="organization"
+                                            onValueChange={(value) =>
+                                                setFormData({
+                                                    ...formData,
+                                                    organization: String(value),
+                                                })
+                                            }
+                                            value={String(
+                                                formData.organization
+                                            )}
+                                        >
                                             <SelectTrigger className="w-full">
                                                 <SelectValue />
                                             </SelectTrigger>
@@ -122,19 +205,53 @@ export default function Register() {
                                     </div>
                                 </div>
                                 <div className="grid gap-2">
+                                    <Label htmlFor="studentId">
+                                        Student ID
+                                    </Label>
+                                    <Input
+                                        id="studentId"
+                                        type="number"
+                                        value={formData.studentId}
+                                        onChange={(e) => {
+                                            setFormData({
+                                                ...formData,
+                                                studentId: e.target.value,
+                                            });
+                                        }}
+                                    />
+                                    <InputError message={errors.studentId} />
+                                </div>
+                                <div className="grid gap-2">
                                     <Label htmlFor="email">Email</Label>
                                     <Input
                                         id="email"
                                         type="email"
-                                        placeholder="m@example.com"
+                                        value={formData.email}
+                                        onChange={(e) => {
+                                            setFormData({
+                                                ...formData,
+                                                email: e.target.value,
+                                            });
+                                        }}
                                     />
+                                    <InputError message={errors.email} />
                                 </div>
                                 <div className="flex gap-2">
                                     <div className="w-full grid gap-2">
                                         <Label htmlFor="password">
                                             Password
                                         </Label>
-                                        <Input id="password" type="password" />
+                                        <Input
+                                            id="password"
+                                            type="password"
+                                            value={formData.password}
+                                            onChange={(e) => {
+                                                setFormData({
+                                                    ...formData,
+                                                    password: e.target.value,
+                                                });
+                                            }}
+                                        />
                                         <InputError message={errors.password} />
                                     </div>
                                     <div className="w-full grid gap-2">
@@ -144,6 +261,16 @@ export default function Register() {
                                         <Input
                                             id="password_confirmation"
                                             type="password_confirmation"
+                                            value={
+                                                formData.password_confirmation
+                                            }
+                                            onChange={(e) => {
+                                                setFormData({
+                                                    ...formData,
+                                                    password_confirmation:
+                                                        e.target.value,
+                                                });
+                                            }}
                                         />
                                         <InputError
                                             message={
@@ -152,8 +279,19 @@ export default function Register() {
                                         />
                                     </div>
                                 </div>
-                                <Button type="submit" className="w-full">
-                                    Register
+                                <Button
+                                    type="submit"
+                                    disabled={processing}
+                                    className="w-full"
+                                >
+                                    {processing ? (
+                                        <span className="flex items-center gap-2">
+                                            <Loader2 className="animate-spin" />
+                                            Please wait
+                                        </span>
+                                    ) : (
+                                        "Register"
+                                    )}
                                 </Button>
                             </div>
                             <div className="text-center text-sm">
