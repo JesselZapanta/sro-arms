@@ -1,120 +1,174 @@
-import InputError from '@/Components/InputError';
-import InputLabel from '@/Components/InputLabel';
-import PrimaryButton from '@/Components/PrimaryButton';
-import TextInput from '@/Components/TextInput';
-import GuestLayout from '@/Layouts/GuestLayout';
-import { Head, Link, useForm } from '@inertiajs/react';
+import InputError from "@/Components/InputError";
+import { Button } from "@/Components/ui/button";
+import { Input } from "@/Components/ui/input";
+import { Label } from "@/Components/ui/label";
+
+import {
+    Select,
+    SelectContent,
+    SelectItem,
+    SelectTrigger,
+    SelectValue,
+} from "@/components/ui/select";
+import { useState } from "react";
 
 export default function Register() {
-    const { data, setData, post, processing, errors, reset } = useForm({
-        name: '',
-        email: '',
-        password: '',
-        password_confirmation: '',
-    });
-
-    const submit = (e) => {
-        e.preventDefault();
-
-        post(route('register'), {
-            onFinish: () => reset('password', 'password_confirmation'),
-        });
-    };
+    const [errors, setErrors] = useState({});
 
     return (
-        <GuestLayout>
-            <Head title="Register" />
-
-            <form onSubmit={submit}>
-                <div>
-                    <InputLabel htmlFor="name" value="Name" />
-
-                    <TextInput
-                        id="name"
-                        name="name"
-                        value={data.name}
-                        className="mt-1 block w-full"
-                        autoComplete="name"
-                        isFocused={true}
-                        onChange={(e) => setData('name', e.target.value)}
-                        required
-                    />
-
-                    <InputError message={errors.name} className="mt-2" />
-                </div>
-
-                <div className="mt-4">
-                    <InputLabel htmlFor="email" value="Email" />
-
-                    <TextInput
-                        id="email"
-                        type="email"
-                        name="email"
-                        value={data.email}
-                        className="mt-1 block w-full"
-                        autoComplete="username"
-                        onChange={(e) => setData('email', e.target.value)}
-                        required
-                    />
-
-                    <InputError message={errors.email} className="mt-2" />
-                </div>
-
-                <div className="mt-4">
-                    <InputLabel htmlFor="password" value="Password" />
-
-                    <TextInput
-                        id="password"
-                        type="password"
-                        name="password"
-                        value={data.password}
-                        className="mt-1 block w-full"
-                        autoComplete="new-password"
-                        onChange={(e) => setData('password', e.target.value)}
-                        required
-                    />
-
-                    <InputError message={errors.password} className="mt-2" />
-                </div>
-
-                <div className="mt-4">
-                    <InputLabel
-                        htmlFor="password_confirmation"
-                        value="Confirm Password"
-                    />
-
-                    <TextInput
-                        id="password_confirmation"
-                        type="password"
-                        name="password_confirmation"
-                        value={data.password_confirmation}
-                        className="mt-1 block w-full"
-                        autoComplete="new-password"
-                        onChange={(e) =>
-                            setData('password_confirmation', e.target.value)
-                        }
-                        required
-                    />
-
-                    <InputError
-                        message={errors.password_confirmation}
-                        className="mt-2"
-                    />
-                </div>
-
-                <div className="mt-4 flex items-center justify-end">
-                    <Link
-                        href={route('login')}
-                        className="rounded-md text-sm text-gray-600 underline hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+        <div className="grid min-h-svh lg:grid-cols-2">
+            <div className="relative hidden bg-emerald-200 lg:block">
+                <img
+                    src="/images/home3.svg"
+                    alt="Ims"
+                    className="absolute inset-0 h-full w-full object-cover dark:brightness-[0.2] dark:grayscale"
+                />
+            </div>
+            <div className="flex flex-col gap-4 p-6 md:p-10">
+                <div className="flex justify-center gap-2 md:justify-start">
+                    <a
+                        href="/"
+                        className="flex items-center gap-2 font-medium text-emerald-800"
                     >
-                        Already registered?
-                    </Link>
-
-                    <PrimaryButton className="ms-4" disabled={processing}>
-                        Register
-                    </PrimaryButton>
+                        <img
+                            src="/images/logo.svg"
+                            alt="Ims"
+                            className="h-12 w-12 rounded-full border-2 border-emerald-700"
+                        />
+                        ARMS
+                    </a>
                 </div>
-            </form>
-        </GuestLayout>
+                <div className="flex flex-1 items-center justify-center">
+                    <div className="w-full max-w-md rounded-lg border bg-white p-6 shadow-md">
+                        <form className="flex flex-col gap-6">
+                            <div className="flex flex-col items-center gap-2 text-center">
+                                <h1 className="text-2xl font-bold">
+                                    Create a new account
+                                </h1>
+                                <p className="text-balance text-sm text-muted-foreground">
+                                    Enter your email below to register your
+                                    account
+                                </p>
+                            </div>
+
+                            <div className="grid gap-6">
+                                <div className="grid gap-2">
+                                    <Label htmlFor="firstname">
+                                        First Name
+                                    </Label>
+                                    <Input id="firstname" type="text" />
+                                    <InputError message={errors.firstname} />
+                                </div>
+                                <div className="grid gap-2">
+                                    <Label htmlFor="middlename">
+                                        Middle Name (Optional)
+                                    </Label>
+                                    <Input id="middlename" type="text" />
+                                    <InputError message={errors.middlename} />
+                                </div>
+                                <div className="grid gap-2">
+                                    <Label htmlFor="lastname">Last Name</Label>
+                                    <Input id="lastname" type="text" />
+                                    <InputError message={errors.lastname} />
+                                </div>
+                                <div className="flex gap-2">
+                                    <div className="w-full grid gap-2">
+                                        <Label htmlFor="institute">
+                                            Institute
+                                        </Label>
+                                        <Select name="institute">
+                                            <SelectTrigger className="w-full">
+                                                <SelectValue />
+                                            </SelectTrigger>
+                                            <SelectContent>
+                                                <SelectItem value="light">
+                                                    Light
+                                                </SelectItem>
+                                                <SelectItem value="dark">
+                                                    Dark
+                                                </SelectItem>
+                                                <SelectItem value="system">
+                                                    System
+                                                </SelectItem>
+                                            </SelectContent>
+                                        </Select>
+                                        <InputError
+                                            message={errors.institute}
+                                        />
+                                    </div>
+                                    <div className="w-full grid gap-2">
+                                        <Label htmlFor="organization">
+                                            Organization
+                                        </Label>
+                                        <Select name="organization">
+                                            <SelectTrigger className="w-full">
+                                                <SelectValue />
+                                            </SelectTrigger>
+                                            <SelectContent>
+                                                <SelectItem value="light">
+                                                    Light
+                                                </SelectItem>
+                                                <SelectItem value="dark">
+                                                    Dark
+                                                </SelectItem>
+                                                <SelectItem value="system">
+                                                    System
+                                                </SelectItem>
+                                            </SelectContent>
+                                        </Select>
+                                        <InputError
+                                            message={errors.organization}
+                                        />
+                                    </div>
+                                </div>
+                                <div className="grid gap-2">
+                                    <Label htmlFor="email">Email</Label>
+                                    <Input
+                                        id="email"
+                                        type="email"
+                                        placeholder="m@example.com"
+                                    />
+                                </div>
+                                <div className="flex gap-2">
+                                    <div className="w-full grid gap-2">
+                                        <Label htmlFor="password">
+                                            Password
+                                        </Label>
+                                        <Input id="password" type="password" />
+                                        <InputError message={errors.password} />
+                                    </div>
+                                    <div className="w-full grid gap-2">
+                                        <Label htmlFor="password_confirmation">
+                                            Re-type Password
+                                        </Label>
+                                        <Input
+                                            id="password_confirmation"
+                                            type="password_confirmation"
+                                        />
+                                        <InputError
+                                            message={
+                                                errors.password_confirmation
+                                            }
+                                        />
+                                    </div>
+                                </div>
+                                <Button type="submit" className="w-full">
+                                    Register
+                                </Button>
+                            </div>
+                            <div className="text-center text-sm">
+                                Already registered?{" "}
+                                <a
+                                    href="/login"
+                                    className="underline underline-offset-4"
+                                >
+                                    Log In
+                                </a>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
     );
 }

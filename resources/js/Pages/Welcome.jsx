@@ -19,7 +19,7 @@ export default function Welcome({ auth }) {
                     <div className="flex gap-4">
                         {auth.user ? (
                             <Button asChild className="w-full">
-                                <Link href={route("dashboard")}>Dashboard</Link>
+                                <Link href={route("dashboard")}>Go to Dashboard</Link>
                             </Button>
                         ) : (
                             <>
@@ -110,7 +110,7 @@ export default function Welcome({ auth }) {
                 </div>
             </div>
 
-            <div className="mt-12 bg-gray-100 text-center p-4">
+            <div className="mt-12 bg-emerald-100 text-center p-4">
                 Copyright © {new Date().getFullYear()} All rights reserved.
             </div>
         </div>
