@@ -136,69 +136,77 @@ export default function Register() {
                                 </div>
                                 <div className="flex gap-2">
                                     <div className="w-full grid gap-2">
-                                        <Label htmlFor="institute">
-                                            Institute
-                                        </Label>
-                                        <Select
-                                            name="institute"
-                                            onValueChange={(value) =>
-                                                setFormData({
-                                                    ...formData,
-                                                    institute: String(value),
-                                                })
-                                            }
-                                            value={String(formData.institute)}
-                                        >
-                                            <SelectTrigger className="w-full">
-                                                <SelectValue />
-                                            </SelectTrigger>
-                                            <SelectContent>
-                                                <SelectItem value="light">
-                                                    Light
-                                                </SelectItem>
-                                                <SelectItem value="dark">
-                                                    Dark
-                                                </SelectItem>
-                                                <SelectItem value="system">
-                                                    System
-                                                </SelectItem>
-                                            </SelectContent>
-                                        </Select>
+                                        <div>
+                                            <Label htmlFor="institute">
+                                                Institute
+                                            </Label>
+                                            <Select
+                                                name="institute"
+                                                onValueChange={(value) =>
+                                                    setFormData({
+                                                        ...formData,
+                                                        institute:
+                                                            String(value),
+                                                    })
+                                                }
+                                                value={String(
+                                                    formData.institute
+                                                )}
+                                            >
+                                                <SelectTrigger className="w-full">
+                                                    <SelectValue />
+                                                </SelectTrigger>
+                                                <SelectContent>
+                                                    <SelectItem value="light">
+                                                        Light
+                                                    </SelectItem>
+                                                    <SelectItem value="dark">
+                                                        Dark
+                                                    </SelectItem>
+                                                    <SelectItem value="system">
+                                                        System
+                                                    </SelectItem>
+                                                </SelectContent>
+                                            </Select>
+                                        </div>
                                         <InputError
                                             message={errors.institute}
                                         />
                                     </div>
                                     <div className="w-full grid gap-2">
-                                        <Label htmlFor="organization">
-                                            Organization
-                                        </Label>
-                                        <Select
-                                            name="organization"
-                                            onValueChange={(value) =>
-                                                setFormData({
-                                                    ...formData,
-                                                    organization: String(value),
-                                                })
-                                            }
-                                            value={String(
-                                                formData.organization
-                                            )}
-                                        >
-                                            <SelectTrigger className="w-full">
-                                                <SelectValue />
-                                            </SelectTrigger>
-                                            <SelectContent>
-                                                <SelectItem value="light">
-                                                    Light
-                                                </SelectItem>
-                                                <SelectItem value="dark">
-                                                    Dark
-                                                </SelectItem>
-                                                <SelectItem value="system">
-                                                    System
-                                                </SelectItem>
-                                            </SelectContent>
-                                        </Select>
+                                        <div>
+                                            <Label htmlFor="organization">
+                                                Organization
+                                            </Label>
+                                            <Select
+                                                name="organization"
+                                                onValueChange={(value) =>
+                                                    setFormData({
+                                                        ...formData,
+                                                        organization:
+                                                            String(value),
+                                                    })
+                                                }
+                                                value={String(
+                                                    formData.organization
+                                                )}
+                                            >
+                                                <SelectTrigger className="w-full">
+                                                    <SelectValue />
+                                                </SelectTrigger>
+                                                <SelectContent>
+                                                    <SelectItem value="light">
+                                                        Light
+                                                    </SelectItem>
+                                                    <SelectItem value="dark">
+                                                        Dark
+                                                    </SelectItem>
+                                                    <SelectItem value="system">
+                                                        System
+                                                    </SelectItem>
+                                                </SelectContent>
+                                            </Select>
+                                        </div>
                                         <InputError
                                             message={errors.organization}
                                         />
@@ -238,40 +246,45 @@ export default function Register() {
                                 </div>
                                 <div className="flex gap-2">
                                     <div className="w-full grid gap-2">
-                                        <Label htmlFor="password">
-                                            Password
-                                        </Label>
-                                        <Input
-                                            id="password"
-                                            type="password"
-                                            value={formData.password}
-                                            onChange={(e) => {
-                                                setFormData({
-                                                    ...formData,
-                                                    password: e.target.value,
-                                                });
-                                            }}
-                                        />
+                                        <div>
+                                            <Label htmlFor="password">
+                                                Password
+                                            </Label>
+                                            <Input
+                                                id="password"
+                                                type="password"
+                                                value={formData.password}
+                                                onChange={(e) => {
+                                                    setFormData({
+                                                        ...formData,
+                                                        password:
+                                                            e.target.value,
+                                                    });
+                                                }}
+                                            />
+                                        </div>
                                         <InputError message={errors.password} />
                                     </div>
                                     <div className="w-full grid gap-2">
-                                        <Label htmlFor="password_confirmation">
-                                            Re-type Password
-                                        </Label>
-                                        <Input
-                                            id="password_confirmation"
-                                            type="password_confirmation"
-                                            value={
-                                                formData.password_confirmation
-                                            }
-                                            onChange={(e) => {
-                                                setFormData({
-                                                    ...formData,
-                                                    password_confirmation:
-                                                        e.target.value,
-                                                });
-                                            }}
-                                        />
+                                        <div>
+                                            <Label htmlFor="password_confirmation">
+                                                Re-type Password
+                                            </Label>
+                                            <Input
+                                                id="password_confirmation"
+                                                type="password_confirmation"
+                                                value={
+                                                    formData.password_confirmation
+                                                }
+                                                onChange={(e) => {
+                                                    setFormData({
+                                                        ...formData,
+                                                        password_confirmation:
+                                                            e.target.value,
+                                                    });
+                                                }}
+                                            />
+                                        </div>
                                         <InputError
                                             message={
                                                 errors.password_confirmation

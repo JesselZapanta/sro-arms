@@ -9,6 +9,6 @@ class OfficerDashboardController extends Controller
 {
     public function index()
     {
-        return inertia('Student/Dashboard');
+        return inertia('Officer/Dashboard');
     }
 }
