@@ -1,6 +1,19 @@
 import { Button } from "@/Components/ui/button";
 import { Head, Link } from "@inertiajs/react";
 
+import {
+    NavigationMenu,
+    NavigationMenuContent,
+    NavigationMenuIndicator,
+    NavigationMenuItem,
+    NavigationMenuLink,
+    NavigationMenuList,
+    NavigationMenuTrigger,
+    navigationMenuTriggerStyle,
+    NavigationMenuViewport,
+} from "@/components/ui/navigation-menu";
+
+
 export default function Welcome({ auth }) {
     return (
         <div>
@@ -17,24 +30,44 @@ export default function Welcome({ auth }) {
                         </h1>
                     </div>
                     <div className="flex gap-4">
-                        {auth.user ? (
-                            <Button asChild className="w-full">
-                                <Link href={route("dashboard")}>Go to Dashboard</Link>
-                            </Button>
-                        ) : (
-                            <>
-                                <Button asChild className="w-full" size="lg">
-                                    <Link href={route("login")}>Log In</Link>
-                                </Button>
-                            </>
-                        )}
+                        <NavigationMenu>
+                            <NavigationMenuList>
+                                {auth.user ? (
+                                    <Link
+                                        href="/dashboard"
+                                        legacyBehavior
+                                        passHref
+                                    >
+                                        <NavigationMenuLink
+                                            className={`${navigationMenuTriggerStyle()} bg-emerald-600 text-white`}
+                                        >
+                                            Go to Dashboard
+                                        </NavigationMenuLink>
+                                    </Link>
+                                ) : (
+                                    <>
+                                        <Link
+                                            href="/login"
+                                            legacyBehavior
+                                            passHref
+                                        >
+                                            <NavigationMenuLink
+                                                className={`${navigationMenuTriggerStyle()} bg-emerald-600 text-white`}
+                                            >
+                                                Login
+                                            </NavigationMenuLink>
+                                        </Link>
+                                    </>
+                                )}
+                            </NavigationMenuList>
+                        </NavigationMenu>
                     </div>
                 </div>
             </div>
 
             <div className="mt-6 px-4 flex text-center flex-col items-center bg">
                 <h2 className="text-2xl py-4 sm:text-5xl font-semibold text-gray-800">
-                    SRO Attendance and Reaciept <br/> Monitoring System
+                    SRO Attendance and Reaciept <br /> Monitoring System
                 </h2>
                 <p className="py-2 text-md sm:text-xl font-light text-gray-800">
                     A web-based app for tracking products, organizing

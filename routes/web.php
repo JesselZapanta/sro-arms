@@ -18,15 +18,15 @@ Route::get('/', function () {
 Route::get('/dashboard', [DashboardController::class, 'dashboard'])->name('dashboard');
 
 Route::middleware(['auth', 'admin'])->group(function() {
-    Route::get('admin/dashboard', [AdminDashboardController::class, 'index'])->name('admin.dashboard'); 
+    Route::get('/admin/dashboard', [AdminDashboardController::class, 'index'])->name('admin.dashboard'); 
 });
 
 Route::middleware(['auth', 'student'])->group(function() {
-    Route::get('student/dashboard', [StudentDashboardController::class, 'index'])->name('student.dashboard'); 
+    Route::get('/student/dashboard', [StudentDashboardController::class, 'index'])->name('student.dashboard'); 
 });
 
 Route::middleware(['auth', 'officer'])->group(function() {
-    Route::get('officer/dashboard', [OfficerDashboardController::class, 'index'])->name('officer.dashboard'); 
+    Route::get('/officer/dashboard', [OfficerDashboardController::class, 'index'])->name('officer.dashboard'); 
 });
 
 Route::middleware('auth')->group(function () {
