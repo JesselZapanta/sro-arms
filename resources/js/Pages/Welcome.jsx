@@ -35,7 +35,6 @@ export default function Welcome({ auth }) {
                                 {auth.user ? (
                                     <Link
                                         href="/dashboard"
-                                        legacyBehavior
                                         passHref
                                     >
                                         <NavigationMenuLink
@@ -48,7 +47,6 @@ export default function Welcome({ auth }) {
                                     <>
                                         <Link
                                             href="/login"
-                                            legacyBehavior
                                             passHref
                                         >
                                             <NavigationMenuLink

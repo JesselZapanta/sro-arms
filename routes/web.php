@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Admin\AdminDashboardController;
+use App\Http\Controllers\Admin\AdminUserController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\Officer\OfficerDashboardController;
 use App\Http\Controllers\ProfileController;
@@ -19,6 +20,12 @@ Route::get('/dashboard', [DashboardController::class, 'dashboard'])->name('dashb
 
 Route::middleware(['auth', 'admin'])->group(function() {
     Route::get('/admin/dashboard', [AdminDashboardController::class, 'index'])->name('admin.dashboard'); 
+
+    Route::get('/admin/user', [AdminUserController::class, 'index'])->name('admin.user'); 
+    Route::get('/admin/user/getdata', [AdminUserController::class, 'getdata']);
+    Route::post('/admin/user/store', [AdminUserController::class, 'store']);
+    Route::put('/admin/user/update/{id}', [AdminUserController::class, 'update']);
+    Route::delete('/admin/user/destroy/{id}',[AdminUserController::class, 'destroy']);
 });
 
 Route::middleware(['auth', 'student'])->group(function() {

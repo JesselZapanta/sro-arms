@@ -1,10 +1,4 @@
-import ApplicationLogo from "@/Components/ApplicationLogo";
-import Dropdown from "@/Components/Dropdown";
-import NavLink from "@/Components/NavLink";
-import ResponsiveNavLink from "@/Components/ResponsiveNavLink";
 import { Link, usePage } from "@inertiajs/react";
-import { useEffect, useState } from "react";
-
 import {
     NavigationMenu,
     NavigationMenuContent,
@@ -46,7 +40,7 @@ export default function AuthenticatedLayout({ header, children }) {
 
     const items = [
         { title: "Dashboard", url: "/admin/dashboard" },
-        { title: "User", url: "/user" },
+        { title: "User", url: "/admin/user" },
         { title: "Institute", url: "/about" },
         { title: "Organization", url: "/organization" },
         { title: "Event", url: "/event" },
@@ -74,17 +68,16 @@ export default function AuthenticatedLayout({ header, children }) {
                             <NavigationMenuList>
                                 {items.map((item) => (
                                     <NavigationMenuItem key={item.url}>
-                                        <Link href={item.url} legacyBehavior>
-                                            <NavigationMenuLink
-                                                className={`${
-                                                    currentPath === item.url
-                                                        ? "bg-emerald-600 text-white"
-                                                        : ""
-                                                } ${navigationMenuTriggerStyle()}`}
-                                            >
-                                                {item.title}
-                                            </NavigationMenuLink>
-                                        </Link>
+                                        <NavigationMenuLink
+                                            href={item.url}
+                                            className={`${
+                                                currentPath === item.url
+                                                    ? "bg-emerald-600 text-white"
+                                                    : ""
+                                            } ${navigationMenuTriggerStyle()}`}
+                                        >
+                                            {item.title}
+                                        </NavigationMenuLink>
                                     </NavigationMenuItem>
                                 ))}
                                 {/* Profile Dropdown */}
@@ -129,25 +122,34 @@ export default function AuthenticatedLayout({ header, children }) {
                         </SheetTrigger>
                         <SheetContent className="bg-emerald-200 w-[400px] sm:w-[540px]">
                             <div className="w-full">
+                                <SheetTitle>
+                                    <div className="flex gap-2">
+                                        <Avatar className="h-12 w-12 rounded-full border-2 border-emerald-700">
+                                            <AvatarImage alt={user.firstname} />
+                                            <AvatarFallback>
+                                                {user.firstname[0].toUpperCase()}
+                                            </AvatarFallback>
+                                        </Avatar>
+                                        <div className="text-sm font-light"> 
+                                            <p>{user.firstname}</p>
+                                            <p>{user.email}</p>
+                                        </div>
+                                    </div>
+                                </SheetTitle>
                                 <NavigationMenu>
-                                    <NavigationMenuList className="flex flex-col items-start gap-2">
+                                    <NavigationMenuList className="flex flex-col items-start mt-4 gap-2">
                                         {items.map((item) => (
                                             <NavigationMenuItem key={item.url}>
-                                                <Link
+                                                <NavigationMenuLink
                                                     href={item.url}
-                                                    legacyBehavior
+                                                    className={`${
+                                                        currentPath === item.url
+                                                            ? " bg-emerald-600 text-white"
+                                                            : ""
+                                                    } ${navigationMenuTriggerStyle()}`}
                                                 >
-                                                    <NavigationMenuLink
-                                                        className={`${
-                                                            currentPath ===
-                                                            item.url
-                                                                ? " bg-emerald-600 text-white"
-                                                                : ""
-                                                        } ${navigationMenuTriggerStyle()}`}
-                                                    >
-                                                        {item.title}
-                                                    </NavigationMenuLink>
-                                                </Link>
+                                                    {item.title}
+                                                </NavigationMenuLink>
                                             </NavigationMenuItem>
                                         ))}
                                         <NavigationMenuItem>
@@ -155,15 +157,12 @@ export default function AuthenticatedLayout({ header, children }) {
                                                 method="post"
                                                 href={route("logout")}
                                                 as="button"
+                                                className={
+                                                    navigationMenuTriggerStyle() +
+                                                    " bg-red-400 hover:bg-red-300"
+                                                }
                                             >
-                                                <NavigationMenuLink
-                                                    className={
-                                                        navigationMenuTriggerStyle() +
-                                                        " bg-red-400 hover:bg-red-300"
-                                                    }
-                                                >
-                                                    Log Out
-                                                </NavigationMenuLink>
+                                                Log Out
                                             </Link>
                                         </NavigationMenuItem>
                                     </NavigationMenuList>
