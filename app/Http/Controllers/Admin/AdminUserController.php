@@ -36,6 +36,8 @@ class AdminUserController extends Controller
 
         $data['password'] = Hash::make($data['password']);
         
+        User::create($data);
+
         return response()->json([
             'status' => 'created'
         ],200);

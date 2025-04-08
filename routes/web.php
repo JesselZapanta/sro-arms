@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Admin\AdminDashboardController;
+use App\Http\Controllers\Admin\AdminInstituteController;
 use App\Http\Controllers\Admin\AdminUserController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\Officer\OfficerDashboardController;
@@ -21,11 +22,19 @@ Route::get('/dashboard', [DashboardController::class, 'dashboard'])->name('dashb
 Route::middleware(['auth', 'admin'])->group(function() {
     Route::get('/admin/dashboard', [AdminDashboardController::class, 'index'])->name('admin.dashboard'); 
 
+    //user
     Route::get('/admin/user', [AdminUserController::class, 'index'])->name('admin.user'); 
     Route::get('/admin/user/getdata', [AdminUserController::class, 'getdata']);
     Route::post('/admin/user/store', [AdminUserController::class, 'store']);
     Route::put('/admin/user/update/{id}', [AdminUserController::class, 'update']);
     Route::delete('/admin/user/destroy/{id}',[AdminUserController::class, 'destroy']);
+
+    //institute
+    Route::get('/admin/institute', [AdminInstituteController::class, 'index'])->name('admin.institute'); 
+    Route::get('/admin/institute/getdata', [AdminInstituteController::class, 'getdata']);
+    Route::post('/admin/institute/store', [AdminInstituteController::class, 'store']);
+    Route::put('/admin/institute/update/{id}', [AdminInstituteController::class, 'update']);
+    Route::delete('/admin/institute/destroy/{id}',[AdminInstituteController::class, 'destroy']);
 });
 
 Route::middleware(['auth', 'student'])->group(function() {

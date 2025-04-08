@@ -41,7 +41,7 @@ export default function AuthenticatedLayout({ header, children }) {
     const items = [
         { title: "Dashboard", url: "/admin/dashboard" },
         { title: "User", url: "/admin/user" },
-        { title: "Institute", url: "/about" },
+        { title: "Institute", url: "/admin/institute" },
         { title: "Organization", url: "/organization" },
         { title: "Event", url: "/event" },
         { title: "Receipt", url: "/receipt" },

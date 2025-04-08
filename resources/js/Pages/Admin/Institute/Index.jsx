@@ -43,6 +43,7 @@ import { Label } from "@/components/ui/label";
 import InputError from "@/Components/InputError";
 
 import { toast } from "sonner";
+import { Textarea } from "@/Components/ui/textarea";
 
 export default function Index({ auth }) {
     const [data, setData] = useState([]);
@@ -55,7 +56,7 @@ export default function Index({ auth }) {
 
     const [search, setSearch] = useState("");
 
-    //fetching data = users
+    //fetching data = institutes
     const getdata = async () => {
         setLoading(true);
 
@@ -67,7 +68,7 @@ export default function Index({ auth }) {
         ].join("&");
 
         try {
-            const res = await axios.get(`/admin/user/getdata?${params}`);
+            const res = await axios.get(`/admin/institute/getdata?${params}`);
 
             setData(res.data.data);
             setPage(res.data.current_page);
@@ -85,25 +86,17 @@ export default function Index({ auth }) {
 
     // console.log(data)
 
-    //creating new data = user
+    //creating new data = institute
 
     const [isOpen, setIsOpen] = useState(false);
 
     const [formData, setFormData] = useState({
-        firstname: "",
-        middlename: "",
-        lastname: "",
-        institute: "",
-        organization: "",
-        studentId: "",
-        email: "",
-        password: "",
-        password_confirmation: "",
-        role: "",
+        name: "",
+        description: "",
         status: "",
     });
 
-    const [user, setUser] = useState(false);
+    const [institute, setInstitute] = useState(false);
     const [errors, setErrors] = useState({});
     const [processing, setProcessing] = useState(false);
 
@@ -112,38 +105,32 @@ export default function Index({ auth }) {
         setIsOpen(true);
     };
 
-    const editForm = (user) => {
+    const editForm = (institute) => {
         setErrors({});
         setIsOpen(true);
-        setUser(user);
+        setInstitute(institute);
 
         setFormData({
-            firstname: user.firstname,
-            middlename: user.middlename,
-            lastname: user.lastname,
-            institute: user.institute,
-            organization: user.organization,
-            studentId: user.studentId,
-            email: user.email,
-            role: user.role,
-            status: user.status,
+            name: institute.name,
+            description: institute.description,
+            status: institute.status,
         });
     };
 
     const onSubmit = async (e) => {
         e.preventDefault();
         setProcessing(true);
-        if (user) {
+        if (institute) {
             try {
                 const res = await axios.put(
-                    `/admin/user/update/${user.id}`,
+                    `/admin/institute/update/${institute.id}`,
                     formData
                 );
 
                 if (res.data.status === "updated") {
                     formCancel();
                     toast.success(
-                        "The user details have been successfully updated."
+                        "The institute details have been successfully updated."
                     );
                 }
             } catch (err) {
@@ -153,11 +140,14 @@ export default function Index({ auth }) {
             }
         } else {
             try {
-                const res = await axios.post("/admin/user/store", formData);
+                const res = await axios.post(
+                    "/admin/institute/store",
+                    formData
+                );
 
                 if (res.data.status === "created") {
                     formCancel();
-                    toast.success("The user has been successfully added.");
+                    toast.success("The institute has been successfully added.");
                 }
             } catch (err) {
                 setErrors(err.response.data.errors);
@@ -170,41 +160,35 @@ export default function Index({ auth }) {
     const formCancel = () => {
         setIsOpen(false);
         setIsDelete(false);
-        setUser(false);
+        setInstitute(false);
         setErrors({});
         setFormData({
-            firstname: "",
-            middlename: "",
-            lastname: "",
-            institute: "",
-            organization: "",
-            studentId: "",
-            email: "",
-            password: "",
-            password_confirmation: "",
-            role: "",
+            name: "",
+            description: "",
             status: "",
         });
         getdata();
     };
 
-    //delete data = user
+    //delete data = institute
 
     const [isDelete, setIsDelete] = useState(false);
 
-    const deleteConfirm = (user) => {
-        setUser(user);
+    const deleteConfirm = (institute) => {
+        setInstitute(institute);
         setIsDelete(true);
     };
 
-    const destroy = async (user) => {
+    const destroy = async (institute) => {
         setProcessing(true);
         try {
-            const res = await axios.delete(`/admin/user/destroy/${user.id}`);
+            const res = await axios.delete(
+                `/admin/institute/destroy/${institute.id}`
+            );
 
             if (res.data.status === "deleted") {
                 formCancel();
-                toast.success("User deleted successfully.");
+                toast.success("Institute deleted successfully.");
             }
         } catch (err) {
             console.log(err);
@@ -213,19 +197,27 @@ export default function Index({ auth }) {
         }
     };
 
+    //text limit
+    const truncate = (text, limit) => {
+        if (text.length > limit) {
+            return text.slice(0, limit) + "...";
+        }
+        return text;
+    };
+
     return (
         <AuthenticatedLayout>
-            <Head title="User Management" />
+            <Head title="Institute Management" />
             <div className="py-4">
                 <div className="mx-auto max-w-7xl sm:px-6 lg:px-8">
                     <div className="overflow-hidden bg-white shadow-sm sm:rounded-lg">
                         <div className="bg-gray-50 p-6 rounded-md">
-                            <div className="mb-4">List of users</div>
+                            <div className="mb-4">List of institutes</div>
 
                             <div className="mb-4 flex gap-2">
                                 <Input
                                     type="text"
-                                    placeholder="Search user"
+                                    placeholder="Search institute"
                                     value={search}
                                     onChange={(e) => setSearch(e.target.value)}
                                 />
@@ -243,7 +235,8 @@ export default function Index({ auth }) {
                                     <TableRow>
                                         <TableHead>ID</TableHead>
                                         <TableHead>Name</TableHead>
-                                        <TableHead>Email</TableHead>
+                                        <TableHead>Description</TableHead>
+                                        <TableHead>Status</TableHead>
                                     </TableRow>
                                 </TableHeader>
                                 <TableBody>
@@ -269,14 +262,30 @@ export default function Index({ auth }) {
                                             </TableCell>
                                         </TableRow>
                                     ) : data.length > 0 ? (
-                                        data.map((user) => (
-                                            <TableRow key={user.id}>
-                                                <TableCell>{user.id}</TableCell>
+                                        data.map((institute) => (
+                                            <TableRow key={institute.id}>
                                                 <TableCell>
-                                                    {user.name}
+                                                    {institute.id}
                                                 </TableCell>
                                                 <TableCell>
-                                                    {user.email}
+                                                    {institute.name}
+                                                </TableCell>
+                                                <TableCell>
+                                                    {truncate(
+                                                        institute?.description,
+                                                        80
+                                                    )}
+                                                </TableCell>
+                                                <TableCell>
+                                                    {institute.status === 1 ? (
+                                                        <span className="text-green-500">
+                                                            Active
+                                                        </span>
+                                                    ) : (
+                                                        <span className="text-red-500">
+                                                            Inactive
+                                                        </span>
+                                                    )}
                                                 </TableCell>
                                                 <TableCell className="flex justify-end">
                                                     <div className="flex gap-2">
@@ -284,7 +293,9 @@ export default function Index({ auth }) {
                                                             variant="outline"
                                                             size="icon"
                                                             onClick={() =>
-                                                                editForm(user)
+                                                                editForm(
+                                                                    institute
+                                                                )
                                                             }
                                                         >
                                                             <Pencil />
@@ -294,7 +305,7 @@ export default function Index({ auth }) {
                                                             variant="destructive"
                                                             onClick={() =>
                                                                 deleteConfirm(
-                                                                    user
+                                                                    institute
                                                                 )
                                                             }
                                                         >
@@ -350,388 +361,110 @@ export default function Index({ auth }) {
                             {/* form dialog */}
 
                             <Dialog open={isOpen} onOpenChange={formCancel}>
-                                <DialogContent className="sm:max-w-[625px]">
+                                <DialogContent className="sm:max-w-[425px]">
                                     <form
                                         onSubmit={onSubmit}
                                         className="flex flex-col gap-6"
                                     >
                                         <div className="flex flex-col items-center gap-2 text-center">
                                             <h1 className="text-2xl font-bold">
-                                                {user ? "Create a new account" : "Edit user"}
+                                                {institute
+                                                    ? "Create a new account"
+                                                    : "Edit institute"}
                                             </h1>
                                             <p className="text-balance text-sm text-muted-foreground">
                                                 Enter the information below to
-                                                {user ?  " edit " : " create "} your account
+                                                {institute
+                                                    ? " edit "
+                                                    : " create "}{" "}
+                                                your account
                                             </p>
                                         </div>
 
                                         <div className="grid gap-6">
-                                            <div className="flex gap-2">
-                                                <div className="w-full grid gap-2">
-                                                    <div>
-                                                        <Label htmlFor="firstname">
-                                                            First Name
-                                                        </Label>
-                                                        <Input
-                                                            id="firstname"
-                                                            type="text"
-                                                            value={
-                                                                formData.firstname
-                                                            }
-                                                            onChange={(e) => {
-                                                                setFormData({
-                                                                    ...formData,
-                                                                    firstname:
-                                                                        e.target
-                                                                            .value,
-                                                                });
-                                                            }}
-                                                        />
-                                                    </div>
-                                                    <InputError
-                                                        message={
-                                                            errors.firstname
-                                                        }
+                                            <div className="w-full grid gap-2">
+                                                <div>
+                                                    <Label htmlFor="name">
+                                                        Name
+                                                    </Label>
+                                                    <Input
+                                                        id="name"
+                                                        type="text"
+                                                        value={formData.name}
+                                                        onChange={(e) => {
+                                                            setFormData({
+                                                                ...formData,
+                                                                name: e.target
+                                                                    .value,
+                                                            });
+                                                        }}
                                                     />
                                                 </div>
-                                                <div className="w-full grid gap-2">
-                                                    <div>
-                                                        <Label htmlFor="middlename">
-                                                            Middle Name
-                                                            (Optional)
-                                                        </Label>
-                                                        <Input
-                                                            id="middlename"
-                                                            type="text"
-                                                            value={
-                                                                formData.middlename
-                                                            }
-                                                            onChange={(e) => {
-                                                                setFormData({
-                                                                    ...formData,
-                                                                    middlename:
-                                                                        e.target
-                                                                            .value,
-                                                                });
-                                                            }}
-                                                        />
-                                                    </div>
-                                                    <InputError
-                                                        message={
-                                                            errors.middlename
-                                                        }
-                                                    />
-                                                </div>
-                                                <div className="w-full grid gap-2">
-                                                    <div>
-                                                        <Label htmlFor="lastname">
-                                                            Last Name
-                                                        </Label>
-                                                        <Input
-                                                            id="lastname"
-                                                            type="text"
-                                                            value={
-                                                                formData.lastname
-                                                            }
-                                                            onChange={(e) => {
-                                                                setFormData({
-                                                                    ...formData,
-                                                                    lastname:
-                                                                        e.target
-                                                                            .value,
-                                                                });
-                                                            }}
-                                                        />
-                                                    </div>
-                                                    <InputError
-                                                        message={
-                                                            errors.lastname
-                                                        }
-                                                    />
-                                                </div>
+                                                <InputError
+                                                    message={errors.name}
+                                                />
                                             </div>
-                                            <div className="flex gap-2">
-                                                <div className="w-full grid gap-2">
-                                                    <div>
-                                                        <Label htmlFor="institute">
-                                                            Institute
-                                                        </Label>
-                                                        <Select
-                                                            name="institute"
-                                                            onValueChange={(
-                                                                value
-                                                            ) =>
-                                                                setFormData({
-                                                                    ...formData,
-                                                                    institute:
-                                                                        String(
-                                                                            value
-                                                                        ),
-                                                                })
-                                                            }
-                                                            value={String(
-                                                                formData.institute
-                                                            )}
-                                                        >
-                                                            <SelectTrigger className="w-full">
-                                                                <SelectValue />
-                                                            </SelectTrigger>
-                                                            <SelectContent>
-                                                                <SelectItem value="light">
-                                                                    Light
-                                                                </SelectItem>
-                                                                <SelectItem value="dark">
-                                                                    Dark
-                                                                </SelectItem>
-                                                                <SelectItem value="system">
-                                                                    System
-                                                                </SelectItem>
-                                                            </SelectContent>
-                                                        </Select>
-                                                    </div>
-                                                    <InputError
-                                                        message={
-                                                            errors.institute
+                                            <div className="w-full grid gap-2">
+                                                <div>
+                                                    <Label htmlFor="description">
+                                                        Description
+                                                    </Label>
+                                                    <Textarea
+                                                        className="min-h-32"
+                                                        value={
+                                                            formData.description
                                                         }
-                                                    />
-                                                </div>
-                                                <div className="w-full grid gap-2">
-                                                    <div>
-                                                        <Label htmlFor="organization">
-                                                            Organization
-                                                        </Label>
-                                                        <Select
-                                                            name="organization"
-                                                            onValueChange={(
-                                                                value
-                                                            ) =>
-                                                                setFormData({
-                                                                    ...formData,
-                                                                    organization:
-                                                                        String(
-                                                                            value
-                                                                        ),
-                                                                })
-                                                            }
-                                                            value={String(
-                                                                formData.organization
-                                                            )}
-                                                        >
-                                                            <SelectTrigger className="w-full">
-                                                                <SelectValue />
-                                                            </SelectTrigger>
-                                                            <SelectContent>
-                                                                <SelectItem value="light">
-                                                                    Light
-                                                                </SelectItem>
-                                                                <SelectItem value="dark">
-                                                                    Dark
-                                                                </SelectItem>
-                                                                <SelectItem value="system">
-                                                                    System
-                                                                </SelectItem>
-                                                            </SelectContent>
-                                                        </Select>
-                                                    </div>
-                                                    <InputError
-                                                        message={
-                                                            errors.organization
-                                                        }
-                                                    />
-                                                </div>
-                                            </div>
-                                            <div className="flex gap-2">
-                                                <div className="w-full grid gap-2">
-                                                    <div>
-                                                        <Label htmlFor="studentId">
-                                                            Student ID
-                                                        </Label>
-                                                        <Input
-                                                            id="studentId"
-                                                            type="number"
-                                                            value={
-                                                                formData.studentId
-                                                            }
-                                                            onChange={(e) => {
-                                                                setFormData({
-                                                                    ...formData,
-                                                                    studentId:
-                                                                        e.target
-                                                                            .value,
-                                                                });
-                                                            }}
-                                                        />
-                                                    </div>
-                                                    <InputError
-                                                        message={
-                                                            errors.studentId
-                                                        }
-                                                    />
-                                                </div>
-                                                <div className="w-full grid gap-2">
-                                                    <div>
-                                                        <Label htmlFor="email">
-                                                            Email
-                                                        </Label>
-                                                        <Input
-                                                            id="email"
-                                                            type="email"
-                                                            value={
-                                                                formData.email
-                                                            }
-                                                            onChange={(e) => {
-                                                                setFormData({
-                                                                    ...formData,
-                                                                    email: e
-                                                                        .target
+                                                        onChange={(e) => {
+                                                            setFormData({
+                                                                ...formData,
+                                                                description:
+                                                                    e.target
                                                                         .value,
-                                                                });
-                                                            }}
-                                                        />
-                                                    </div>
-                                                    <InputError
-                                                        message={errors.email}
+                                                            });
+                                                        }}
                                                     />
                                                 </div>
+                                                <InputError
+                                                    message={errors.description}
+                                                />
                                             </div>
-                                            <div className="flex gap-2">
-                                                <div className="w-full grid gap-2">
-                                                    <div>
-                                                        <Label htmlFor="password">
-                                                            Password
-                                                        </Label>
-                                                        <Input
-                                                            id="password"
-                                                            type="password"
-                                                            value={
-                                                                formData.password
-                                                            }
-                                                            onChange={(e) => {
-                                                                setFormData({
-                                                                    ...formData,
-                                                                    password:
-                                                                        e.target
-                                                                            .value,
-                                                                });
-                                                            }}
-                                                        />
-                                                    </div>
-                                                    <InputError
-                                                        message={
-                                                            errors.password
+                                            <div className="w-full grid gap-2">
+                                                <div>
+                                                    <Label htmlFor="status">
+                                                        Status
+                                                    </Label>
+                                                    <Select
+                                                        name="status"
+                                                        onValueChange={(
+                                                            value
+                                                        ) =>
+                                                            setFormData({
+                                                                ...formData,
+                                                                status: String(
+                                                                    value
+                                                                ),
+                                                            })
                                                         }
-                                                    />
+                                                        value={String(
+                                                            formData.status
+                                                        )}
+                                                    >
+                                                        <SelectTrigger className="w-full">
+                                                            <SelectValue />
+                                                        </SelectTrigger>
+                                                        <SelectContent>
+                                                            <SelectItem value="1">
+                                                                Active
+                                                            </SelectItem>
+                                                            <SelectItem value="0">
+                                                                Inactive
+                                                            </SelectItem>
+                                                        </SelectContent>
+                                                    </Select>
                                                 </div>
-                                                <div className="w-full grid gap-2">
-                                                    <div>
-                                                        <Label htmlFor="password_confirmation">
-                                                            Re-type Password
-                                                        </Label>
-                                                        <Input
-                                                            id="password_confirmation"
-                                                            type="password_confirmation"
-                                                            value={
-                                                                formData.password_confirmation
-                                                            }
-                                                            onChange={(e) => {
-                                                                setFormData({
-                                                                    ...formData,
-                                                                    password_confirmation:
-                                                                        e.target
-                                                                            .value,
-                                                                });
-                                                            }}
-                                                        />
-                                                    </div>
-                                                    <InputError
-                                                        message={
-                                                            errors.password_confirmation
-                                                        }
-                                                    />
-                                                </div>
-                                            </div>
-                                            <div className="flex gap-2">
-                                                <div className="w-full grid gap-2">
-                                                    <div>
-                                                        <Label htmlFor="role">
-                                                            Role
-                                                        </Label>
-                                                        <Select
-                                                            name="role"
-                                                            onValueChange={(
-                                                                value
-                                                            ) =>
-                                                                setFormData({
-                                                                    ...formData,
-                                                                    role: String(
-                                                                        value
-                                                                    ),
-                                                                })
-                                                            }
-                                                            value={String(
-                                                                formData.role
-                                                            )}
-                                                        >
-                                                            <SelectTrigger className="w-full">
-                                                                <SelectValue />
-                                                            </SelectTrigger>
-                                                            <SelectContent>
-                                                                <SelectItem value="1">
-                                                                    Admin
-                                                                </SelectItem>
-                                                                <SelectItem value="2">
-                                                                    Student
-                                                                </SelectItem>
-                                                                <SelectItem value="3">
-                                                                    Officer
-                                                                </SelectItem>
-                                                            </SelectContent>
-                                                        </Select>
-                                                    </div>
-                                                    <InputError
-                                                        message={
-                                                            errors.organization
-                                                        }
-                                                    />
-                                                </div>
-                                                <div className="w-full grid gap-2">
-                                                    <div>
-                                                        <Label htmlFor="status">
-                                                            Status
-                                                        </Label>
-                                                        <Select
-                                                            name="status"
-                                                            onValueChange={(
-                                                                value
-                                                            ) =>
-                                                                setFormData({
-                                                                    ...formData,
-                                                                    status: String(
-                                                                        value
-                                                                    ),
-                                                                })
-                                                            }
-                                                            value={String(
-                                                                formData.status
-                                                            )}
-                                                        >
-                                                            <SelectTrigger className="w-full">
-                                                                <SelectValue />
-                                                            </SelectTrigger>
-                                                            <SelectContent>
-                                                                <SelectItem value="1">
-                                                                    Active
-                                                                </SelectItem>
-                                                                <SelectItem value="0">
-                                                                    In active
-                                                                </SelectItem>
-                                                            </SelectContent>
-                                                        </Select>
-                                                    </div>
-                                                    <InputError
-                                                        message={errors.status}
-                                                    />
-                                                </div>
+                                                <InputError
+                                                    message={errors.status}
+                                                />
                                             </div>
                                         </div>
                                         <DialogFooter className="mt-4">
@@ -752,8 +485,10 @@ export default function Index({ auth }) {
                                                         <Loader2 className="animate-spin" />
                                                         Please wait
                                                     </span>
+                                                ) : institute ? (
+                                                    "Update"
                                                 ) : (
-                                                    user ? "Update" : "Create"
+                                                    "Create"
                                                 )}
                                             </Button>
                                         </DialogFooter>
@@ -766,10 +501,12 @@ export default function Index({ auth }) {
                             <Dialog open={isDelete} onOpenChange={formCancel}>
                                 <DialogContent className="sm:max-w-[425px]">
                                     <DialogHeader>
-                                        <DialogTitle>Delete User?</DialogTitle>
+                                        <DialogTitle>
+                                            Delete Institute?
+                                        </DialogTitle>
                                         <DialogDescription>
                                             Confirm to permanently delete this
-                                            user?
+                                            institute?
                                         </DialogDescription>
                                     </DialogHeader>
                                     <DialogFooter className="mt-4">
@@ -781,7 +518,7 @@ export default function Index({ auth }) {
                                         </Button>
                                         <Button
                                             variant="destructive"
-                                            onClick={() => destroy(user)}
+                                            onClick={() => destroy(institute)}
                                         >
                                             Delete
                                         </Button>
