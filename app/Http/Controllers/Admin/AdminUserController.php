@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\UserStoreRequest;
+use App\Http\Requests\Admin\UserUpdateRequest;
 use App\Models\User;
 use Auth;
 use Illuminate\Http\Request;
@@ -40,13 +41,33 @@ class AdminUserController extends Controller
         ],200);
     }
 
-    public function update()
+    public function update(UserUpdateRequest $request)
     {
+        $user = User::findOrFail($request->id);
+        $data = $request->validated();
 
+        if($request->password != null){
+            $data['password'] = Hash::make($data['password']);
+        }else{
+            unset($data['password']);
+        }
+        
+
+        $user->update($data);
+
+        return response()->json([
+            'status' => 'updated'
+        ],200);
     }
 
-    public function destroy()
+    public function destroy($id)
     {
+        $user = User::findOrFail($id);
 
+        $user->delete();
+
+        return response()->json([
+            'status' => 'deleted'
+        ],200);
     }
 }
