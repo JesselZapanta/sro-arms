@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\UserStoreRequest;
 use App\Http\Requests\Admin\UserUpdateRequest;
 use App\Models\Institute;
+use App\Models\Organization;
 use App\Models\User;
 use Auth;
 use Illuminate\Http\Request;
@@ -16,9 +17,11 @@ class AdminUserController extends Controller
     public function index()
     {
         $institutes = Institute::all();
+        $organizations = Organization::all();
 
         return inertia('Admin/User/Index', [
-            'institutes' => $institutes
+            'institutes' => $institutes,
+            'organizations' => $organizations
         ]);
     }
 

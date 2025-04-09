@@ -277,7 +277,8 @@ export default function Index({ auth }) {
                                                     )}
                                                 </TableCell>
                                                 <TableCell>
-                                                    {organization.status === 1 ? (
+                                                    {organization.status ===
+                                                    1 ? (
                                                         <span className="text-green-500">
                                                             Active
                                                         </span>
@@ -369,15 +370,15 @@ export default function Index({ auth }) {
                                         <div className="flex flex-col items-center gap-2 text-center">
                                             <h1 className="text-2xl font-bold">
                                                 {organization
-                                                    ? "Create a new account"
-                                                    : "Edit organization"}
+                                                    ? "Edit organization"
+                                                    : "Create new organization"}
                                             </h1>
                                             <p className="text-balance text-sm text-muted-foreground">
                                                 Enter the information below to
                                                 {organization
                                                     ? " edit "
                                                     : " create "}{" "}
-                                                your account
+                                                organization
                                             </p>
                                         </div>
 
@@ -518,7 +519,9 @@ export default function Index({ auth }) {
                                         </Button>
                                         <Button
                                             variant="destructive"
-                                            onClick={() => destroy(organization)}
+                                            onClick={() =>
+                                                destroy(organization)
+                                            }
                                         >
                                             Delete
                                         </Button>

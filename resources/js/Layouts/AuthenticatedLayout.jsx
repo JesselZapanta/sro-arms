@@ -43,7 +43,7 @@ export default function AuthenticatedLayout({ header, children }) {
         { title: "User", url: "/admin/user" },
         { title: "Institute", url: "/admin/institute" },
         { title: "Organization", url: "/admin/organization" },
-        { title: "Event", url: "/event" },
+        { title: "Event", url: "/admin/event" },
         { title: "Receipt", url: "/receipt" },
     ];
 

@@ -56,7 +56,7 @@ export default function Index({ auth }) {
 
     const [search, setSearch] = useState("");
 
-    //fetching data = institutes
+    //fetching data = events
     const getdata = async () => {
         setLoading(true);
 
@@ -68,7 +68,7 @@ export default function Index({ auth }) {
         ].join("&");
 
         try {
-            const res = await axios.get(`/admin/institute/getdata?${params}`);
+            const res = await axios.get(`/admin/event/getdata?${params}`);
 
             setData(res.data.data);
             setPage(res.data.current_page);
@@ -86,7 +86,7 @@ export default function Index({ auth }) {
 
     // console.log(data)
 
-    //creating new data = institute
+    //creating new data = event
 
     const [isOpen, setIsOpen] = useState(false);
 
@@ -96,7 +96,7 @@ export default function Index({ auth }) {
         status: "",
     });
 
-    const [institute, setInstitute] = useState(false);
+    const [event, setEvent] = useState(false);
     const [errors, setErrors] = useState({});
     const [processing, setProcessing] = useState(false);
 
@@ -105,32 +105,32 @@ export default function Index({ auth }) {
         setIsOpen(true);
     };
 
-    const editForm = (institute) => {
+    const editForm = (event) => {
         setErrors({});
         setIsOpen(true);
-        setInstitute(institute);
+        setEvent(event);
 
         setFormData({
-            name: institute.name,
-            description: institute.description,
-            status: institute.status,
+            name: event.name,
+            description: event.description,
+            status: event.status,
         });
     };
 
     const onSubmit = async (e) => {
         e.preventDefault();
         setProcessing(true);
-        if (institute) {
+        if (event) {
             try {
                 const res = await axios.put(
-                    `/admin/institute/update/${institute.id}`,
+                    `/admin/event/update/${event.id}`,
                     formData
                 );
 
                 if (res.data.status === "updated") {
                     formCancel();
                     toast.success(
-                        "The institute details have been successfully updated."
+                        "The event details have been successfully updated."
                     );
                 }
             } catch (err) {
@@ -141,13 +141,13 @@ export default function Index({ auth }) {
         } else {
             try {
                 const res = await axios.post(
-                    "/admin/institute/store",
+                    "/admin/event/store",
                     formData
                 );
 
                 if (res.data.status === "created") {
                     formCancel();
-                    toast.success("The institute has been successfully added.");
+                    toast.success("The event has been successfully added.");
                 }
             } catch (err) {
                 setErrors(err.response.data.errors);
@@ -160,7 +160,7 @@ export default function Index({ auth }) {
     const formCancel = () => {
         setIsOpen(false);
         setIsDelete(false);
-        setInstitute(false);
+        setEvent(false);
         setErrors({});
         setFormData({
             name: "",
@@ -170,25 +170,25 @@ export default function Index({ auth }) {
         getdata();
     };
 
-    //delete data = institute
+    //delete data = event
 
     const [isDelete, setIsDelete] = useState(false);
 
-    const deleteConfirm = (institute) => {
-        setInstitute(institute);
+    const deleteConfirm = (event) => {
+        setEvent(event);
         setIsDelete(true);
     };
 
-    const destroy = async (institute) => {
+    const destroy = async (event) => {
         setProcessing(true);
         try {
             const res = await axios.delete(
-                `/admin/institute/destroy/${institute.id}`
+                `/admin/event/destroy/${event.id}`
             );
 
             if (res.data.status === "deleted") {
                 formCancel();
-                toast.success("Institute deleted successfully.");
+                toast.success("Event deleted successfully.");
             }
         } catch (err) {
             console.log(err);
@@ -207,17 +207,17 @@ export default function Index({ auth }) {
 
     return (
         <AuthenticatedLayout>
-            <Head title="Institute Management" />
+            <Head title="Event Management" />
             <div className="py-4">
                 <div className="mx-auto max-w-7xl sm:px-6 lg:px-8">
                     <div className="overflow-hidden bg-white shadow-sm sm:rounded-lg">
                         <div className="bg-gray-50 p-6 rounded-md">
-                            <div className="mb-4">List of institutes</div>
+                            <div className="mb-4">List of events</div>
 
                             <div className="mb-4 flex gap-2">
                                 <Input
                                     type="text"
-                                    placeholder="Search institute"
+                                    placeholder="Search event"
                                     value={search}
                                     onChange={(e) => setSearch(e.target.value)}
                                 />
@@ -262,22 +262,22 @@ export default function Index({ auth }) {
                                             </TableCell>
                                         </TableRow>
                                     ) : data.length > 0 ? (
-                                        data.map((institute) => (
-                                            <TableRow key={institute.id}>
+                                        data.map((event) => (
+                                            <TableRow key={event.id}>
                                                 <TableCell>
-                                                    {institute.id}
+                                                    {event.id}
                                                 </TableCell>
                                                 <TableCell>
-                                                    {institute.name}
+                                                    {event.name}
                                                 </TableCell>
                                                 <TableCell>
                                                     {truncate(
-                                                        institute?.description,
+                                                        event?.description,
                                                         80
                                                     )}
                                                 </TableCell>
                                                 <TableCell>
-                                                    {institute.status === 1 ? (
+                                                    {event.status === 1 ? (
                                                         <span className="text-green-500">
                                                             Active
                                                         </span>
@@ -294,7 +294,7 @@ export default function Index({ auth }) {
                                                             size="icon"
                                                             onClick={() =>
                                                                 editForm(
-                                                                    institute
+                                                                    event
                                                                 )
                                                             }
                                                         >
@@ -305,7 +305,7 @@ export default function Index({ auth }) {
                                                             variant="destructive"
                                                             onClick={() =>
                                                                 deleteConfirm(
-                                                                    institute
+                                                                    event
                                                                 )
                                                             }
                                                         >
@@ -368,16 +368,16 @@ export default function Index({ auth }) {
                                     >
                                         <div className="flex flex-col items-center gap-2 text-center">
                                             <h1 className="text-2xl font-bold">
-                                                {institute
-                                                    ? "Edit institute"
-                                                    : "Create new institute"}
+                                                {event
+                                                    ? "Create a new account"
+                                                    : "Edit event"}
                                             </h1>
                                             <p className="text-balance text-sm text-muted-foreground">
                                                 Enter the information below to
-                                                {institute
+                                                {event
                                                     ? " edit "
                                                     : " create "}{" "}
-                                                institute
+                                                your account
                                             </p>
                                         </div>
 
@@ -485,7 +485,7 @@ export default function Index({ auth }) {
                                                         <Loader2 className="animate-spin" />
                                                         Please wait
                                                     </span>
-                                                ) : institute ? (
+                                                ) : event ? (
                                                     "Update"
                                                 ) : (
                                                     "Create"
@@ -502,11 +502,11 @@ export default function Index({ auth }) {
                                 <DialogContent className="sm:max-w-[425px]">
                                     <DialogHeader>
                                         <DialogTitle>
-                                            Delete Institute?
+                                            Delete Event?
                                         </DialogTitle>
                                         <DialogDescription>
                                             Confirm to permanently delete this
-                                            institute?
+                                            event?
                                         </DialogDescription>
                                     </DialogHeader>
                                     <DialogFooter className="mt-4">
@@ -518,7 +518,7 @@ export default function Index({ auth }) {
                                         </Button>
                                         <Button
                                             variant="destructive"
-                                            onClick={() => destroy(institute)}
+                                            onClick={() => destroy(event)}
                                         >
                                             Delete
                                         </Button>

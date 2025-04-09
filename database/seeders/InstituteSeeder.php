@@ -15,36 +15,37 @@ class InstituteSeeder extends Seeder
     {
         $institutes = [
             [
-                'name' => 'Institute of Criminal Justice Education',
-                'description' => 'Offers programs related to criminal justice and law enforcement.',
+                'name' => 'ICJE',
+                'description' => 'Institute of Criminal Justice Education',
                 'status' => 1,
             ],
             [
-                'name' => 'Institute of Business and Financial Services',
-                'description' => 'Provides education in business management and financial services.',
+                'name' => 'IBFS',
+                'description' => 'Institute of Business and Financial Services',
                 'status' => 1,
             ],
             [
-                'name' => 'Institute of Health Sciences',
-                'description' => 'Focuses on health-related programs, including midwifery.',
+                'name' => 'IHS',
+                'description' => 'Institute of Health Sciences',
                 'status' => 1,
             ],
             [
-                'name' => 'Institute of Arts and Sciences',
-                'description' => 'Offers courses in various arts and sciences disciplines.',
+                'name' => 'IAS',
+                'description' => 'Institute of Arts and Sciences',
                 'status' => 1,
             ],
             [
-                'name' => 'Institute of Computer Studies',
-                'description' => 'Provides education in computer science and information technology.',
+                'name' => 'ICS',
+                'description' => 'Institute of Computer Studies',
                 'status' => 1,
             ],
             [
-                'name' => 'Institute of Teacher Education',
-                'description' => 'Offers programs in education, preparing students for teaching professions.',
+                'name' => 'ITE',
+                'description' => 'Institute of Teacher Education',
                 'status' => 1,
             ],
         ];
+
         Institute::insertOrIgnore($institutes);
     }
 }

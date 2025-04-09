@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Admin\AdminDashboardController;
+use App\Http\Controllers\Admin\AdminEventController;
 use App\Http\Controllers\Admin\AdminInstituteController;
 use App\Http\Controllers\Admin\AdminOrganizationController;
 use App\Http\Controllers\Admin\AdminUserController;
@@ -43,6 +44,13 @@ Route::middleware(['auth', 'admin'])->group(function() {
     Route::post('/admin/organization/store', [AdminOrganizationController::class, 'store']);
     Route::put('/admin/organization/update/{id}', [AdminOrganizationController::class, 'update']);
     Route::delete('/admin/organization/destroy/{id}',[AdminOrganizationController::class, 'destroy']);
+
+    //event
+    Route::get('/admin/event', [AdminEventController::class, 'index'])->name('admin.event'); 
+    Route::get('/admin/event/getdata', [AdminEventController::class, 'getdata']);
+    Route::post('/admin/event/store', [AdminEventController::class, 'store']);
+    Route::put('/admin/event/update/{id}', [AdminEventController::class, 'update']);
+    Route::delete('/admin/event/destroy/{id}',[AdminEventController::class, 'destroy']);
 });
 
 Route::middleware(['auth', 'student'])->group(function() {

@@ -44,7 +44,7 @@ import InputError from "@/Components/InputError";
 
 import { toast } from "sonner";
 
-export default function Index({ auth, institutes }) {
+export default function Index({ auth, institutes, organizations }) {
     const [data, setData] = useState([]);
     const [loading, setLoading] = useState(false);
 
@@ -83,7 +83,7 @@ export default function Index({ auth, institutes }) {
         getdata();
     }, [page, sortField, sortOrder]);
 
-    console.log(data)
+    console.log(data);
 
     //creating new data = user
 
@@ -252,7 +252,7 @@ export default function Index({ auth, institutes }) {
                                     {loading ? (
                                         <TableRow>
                                             <TableCell
-                                                colSpan={4}
+                                                colSpan={6}
                                                 className="text-center"
                                             >
                                                 <div className="flex flex-col gap-2">
@@ -273,11 +273,13 @@ export default function Index({ auth, institutes }) {
                                     ) : data.length > 0 ? (
                                         data.map((user) => (
                                             <TableRow key={user.id}>
-                                                <TableCell>{user.studentId}</TableCell>
                                                 <TableCell>
-                                                    { user.firstname}{" "}
+                                                    {user.studentId}
+                                                </TableCell>
+                                                <TableCell>
+                                                    {user.firstname}{" "}
                                                     {user.middlename}{" "}
-                                                    {user.lastname} 
+                                                    {user.lastname}
                                                 </TableCell>
                                                 <TableCell>
                                                     {user.email}
@@ -368,8 +370,8 @@ export default function Index({ auth, institutes }) {
                                         <div className="flex flex-col items-center gap-2 text-center">
                                             <h1 className="text-2xl font-bold">
                                                 {user
-                                                    ? "Create a new account"
-                                                    : "Edit user"}
+                                                    ? "Edit user"
+                                                    : "Create a new account"}
                                             </h1>
                                             <p className="text-balance text-sm text-muted-foreground">
                                                 Enter the information below to
@@ -545,15 +547,24 @@ export default function Index({ auth, institutes }) {
                                                                 <SelectValue />
                                                             </SelectTrigger>
                                                             <SelectContent>
-                                                                <SelectItem value="light">
-                                                                    Light
-                                                                </SelectItem>
-                                                                <SelectItem value="dark">
-                                                                    Dark
-                                                                </SelectItem>
-                                                                <SelectItem value="system">
-                                                                    System
-                                                                </SelectItem>
+                                                                {organizations.map(
+                                                                    (
+                                                                        organization
+                                                                    ) => (
+                                                                        <SelectItem
+                                                                            key={
+                                                                                organization.name
+                                                                            }
+                                                                            value={String(
+                                                                                organization.name
+                                                                            )}
+                                                                        >
+                                                                            {
+                                                                                organization.name
+                                                                            }
+                                                                        </SelectItem>
+                                                                    )
+                                                                )}
                                                             </SelectContent>
                                                         </Select>
                                                     </div>

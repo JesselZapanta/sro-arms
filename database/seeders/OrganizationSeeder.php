@@ -15,41 +15,42 @@ class OrganizationSeeder extends Seeder
     {
         $organizations = [
             [
-                'name' => 'Junior Association for Marketing Executives',
-                'description' => 'Develops marketing skills among students.',
+                'name' => 'JAMEX',
+                'description' => 'Junior Association for Marketing Executives',
                 'status' => 1,
             ],
             [
-                'name' => 'Voice of the Student\'s Society',
-                'description' => 'Represents education students and addresses their concerns.',
+                'name' => 'VOSS',
+                'description' => 'Voice of the Student\'s Society',
                 'status' => 1,
             ],
             [
-                'name' => 'Tanyag na mga Mag-aaral sa Samahang Filipino',
-                'description' => 'Promotes the Filipino language and culture.',
+                'name' => 'TMS FIL',
+                'description' => 'Tanyag na mga Mag-aaral sa Samahang Filipino',
                 'status' => 1,
             ],
             [
-                'name' => 'Troop of Educators and Enthusiasts of Mathematics',
-                'description' => 'Enhances student interest and skills in mathematics.',
+                'name' => 'TEEMS',
+                'description' => 'Troop of Educators and Enthusiasts of Mathematics',
                 'status' => 1,
             ],
             [
-                'name' => 'Political Science Club',
-                'description' => 'Engages students in politics and governance discussions.',
+                'name' => 'PSC',
+                'description' => 'Political Science Club',
                 'status' => 1,
             ],
             [
-                'name' => 'Junior Programming Enthusiasts Group of Computer Students',
-                'description' => 'Represents IT students and organizes tech-focused activities.',
+                'name' => 'JPEG.COM',
+                'description' => 'Junior Programming Enthusiasts Group of Computer Students',
                 'status' => 1,
             ],
             [
-                'name' => 'Association of Young Office Administrators',
-                'description' => 'Prepares students for administrative and office careers.',
+                'name' => 'AYOA',
+                'description' => 'Association of Young Office Administrators',
                 'status' => 1,
             ],
         ];
+
 
         Organization::insertOrIgnore($organizations);
     }
