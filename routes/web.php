@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Admin\AdminDashboardController;
 use App\Http\Controllers\Admin\AdminInstituteController;
+use App\Http\Controllers\Admin\AdminOrganizationController;
 use App\Http\Controllers\Admin\AdminUserController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\Officer\OfficerDashboardController;
@@ -35,6 +36,13 @@ Route::middleware(['auth', 'admin'])->group(function() {
     Route::post('/admin/institute/store', [AdminInstituteController::class, 'store']);
     Route::put('/admin/institute/update/{id}', [AdminInstituteController::class, 'update']);
     Route::delete('/admin/institute/destroy/{id}',[AdminInstituteController::class, 'destroy']);
+
+    //organization
+    Route::get('/admin/organization', [AdminOrganizationController::class, 'index'])->name('admin.organization'); 
+    Route::get('/admin/organization/getdata', [AdminOrganizationController::class, 'getdata']);
+    Route::post('/admin/organization/store', [AdminOrganizationController::class, 'store']);
+    Route::put('/admin/organization/update/{id}', [AdminOrganizationController::class, 'update']);
+    Route::delete('/admin/organization/destroy/{id}',[AdminOrganizationController::class, 'destroy']);
 });
 
 Route::middleware(['auth', 'student'])->group(function() {

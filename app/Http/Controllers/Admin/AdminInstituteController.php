@@ -3,15 +3,11 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Admin\UserStoreRequest;
-use App\Http\Requests\Admin\UserUpdateRequest;
-use App\Http\Requests\InstituteStoreRequest;
-use App\Http\Requests\InstituteUpdateRequest;
+use App\Http\Requests\Admin\InstituteStoreRequest;
+use App\Http\Requests\Admin\InstituteUpdateRequest;
 use App\Models\Institute;
-use App\Models\User;
 use Auth;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Hash;
 
 class AdminInstituteController extends Controller
 {
@@ -40,10 +36,10 @@ class AdminInstituteController extends Controller
 
     public function update(InstituteUpdateRequest $request)
     {
-        $user = Institute::findOrFail($request->id);
+        $institute = Institute::findOrFail($request->id);
         $data = $request->validated();
 
-        $user->update($data);
+        $institute->update($data);
 
         return response()->json([
             'status' => 'updated'
@@ -52,9 +48,9 @@ class AdminInstituteController extends Controller
 
     public function destroy($id)
     {
-        $user = Institute::findOrFail($id);
+        $institute = Institute::findOrFail($id);
 
-        $user->delete();
+        $institute->delete();
 
         return response()->json([
             'status' => 'deleted'
