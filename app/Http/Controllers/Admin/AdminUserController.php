@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\UserStoreRequest;
 use App\Http\Requests\Admin\UserUpdateRequest;
+use App\Models\Institute;
 use App\Models\User;
 use Auth;
 use Illuminate\Http\Request;
@@ -14,7 +15,11 @@ class AdminUserController extends Controller
 {
     public function index()
     {
-        return inertia('Admin/User/Index');
+        $institutes = Institute::all();
+
+        return inertia('Admin/User/Index', [
+            'institutes' => $institutes
+        ]);
     }
 
     public function getdata(Request $request)
@@ -48,12 +53,14 @@ class AdminUserController extends Controller
         $user = User::findOrFail($request->id);
         $data = $request->validated();
 
+            
+        // return $data;
+
         if($request->password != null){
             $data['password'] = Hash::make($data['password']);
         }else{
             unset($data['password']);
         }
-        
 
         $user->update($data);
 

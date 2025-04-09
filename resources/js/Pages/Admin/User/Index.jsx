@@ -44,7 +44,7 @@ import InputError from "@/Components/InputError";
 
 import { toast } from "sonner";
 
-export default function Index({ auth }) {
+export default function Index({ auth, institutes }) {
     const [data, setData] = useState([]);
     const [loading, setLoading] = useState(false);
 
@@ -83,7 +83,7 @@ export default function Index({ auth }) {
         getdata();
     }, [page, sortField, sortOrder]);
 
-    // console.log(data)
+    console.log(data)
 
     //creating new data = user
 
@@ -241,9 +241,11 @@ export default function Index({ auth }) {
                             <Table>
                                 <TableHeader>
                                     <TableRow>
-                                        <TableHead>ID</TableHead>
+                                        <TableHead>Student Id</TableHead>
                                         <TableHead>Name</TableHead>
                                         <TableHead>Email</TableHead>
+                                        <TableHead>Institute</TableHead>
+                                        <TableHead>Organization</TableHead>
                                     </TableRow>
                                 </TableHeader>
                                 <TableBody>
@@ -271,12 +273,20 @@ export default function Index({ auth }) {
                                     ) : data.length > 0 ? (
                                         data.map((user) => (
                                             <TableRow key={user.id}>
-                                                <TableCell>{user.id}</TableCell>
+                                                <TableCell>{user.studentId}</TableCell>
                                                 <TableCell>
-                                                    {user.name}
+                                                    { user.firstname}{" "}
+                                                    {user.middlename}{" "}
+                                                    {user.lastname} 
                                                 </TableCell>
                                                 <TableCell>
                                                     {user.email}
+                                                </TableCell>
+                                                <TableCell>
+                                                    {user.institute}
+                                                </TableCell>
+                                                <TableCell>
+                                                    {user.organization}
                                                 </TableCell>
                                                 <TableCell className="flex justify-end">
                                                     <div className="flex gap-2">
@@ -357,11 +367,16 @@ export default function Index({ auth }) {
                                     >
                                         <div className="flex flex-col items-center gap-2 text-center">
                                             <h1 className="text-2xl font-bold">
-                                                {user ? "Create a new account" : "Edit user"}
+                                                {user
+                                                    ? "Create a new account"
+                                                    : "Edit user"}
                                             </h1>
                                             <p className="text-balance text-sm text-muted-foreground">
                                                 Enter the information below to
-                                                {user ?  " edit " : " create "} your account
+                                                {user
+                                                    ? " edit "
+                                                    : " create "}{" "}
+                                                your account
                                             </p>
                                         </div>
 
@@ -477,15 +492,24 @@ export default function Index({ auth }) {
                                                                 <SelectValue />
                                                             </SelectTrigger>
                                                             <SelectContent>
-                                                                <SelectItem value="light">
-                                                                    Light
-                                                                </SelectItem>
-                                                                <SelectItem value="dark">
-                                                                    Dark
-                                                                </SelectItem>
-                                                                <SelectItem value="system">
-                                                                    System
-                                                                </SelectItem>
+                                                                {institutes.map(
+                                                                    (
+                                                                        institute
+                                                                    ) => (
+                                                                        <SelectItem
+                                                                            key={
+                                                                                institute.name
+                                                                            }
+                                                                            value={String(
+                                                                                institute.name
+                                                                            )}
+                                                                        >
+                                                                            {
+                                                                                institute.name
+                                                                            }
+                                                                        </SelectItem>
+                                                                    )
+                                                                )}
                                                             </SelectContent>
                                                         </Select>
                                                     </div>
@@ -752,8 +776,10 @@ export default function Index({ auth }) {
                                                         <Loader2 className="animate-spin" />
                                                         Please wait
                                                     </span>
+                                                ) : user ? (
+                                                    "Update"
                                                 ) : (
-                                                    user ? "Update" : "Create"
+                                                    "Create"
                                                 )}
                                             </Button>
                                         </DialogFooter>
