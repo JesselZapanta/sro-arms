@@ -11,7 +11,7 @@ class EventStoreRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -22,7 +22,15 @@ class EventStoreRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'name' => ['required', 'string', 'max:255'],
+            'event_date' => ['required', 'date'],
+            'type' => ['required', 'in:AM,PM,WD'],
+            'am_start' => ['required', 'date_format:H:i'],
+            'am_end' => ['required', 'date_format:H:i', 'after:am_start'],
+            'pm_start' => ['required', 'date_format:H:i', 'after:am_end'],
+            'pm_end' => ['required', 'date_format:H:i', 'after:pm_start'],
+            'sanction' => ['required', 'numeric', 'min:0'],
+            'status' => ['required', 'in:0,1'],
         ];
     }
 }

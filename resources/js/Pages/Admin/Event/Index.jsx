@@ -92,7 +92,13 @@ export default function Index({ auth }) {
 
     const [formData, setFormData] = useState({
         name: "",
-        description: "",
+        event_date: "",
+        type: "",
+        am_start: "",
+        am_end: "",
+        pm_start: "",
+        pm_end: "",
+        sanction: "",
         status: "",
     });
 
@@ -112,7 +118,13 @@ export default function Index({ auth }) {
 
         setFormData({
             name: event.name,
-            description: event.description,
+            event_date: event.event_date,
+            type: event.type,
+            am_start: event.am_start,
+            am_end: event.am_end,
+            pm_start: event.pm_start,
+            pm_end: event.pm_end,
+            sanction: event.sanction,
             status: event.status,
         });
     };
@@ -164,7 +176,13 @@ export default function Index({ auth }) {
         setErrors({});
         setFormData({
             name: "",
-            description: "",
+            event_date: "",
+            type: "",
+            am_start: "",
+            am_end: "",
+            pm_start: "",
+            pm_end: "",
+            sanction: "",
             status: "",
         });
         getdata();
@@ -271,12 +289,6 @@ export default function Index({ auth }) {
                                                     {event.name}
                                                 </TableCell>
                                                 <TableCell>
-                                                    {truncate(
-                                                        event?.description,
-                                                        80
-                                                    )}
-                                                </TableCell>
-                                                <TableCell>
                                                     {event.status === 1 ? (
                                                         <span className="text-green-500">
                                                             Active
@@ -293,9 +305,7 @@ export default function Index({ auth }) {
                                                             variant="outline"
                                                             size="icon"
                                                             onClick={() =>
-                                                                editForm(
-                                                                    event
-                                                                )
+                                                                editForm(event)
                                                             }
                                                         >
                                                             <Pencil />
@@ -406,28 +416,205 @@ export default function Index({ auth }) {
                                             </div>
                                             <div className="w-full grid gap-2">
                                                 <div>
-                                                    <Label htmlFor="description">
-                                                        Description
+                                                    <Label htmlFor="event_date">
+                                                        Event Date
                                                     </Label>
-                                                    <Textarea
-                                                        className="min-h-32"
-                                                        value={
-                                                            formData.description
-                                                        }
+                                                    <Input
+                                                        id="event_date"
+                                                        type="date"
+                                                        value={formData.event_date}
                                                         onChange={(e) => {
                                                             setFormData({
                                                                 ...formData,
-                                                                description:
-                                                                    e.target
-                                                                        .value,
+                                                                event_date: e.target
+                                                                    .value,
                                                             });
                                                         }}
                                                     />
                                                 </div>
                                                 <InputError
-                                                    message={errors.description}
+                                                    message={errors.event_date}
                                                 />
                                             </div>
+                                            <div className="flex gap-2">
+                                                <div className="w-full grid gap-2">
+                                                    <div>
+                                                        <Label htmlFor="sanction">
+                                                            Sanction
+                                                        </Label>
+                                                        <Input
+                                                            id="sanction"
+                                                            type="number"
+                                                            value={
+                                                                formData.sanction
+                                                            }
+                                                            onChange={(e) => {
+                                                                setFormData({
+                                                                    ...formData,
+                                                                    sanction:
+                                                                        e.target
+                                                                            .value,
+                                                                });
+                                                            }}
+                                                        />
+                                                    </div>
+                                                    <InputError
+                                                        message={
+                                                            errors.sanction
+                                                        }
+                                                    />
+                                                </div>
+                                                <div className="w-full grid gap-2">
+                                                    <div>
+                                                        <Label htmlFor="type">
+                                                            Event Type
+                                                        </Label>
+                                                        <Select
+                                                            name="type"
+                                                            onValueChange={(
+                                                                value
+                                                            ) =>
+                                                                setFormData({
+                                                                    ...formData,
+                                                                    type: String(
+                                                                        value
+                                                                    ),
+                                                                })
+                                                            }
+                                                            value={String(
+                                                                formData.type
+                                                            )}
+                                                        >
+                                                            <SelectTrigger className="w-full">
+                                                                <SelectValue />
+                                                            </SelectTrigger>
+                                                            <SelectContent>
+                                                                <SelectItem value="AM">
+                                                                    AM
+                                                                </SelectItem>
+                                                                <SelectItem value="PM">
+                                                                    PM
+                                                                </SelectItem>
+                                                                <SelectItem value="WD">
+                                                                    WD
+                                                                </SelectItem>
+                                                            </SelectContent>
+                                                        </Select>
+                                                    </div>
+                                                    <InputError
+                                                        message={errors.status}
+                                                    />
+                                                </div>
+                                            </div>
+                                            <div className="flex gap-2">
+                                                <div className="w-full grid gap-2">
+                                                    <div>
+                                                        <Label htmlFor="am_start">
+                                                            AM Start
+                                                        </Label>
+                                                        <Input
+                                                            id="am_start"
+                                                            type="time"
+                                                            value={
+                                                                formData.am_start
+                                                            }
+                                                            onChange={(e) => {
+                                                                setFormData({
+                                                                    ...formData,
+                                                                    am_start:
+                                                                        e.target
+                                                                            .value,
+                                                                });
+                                                            }}
+                                                        />
+                                                    </div>
+                                                    <InputError
+                                                        message={
+                                                            errors.am_start
+                                                        }
+                                                    />
+                                                </div>
+                                                <div className="w-full grid gap-2">
+                                                    <div>
+                                                        <Label htmlFor="am_end">
+                                                            AM End
+                                                        </Label>
+                                                        <Input
+                                                            id="am_end"
+                                                            type="time"
+                                                            value={
+                                                                formData.am_end
+                                                            }
+                                                            onChange={(e) => {
+                                                                setFormData({
+                                                                    ...formData,
+                                                                    am_end: e
+                                                                        .target
+                                                                        .value,
+                                                                });
+                                                            }}
+                                                        />
+                                                    </div>
+                                                    <InputError
+                                                        message={errors.am_end}
+                                                    />
+                                                </div>
+                                            </div>
+                                            <div className="flex gap-2">
+                                                <div className="w-full grid gap-2">
+                                                    <div>
+                                                        <Label htmlFor="pm_start">
+                                                            PM Start
+                                                        </Label>
+                                                        <Input
+                                                            id="pm_start"
+                                                            type="time"
+                                                            value={
+                                                                formData.pm_start
+                                                            }
+                                                            onChange={(e) => {
+                                                                setFormData({
+                                                                    ...formData,
+                                                                    pm_start:
+                                                                        e.target
+                                                                            .value,
+                                                                });
+                                                            }}
+                                                        />
+                                                    </div>
+                                                    <InputError
+                                                        message={
+                                                            errors.pm_start
+                                                        }
+                                                    />
+                                                </div>
+                                                <div className="w-full grid gap-2">
+                                                    <div>
+                                                        <Label htmlFor="pm_end">
+                                                            PM End
+                                                        </Label>
+                                                        <Input
+                                                            id="pm_end"
+                                                            type="time"
+                                                            value={
+                                                                formData.pm_end
+                                                            }
+                                                            onChange={(e) => {
+                                                                setFormData({
+                                                                    ...formData,
+                                                                    pm_end: e
+                                                                        .target
+                                                                        .value,
+                                                                });
+                                                            }}
+                                                        />
+                                                    </div>
+                                                    <InputError
+                                                        message={errors.pm_end}
+                                                    />
+                                                </div>
+                                            </div>
+
                                             <div className="w-full grid gap-2">
                                                 <div>
                                                     <Label htmlFor="status">
@@ -501,9 +688,7 @@ export default function Index({ auth }) {
                             <Dialog open={isDelete} onOpenChange={formCancel}>
                                 <DialogContent className="sm:max-w-[425px]">
                                     <DialogHeader>
-                                        <DialogTitle>
-                                            Delete Event?
-                                        </DialogTitle>
+                                        <DialogTitle>Delete Event?</DialogTitle>
                                         <DialogDescription>
                                             Confirm to permanently delete this
                                             event?
