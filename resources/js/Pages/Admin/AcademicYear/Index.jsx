@@ -56,7 +56,7 @@ export default function Index({ auth }) {
 
     const [search, setSearch] = useState("");
 
-    //fetching data = events
+    //fetching data = academicYears
     const getdata = async () => {
         setLoading(true);
 
@@ -68,7 +68,9 @@ export default function Index({ auth }) {
         ].join("&");
 
         try {
-            const res = await axios.get(`/admin/event/getdata?${params}`);
+            const res = await axios.get(
+                `/admin/academic-year/getdata?${params}`
+            );
 
             setData(res.data.data);
             setPage(res.data.current_page);
@@ -86,23 +88,19 @@ export default function Index({ auth }) {
 
     // console.log(data)
 
-    //creating new data = event
+    //creating new data = academicYear
 
     const [isOpen, setIsOpen] = useState(false);
 
     const [formData, setFormData] = useState({
-        name: "",
-        event_date: "",
-        type: "",
-        am_start: "",
-        am_end: "",
-        pm_start: "",
-        pm_end: "",
-        sanction: "",
+        code: "",
+        description: "",
+        start_date: "",
+        end_date: "",
         status: "",
     });
 
-    const [event, setEvent] = useState(false);
+    const [academicYear, setAcademicYear] = useState(false);
     const [errors, setErrors] = useState({});
     const [processing, setProcessing] = useState(false);
 
@@ -111,47 +109,34 @@ export default function Index({ auth }) {
         setIsOpen(true);
     };
 
-    const formatDate = (datetime) => {
-        return datetime ? datetime.split("T")[0] : "";
-    };
-
-    const formatTime = (datetime) => {
-        return datetime ? datetime.split("T")[1].slice(0, 5) : "";
-    };
-
-    const editForm = (event) => {
-
+    const editForm = (academicYear) => {
         setErrors({});
         setIsOpen(true);
-        setEvent(event);
+        setAcademicYear(academicYear);
 
         setFormData({
-            name: event.name,
-            event_date: formatDate(event.event_date),
-            type: event.type,
-            am_start: formatTime(event.am_start),
-            am_end: formatTime(event.am_end),
-            pm_start: formatTime(event.pm_start),
-            pm_end: formatTime(event.pm_end),
-            sanction: event.sanction,
-            status: event.status,
+            code: academicYear.code,
+            description: academicYear.description,
+            start_date: academicYear.start_date,
+            end_date: academicYear.end_date,
+            status: academicYear.status,
         });
     };
 
     const onSubmit = async (e) => {
         e.preventDefault();
         setProcessing(true);
-        if (event) {
+        if (academicYear) {
             try {
                 const res = await axios.put(
-                    `/admin/event/update/${event.id}`,
+                    `/admin/academic-year/update/${academicYear.id}`,
                     formData
                 );
 
                 if (res.data.status === "updated") {
                     formCancel();
                     toast.success(
-                        "The event details have been successfully updated."
+                        "The academic year details have been successfully updated."
                     );
                 }
             } catch (err) {
@@ -162,13 +147,15 @@ export default function Index({ auth }) {
         } else {
             try {
                 const res = await axios.post(
-                    "/admin/event/store",
+                    "/admin/academic-year/store",
                     formData
                 );
 
                 if (res.data.status === "created") {
                     formCancel();
-                    toast.success("The event has been successfully added.");
+                    toast.success(
+                        "The academic year has been successfully added."
+                    );
                 }
             } catch (err) {
                 setErrors(err.response.data.errors);
@@ -181,41 +168,37 @@ export default function Index({ auth }) {
     const formCancel = () => {
         setIsOpen(false);
         setIsDelete(false);
-        setEvent(false);
+        setAcademicYear(false);
         setErrors({});
         setFormData({
-            name: "",
-            event_date: "",
-            type: "",
-            am_start: "",
-            am_end: "",
-            pm_start: "",
-            pm_end: "",
-            sanction: "",
+            code: "",
+            description: "",
+            start_date: "",
+            end_date: "",
             status: "",
         });
         getdata();
     };
 
-    //delete data = event
+    //delete data = academicYear
 
     const [isDelete, setIsDelete] = useState(false);
 
-    const deleteConfirm = (event) => {
-        setEvent(event);
+    const deleteConfirm = (academicYear) => {
+        setAcademicYear(academicYear);
         setIsDelete(true);
     };
 
-    const destroy = async (event) => {
+    const destroy = async (academicYear) => {
         setProcessing(true);
         try {
             const res = await axios.delete(
-                `/admin/event/destroy/${event.id}`
+                `/admin/academic-year/destroy/${academicYear.id}`
             );
 
             if (res.data.status === "deleted") {
                 formCancel();
-                toast.success("Event deleted successfully.");
+                toast.success("Academic year deleted successfully.");
             }
         } catch (err) {
             console.log(err);
@@ -234,17 +217,17 @@ export default function Index({ auth }) {
 
     return (
         <AuthenticatedLayout>
-            <Head title="Event Management" />
+            <Head title="Academic Year Management" />
             <div className="py-4">
                 <div className="mx-auto max-w-7xl sm:px-6 lg:px-8">
                     <div className="overflow-hidden bg-white shadow-sm sm:rounded-lg">
                         <div className="bg-gray-50 p-6 rounded-md">
-                            <div className="mb-4">List of events</div>
+                            <div className="mb-4">List of Academic Years</div>
 
                             <div className="mb-4 flex gap-2">
                                 <Input
                                     type="text"
-                                    placeholder="Search event"
+                                    placeholder="Search academic year"
                                     value={search}
                                     onChange={(e) => setSearch(e.target.value)}
                                 />
@@ -261,10 +244,8 @@ export default function Index({ auth }) {
                                 <TableHeader>
                                     <TableRow>
                                         <TableHead>ID</TableHead>
-                                        <TableHead>Name</TableHead>
-                                        <TableHead>Type</TableHead>
-                                        <TableHead>Event Date</TableHead>
-                                        <TableHead>Sanction</TableHead>
+                                        <TableHead>Code</TableHead>
+                                        <TableHead>Description</TableHead>
                                         <TableHead>Status</TableHead>
                                     </TableRow>
                                 </TableHeader>
@@ -272,7 +253,7 @@ export default function Index({ auth }) {
                                     {loading ? (
                                         <TableRow>
                                             <TableCell
-                                                colSpan={6}
+                                                colSpan={4}
                                                 className="text-center"
                                             >
                                                 <div className="flex flex-col gap-2">
@@ -291,34 +272,23 @@ export default function Index({ auth }) {
                                             </TableCell>
                                         </TableRow>
                                     ) : data.length > 0 ? (
-                                        data.map((event) => (
-                                            <TableRow key={event.id}>
+                                        data.map((academicYear) => (
+                                            <TableRow key={academicYear.id}>
                                                 <TableCell>
-                                                    {event.id}
+                                                    {academicYear.id}
                                                 </TableCell>
                                                 <TableCell>
-                                                    {event.name}
+                                                    {academicYear.code}
                                                 </TableCell>
                                                 <TableCell>
-                                                    {event.type}
-                                                </TableCell>
-                                                {/* <TableCell>
-                                                    {new Date(
-                                                        event.event_date
-                                                    ).toLocaleDateString(
-                                                        "en-US",
-                                                        {
-                                                            year: "numeric",
-                                                            month: "long",
-                                                            day: "numeric",
-                                                        }
+                                                    {truncate(
+                                                        academicYear?.description,
+                                                        80
                                                     )}
-                                                </TableCell> */}
-                                                <TableCell>
-                                                    {event.sanction}
                                                 </TableCell>
                                                 <TableCell>
-                                                    {event.status === 1 ? (
+                                                    {academicYear.status ===
+                                                    1 ? (
                                                         <span className="text-green-500">
                                                             Active
                                                         </span>
@@ -334,7 +304,9 @@ export default function Index({ auth }) {
                                                             variant="outline"
                                                             size="icon"
                                                             onClick={() =>
-                                                                editForm(event)
+                                                                editForm(
+                                                                    academicYear
+                                                                )
                                                             }
                                                         >
                                                             <Pencil />
@@ -344,7 +316,7 @@ export default function Index({ auth }) {
                                                             variant="destructive"
                                                             onClick={() =>
                                                                 deleteConfirm(
-                                                                    event
+                                                                    academicYear
                                                                 )
                                                             }
                                                         >
@@ -407,83 +379,80 @@ export default function Index({ auth }) {
                                     >
                                         <div className="flex flex-col items-center gap-2 text-center">
                                             <h1 className="text-2xl font-bold">
-                                                {event
-                                                    ? "Create a new account"
-                                                    : "Edit event"}
+                                                {academicYear
+                                                    ? "Edit academic year"
+                                                    : "Create new academic year"}
                                             </h1>
                                             <p className="text-balance text-sm text-muted-foreground">
                                                 Enter the information below to
-                                                {event
+                                                {academicYear
                                                     ? " edit "
                                                     : " create "}{" "}
-                                                your account
+                                                academic year
                                             </p>
                                         </div>
 
                                         <div className="grid gap-6">
                                             <div className="w-full grid gap-2">
                                                 <div>
-                                                    <Label htmlFor="name">
-                                                        Name
+                                                    <Label htmlFor="code">
+                                                        Code
                                                     </Label>
                                                     <Input
-                                                        id="name"
+                                                        id="code"
                                                         type="text"
-                                                        value={formData.name}
+                                                        value={formData.code}
                                                         onChange={(e) => {
                                                             setFormData({
                                                                 ...formData,
-                                                                name: e.target
+                                                                code: e.target
                                                                     .value,
                                                             });
                                                         }}
                                                     />
                                                 </div>
                                                 <InputError
-                                                    message={errors.name}
+                                                    message={errors.code}
                                                 />
                                             </div>
                                             <div className="w-full grid gap-2">
                                                 <div>
-                                                    <Label htmlFor="event_date">
-                                                        Event Date
+                                                    <Label htmlFor="description">
+                                                        Description
                                                     </Label>
                                                     <Input
-                                                        id="event_date"
-                                                        type="date"
-                                                        value={
-                                                            formData.event_date
-                                                        }
+                                                        id="description"
+                                                        type="text"
+                                                        value={formData.description}
                                                         onChange={(e) => {
                                                             setFormData({
                                                                 ...formData,
-                                                                event_date:
-                                                                    e.target
-                                                                        .value,
+                                                                description: e.target
+                                                                    .value,
                                                             });
                                                         }}
                                                     />
                                                 </div>
                                                 <InputError
-                                                    message={errors.event_date}
+                                                    message={errors.description}
                                                 />
                                             </div>
                                             <div className="flex gap-2">
                                                 <div className="w-full grid gap-2">
                                                     <div>
-                                                        <Label htmlFor="sanction">
-                                                            Sanction
+                                                        <Label htmlFor="start_date">
+                                                            Start Date
                                                         </Label>
                                                         <Input
-                                                            id="sanction"
-                                                            type="number"
+                                                            id="start_date"
+                                                            type="date"
                                                             value={
-                                                                formData.sanction
+                                                                formData.start_date
                                                             }
                                                             onChange={(e) => {
                                                                 setFormData({
                                                                     ...formData,
-                                                                    sanction:
+                                                                    start_date:
                                                                         e.target
                                                                             .value,
                                                                 });
@@ -492,197 +461,38 @@ export default function Index({ auth }) {
                                                     </div>
                                                     <InputError
                                                         message={
-                                                            errors.sanction
+                                                            errors.start_date
                                                         }
                                                     />
                                                 </div>
                                                 <div className="w-full grid gap-2">
                                                     <div>
-                                                        <Label htmlFor="type">
-                                                            Event Type
+                                                        <Label htmlFor="end_date">
+                                                            End Date
                                                         </Label>
-                                                        <Select
-                                                            name="type"
-                                                            onValueChange={(
-                                                                value
-                                                            ) =>
+                                                        <Input
+                                                            id="end_date"
+                                                            type="date"
+                                                            value={
+                                                                formData.end_date
+                                                            }
+                                                            onChange={(e) => {
                                                                 setFormData({
                                                                     ...formData,
-                                                                    type: String(
-                                                                        value
-                                                                    ),
-                                                                })
-                                                            }
-                                                            value={String(
-                                                                formData.type
-                                                            )}
-                                                        >
-                                                            <SelectTrigger className="w-full">
-                                                                <SelectValue />
-                                                            </SelectTrigger>
-                                                            <SelectContent>
-                                                                <SelectItem value="AM">
-                                                                    AM
-                                                                </SelectItem>
-                                                                <SelectItem value="PM">
-                                                                    PM
-                                                                </SelectItem>
-                                                                <SelectItem value="WD">
-                                                                    WD
-                                                                </SelectItem>
-                                                            </SelectContent>
-                                                        </Select>
+                                                                    end_date:
+                                                                        e.target
+                                                                            .value,
+                                                                });
+                                                            }}
+                                                        />
                                                     </div>
                                                     <InputError
-                                                        message={errors.status}
+                                                        message={
+                                                            errors.end_date
+                                                        }
                                                     />
                                                 </div>
                                             </div>
-                                            {(formData.type === "AM" ||
-                                                formData.type === "WD") && (
-                                                <div className="flex gap-2">
-                                                    <div className="w-full grid gap-2">
-                                                        <div>
-                                                            <Label htmlFor="am_start">
-                                                                AM Start
-                                                            </Label>
-                                                            <Input
-                                                                id="am_start"
-                                                                type="time"
-                                                                min="00:00"
-                                                                max="11:59"
-                                                                value={
-                                                                    formData.am_start
-                                                                }
-                                                                onChange={(
-                                                                    e
-                                                                ) => {
-                                                                    setFormData(
-                                                                        {
-                                                                            ...formData,
-                                                                            am_start:
-                                                                                e
-                                                                                    .target
-                                                                                    .value,
-                                                                        }
-                                                                    );
-                                                                }}
-                                                            />
-                                                        </div>
-                                                        <InputError
-                                                            message={
-                                                                errors.am_start
-                                                            }
-                                                        />
-                                                    </div>
-                                                    <div className="w-full grid gap-2">
-                                                        <div>
-                                                            <Label htmlFor="am_end">
-                                                                AM End
-                                                            </Label>
-                                                            <Input
-                                                                id="am_end"
-                                                                type="time"
-                                                                min="00:00"
-                                                                max="11:59"
-                                                                value={
-                                                                    formData.am_end
-                                                                }
-                                                                onChange={(
-                                                                    e
-                                                                ) => {
-                                                                    setFormData(
-                                                                        {
-                                                                            ...formData,
-                                                                            am_end: e
-                                                                                .target
-                                                                                .value,
-                                                                        }
-                                                                    );
-                                                                }}
-                                                            />
-                                                        </div>
-                                                        <InputError
-                                                            message={
-                                                                errors.am_end
-                                                            }
-                                                        />
-                                                    </div>
-                                                </div>
-                                            )}
-                                            {(formData.type === "PM" ||
-                                                formData.type === "WD") && (
-                                                <div className="flex gap-2">
-                                                    <div className="w-full grid gap-2">
-                                                        <div>
-                                                            <Label htmlFor="pm_start">
-                                                                PM Start
-                                                            </Label>
-                                                            <Input
-                                                                id="pm_start"
-                                                                type="time"
-                                                                min="12:00"
-                                                                max="23:59"
-                                                                value={
-                                                                    formData.pm_start
-                                                                }
-                                                                onChange={(
-                                                                    e
-                                                                ) => {
-                                                                    setFormData(
-                                                                        {
-                                                                            ...formData,
-                                                                            pm_start:
-                                                                                e
-                                                                                    .target
-                                                                                    .value,
-                                                                        }
-                                                                    );
-                                                                }}
-                                                            />
-                                                        </div>
-                                                        <InputError
-                                                            message={
-                                                                errors.pm_start
-                                                            }
-                                                        />
-                                                    </div>
-                                                    <div className="w-full grid gap-2">
-                                                        <div>
-                                                            <Label htmlFor="pm_end">
-                                                                PM End
-                                                            </Label>
-                                                            <Input
-                                                                id="pm_end"
-                                                                type="time"
-                                                                min="12:00"
-                                                                max="23:59"
-                                                                value={
-                                                                    formData.pm_end
-                                                                }
-                                                                onChange={(
-                                                                    e
-                                                                ) => {
-                                                                    setFormData(
-                                                                        {
-                                                                            ...formData,
-                                                                            pm_end: e
-                                                                                .target
-                                                                                .value,
-                                                                        }
-                                                                    );
-                                                                }}
-                                                            />
-                                                        </div>
-                                                        <InputError
-                                                            message={
-                                                                errors.pm_end
-                                                            }
-                                                        />
-                                                    </div>
-                                                </div>
-                                            )}
-
                                             <div className="w-full grid gap-2">
                                                 <div>
                                                     <Label htmlFor="status">
@@ -740,7 +550,7 @@ export default function Index({ auth }) {
                                                         <Loader2 className="animate-spin" />
                                                         Please wait
                                                     </span>
-                                                ) : event ? (
+                                                ) : academicYear ? (
                                                     "Update"
                                                 ) : (
                                                     "Create"
@@ -756,10 +566,12 @@ export default function Index({ auth }) {
                             <Dialog open={isDelete} onOpenChange={formCancel}>
                                 <DialogContent className="sm:max-w-[425px]">
                                     <DialogHeader>
-                                        <DialogTitle>Delete Event?</DialogTitle>
+                                        <DialogTitle>
+                                            Delete Academic year?
+                                        </DialogTitle>
                                         <DialogDescription>
                                             Confirm to permanently delete this
-                                            event?
+                                            academic year?
                                         </DialogDescription>
                                     </DialogHeader>
                                     <DialogFooter className="mt-4">
@@ -771,7 +583,9 @@ export default function Index({ auth }) {
                                         </Button>
                                         <Button
                                             variant="destructive"
-                                            onClick={() => destroy(event)}
+                                            onClick={() =>
+                                                destroy(academicYear)
+                                            }
                                         >
                                             Delete
                                         </Button>

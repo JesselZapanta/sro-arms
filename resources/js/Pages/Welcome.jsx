@@ -35,25 +35,17 @@ export default function Welcome({ auth }) {
                                 {auth.user ? (
                                     <Link
                                         href="/dashboard"
-                                        passHref
+                                        className={`${navigationMenuTriggerStyle()} bg-emerald-600 text-white`}
                                     >
-                                        <NavigationMenuLink
-                                            className={`${navigationMenuTriggerStyle()} bg-emerald-600 text-white`}
-                                        >
-                                            Go to Dashboard
-                                        </NavigationMenuLink>
+                                        Go to Dashboard
                                     </Link>
                                 ) : (
                                     <>
                                         <Link
                                             href="/login"
-                                            passHref
+                                            className={`${navigationMenuTriggerStyle()} bg-emerald-600 text-white`}
                                         >
-                                            <NavigationMenuLink
-                                                className={`${navigationMenuTriggerStyle()} bg-emerald-600 text-white`}
-                                            >
-                                                Login
-                                            </NavigationMenuLink>
+                                            Login
                                         </Link>
                                     </>
                                 )}

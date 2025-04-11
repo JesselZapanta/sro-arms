@@ -38,13 +38,20 @@ export default function AuthenticatedLayout({ header, children }) {
 
     const currentPath = window.location.pathname;
 
-    const items = [
+    const adminLinks = [
         { title: "Dashboard", url: "/admin/dashboard" },
         { title: "User", url: "/admin/user" },
+        { title: "A.Y.", url: "/admin/academic-year" },
         { title: "Institute", url: "/admin/institute" },
         { title: "Organization", url: "/admin/organization" },
         { title: "Event", url: "/admin/event" },
         { title: "Receipt", url: "/receipt" },
+    ];
+
+    const studentLinks = [
+        { title: "Dashboard", url: "/student/dashboard" },
+        { title: "Event", url: "/admin/event" },
+        { title: "Attendance", url: "/admin/attendance" },
     ];
 
     return (
@@ -66,20 +73,38 @@ export default function AuthenticatedLayout({ header, children }) {
                     <div className="lg:block hidden">
                         <NavigationMenu>
                             <NavigationMenuList>
-                                {items.map((item) => (
-                                    <NavigationMenuItem key={item.url}>
-                                        <NavigationMenuLink
-                                            href={item.url}
-                                            className={`${
-                                                currentPath === item.url
-                                                    ? "bg-emerald-600 text-white"
-                                                    : ""
-                                            } ${navigationMenuTriggerStyle()}`}
-                                        >
-                                            {item.title}
-                                        </NavigationMenuLink>
-                                    </NavigationMenuItem>
-                                ))}
+                                {user.role === 1 &&
+                                    adminLinks.map((link) => (
+                                        <NavigationMenuItem key={link.url}>
+                                            <NavigationMenuLink
+                                                href={link.url}
+                                                className={`${
+                                                    currentPath === link.url
+                                                        ? "bg-emerald-600 text-white"
+                                                        : ""
+                                                } ${navigationMenuTriggerStyle()}`}
+                                            >
+                                                {link.title}
+                                            </NavigationMenuLink>
+                                        </NavigationMenuItem>
+                                    ))}
+
+                                {user.role === 2 &&
+                                    studentLinks.map((link) => (
+                                        <NavigationMenuItem key={link.url}>
+                                            <NavigationMenuLink
+                                                href={link.url}
+                                                className={`${
+                                                    currentPath === link.url
+                                                        ? "bg-emerald-600 text-white"
+                                                        : ""
+                                                } ${navigationMenuTriggerStyle()}`}
+                                            >
+                                                {link.title}
+                                            </NavigationMenuLink>
+                                        </NavigationMenuItem>
+                                    ))}
+
                                 {/* Profile Dropdown */}
                                 <NavigationMenuItem>
                                     <DropdownMenu>
@@ -120,7 +145,7 @@ export default function AuthenticatedLayout({ header, children }) {
                         <SheetTrigger className="lg:hidden">
                             <Menu />
                         </SheetTrigger>
-                        <SheetContent className="bg-emerald-200 w-[400px] sm:w-[540px]">
+                        <SheetContent className="bg-emerald-200 max-w-[400px] sm:w-full">
                             <div className="w-full">
                                 <SheetTitle>
                                     <div className="flex gap-2">
@@ -130,7 +155,7 @@ export default function AuthenticatedLayout({ header, children }) {
                                                 {user.firstname[0].toUpperCase()}
                                             </AvatarFallback>
                                         </Avatar>
-                                        <div className="text-sm font-light"> 
+                                        <div className="text-sm font-light">
                                             <p>{user.firstname}</p>
                                             <p>{user.email}</p>
                                         </div>
@@ -138,17 +163,17 @@ export default function AuthenticatedLayout({ header, children }) {
                                 </SheetTitle>
                                 <NavigationMenu>
                                     <NavigationMenuList className="flex flex-col items-start mt-4 gap-2">
-                                        {items.map((item) => (
-                                            <NavigationMenuItem key={item.url}>
+                                        {adminLinks.map((link) => (
+                                            <NavigationMenuItem key={link.url}>
                                                 <NavigationMenuLink
-                                                    href={item.url}
+                                                    href={link.url}
                                                     className={`${
-                                                        currentPath === item.url
+                                                        currentPath === link.url
                                                             ? " bg-emerald-600 text-white"
                                                             : ""
                                                     } ${navigationMenuTriggerStyle()}`}
                                                 >
-                                                    {item.title}
+                                                    {link.title}
                                                 </NavigationMenuLink>
                                             </NavigationMenuItem>
                                         ))}

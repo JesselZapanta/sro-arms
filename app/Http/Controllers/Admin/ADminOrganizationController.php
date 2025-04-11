@@ -43,10 +43,10 @@ class AdminOrganizationController extends Controller
 
     public function update(OrganizationUpdateRequest $request)
     {
-        $user = Organization::findOrFail($request->id);
+        $organization = Organization::findOrFail($request->id);
         $data = $request->validated();
 
-        $user->update($data);
+        $organization->update($data);
 
         return response()->json([
             'status' => 'updated'
@@ -55,9 +55,9 @@ class AdminOrganizationController extends Controller
 
     public function destroy($id)
     {
-        $user = Organization::findOrFail($id);
+        $organization = Organization::findOrFail($id);
 
-        $user->delete();
+        $organization->delete();
 
         return response()->json([
             'status' => 'deleted'

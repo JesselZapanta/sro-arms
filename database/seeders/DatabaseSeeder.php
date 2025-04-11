@@ -21,8 +21,10 @@ class DatabaseSeeder extends Seeder
         // ]);
 
         $this->call([
-            InstituteSeeder::class,
-            OrganizationSeeder::class,
+            // InstituteSeeder::class,
+            // OrganizationSeeder::class,
+            // UserSeeder::class,
+            AcademicYearSeeder::class,
         ]);
     }
 }

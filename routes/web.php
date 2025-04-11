@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\AdminAcademicYearController;
 use App\Http\Controllers\Admin\AdminDashboardController;
 use App\Http\Controllers\Admin\AdminEventController;
 use App\Http\Controllers\Admin\AdminInstituteController;
@@ -30,6 +31,13 @@ Route::middleware(['auth', 'admin'])->group(function() {
     Route::post('/admin/user/store', [AdminUserController::class, 'store']);
     Route::put('/admin/user/update/{id}', [AdminUserController::class, 'update']);
     Route::delete('/admin/user/destroy/{id}',[AdminUserController::class, 'destroy']);
+
+    //academic-year
+    Route::get('/admin/academic-year', [AdminAcademicYearController::class, 'index'])->name('admin.academic-year'); 
+    Route::get('/admin/academic-year/getdata', [AdminAcademicYearController::class, 'getdata']);
+    Route::post('/admin/academic-year/store', [AdminAcademicYearController::class, 'store']);
+    Route::put('/admin/academic-year/update/{id}', [AdminAcademicYearController::class, 'update']);
+    Route::delete('/admin/academic-year/destroy/{id}',[AdminAcademicYearController::class, 'destroy']);
 
     //institute
     Route::get('/admin/institute', [AdminInstituteController::class, 'index'])->name('admin.institute'); 
