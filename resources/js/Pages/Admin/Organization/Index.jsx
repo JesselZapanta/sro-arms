@@ -362,7 +362,7 @@ export default function Index({ auth }) {
                             {/* form dialog */}
 
                             <Dialog open={isOpen} onOpenChange={formCancel}>
-                                <DialogContent className="sm:max-w-[425px]">
+                                <DialogContent className="sm:max-w-[425px] max-h-[100vh] overflow-y-auto">
                                     <form
                                         onSubmit={onSubmit}
                                         className="flex flex-col gap-6"
