@@ -48,7 +48,7 @@ class UserSeeder extends Seeder
                 'studentId' => '321',
                 'email' => 'officer@gmail.com',
                 'password' => Hash::make('officer'),
-                'role' => 2, // 1: Officer
+                'role' => 3, // 1: Officer
                 'status' => 1, // 1: active
             ],
         ];

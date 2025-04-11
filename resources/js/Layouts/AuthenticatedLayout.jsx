@@ -54,6 +54,11 @@ export default function AuthenticatedLayout({ header, children }) {
         { title: "Attendance", url: "/admin/attendance" },
     ];
 
+    const officerLinks = [
+        { title: "Dashboard", url: "/officer/dashboard" },
+        { title: "Event", url: "/officer/event" },
+    ];
+
     return (
         <div className="min-h-screen bg-gray-100">
             <div className="bg-emerald-200">
@@ -91,6 +96,22 @@ export default function AuthenticatedLayout({ header, children }) {
 
                                 {user.role === 2 &&
                                     studentLinks.map((link) => (
+                                        <NavigationMenuItem key={link.url}>
+                                            <NavigationMenuLink
+                                                href={link.url}
+                                                className={`${
+                                                    currentPath === link.url
+                                                        ? "bg-emerald-600 text-white"
+                                                        : ""
+                                                } ${navigationMenuTriggerStyle()}`}
+                                            >
+                                                {link.title}
+                                            </NavigationMenuLink>
+                                        </NavigationMenuItem>
+                                    ))}
+
+                                {user.role === 3 &&
+                                    officerLinks.map((link) => (
                                         <NavigationMenuItem key={link.url}>
                                             <NavigationMenuLink
                                                 href={link.url}
@@ -177,6 +198,37 @@ export default function AuthenticatedLayout({ header, children }) {
                                                 </NavigationMenuLink>
                                             </NavigationMenuItem>
                                         ))}
+
+                                        {studentLinks.map((link) => (
+                                            <NavigationMenuItem key={link.url}>
+                                                <NavigationMenuLink
+                                                    href={link.url}
+                                                    className={`${
+                                                        currentPath === link.url
+                                                            ? " bg-emerald-600 text-white"
+                                                            : ""
+                                                    } ${navigationMenuTriggerStyle()}`}
+                                                >
+                                                    {link.title}
+                                                </NavigationMenuLink>
+                                            </NavigationMenuItem>
+                                        ))}
+
+                                        {officerLinks.map((link) => (
+                                            <NavigationMenuItem key={link.url}>
+                                                <NavigationMenuLink
+                                                    href={link.url}
+                                                    className={`${
+                                                        currentPath === link.url
+                                                            ? " bg-emerald-600 text-white"
+                                                            : ""
+                                                    } ${navigationMenuTriggerStyle()}`}
+                                                >
+                                                    {link.title}
+                                                </NavigationMenuLink>
+                                            </NavigationMenuItem>
+                                        ))}
+
                                         <NavigationMenuItem>
                                             <Link
                                                 method="post"
