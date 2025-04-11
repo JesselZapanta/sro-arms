@@ -8,6 +8,7 @@ use App\Http\Requests\Admin\EventUpdateRequest;
 use App\Models\Event;
 use Auth;
 use Illuminate\Http\Request;
+use Illuminate\Support\Carbon;
 
 class AdminEventController extends Controller
 {
@@ -27,6 +28,21 @@ class AdminEventController extends Controller
     {
         $data = $request->validated();
 
+        $eventDate = $data['event_date'];
+
+        if ($data['type'] === 'AM') {
+            $data['am_start'] = Carbon::parse("{$eventDate} {$data['am_start']}");
+            $data['am_end'] = Carbon::parse("{$eventDate} {$data['am_end']}");
+            $data['pm_start'] = null;
+            $data['pm_end'] = null;
+        } else if ($data['type'] === 'PM'){
+            $data['pm_start'] = Carbon::parse("{$eventDate} {$data['pm_start']}");
+            $data['pm_end'] = Carbon::parse("{$eventDate} {$data['pm_end']}");
+            $data['am_start'] = null;
+            $data['am_end'] = null;
+        }
+        // return $data;
+        
         Event::create($data);
 
         return response()->json([
@@ -39,6 +55,20 @@ class AdminEventController extends Controller
         $event = Event::findOrFail($request->id);
         $data = $request->validated();
 
+        $eventDate = $data['event_date'];
+
+        if ($data['type'] === 'AM') {
+            $data['am_start'] = Carbon::parse("{$eventDate} {$data['am_start']}");
+            $data['am_end'] = Carbon::parse("{$eventDate} {$data['am_end']}");
+            $data['pm_start'] = null;
+            $data['pm_end'] = null;
+        } else if ($data['type'] === 'PM'){
+            $data['pm_start'] = Carbon::parse("{$eventDate} {$data['pm_start']}");
+            $data['pm_end'] = Carbon::parse("{$eventDate} {$data['pm_end']}");
+            $data['am_start'] = null;
+            $data['am_end'] = null;
+        }
+        // return $data;
         $event->update($data);
 
         return response()->json([

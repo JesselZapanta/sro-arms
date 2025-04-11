@@ -111,19 +111,28 @@ export default function Index({ auth }) {
         setIsOpen(true);
     };
 
+    const formatDate = (datetime) => {
+        return datetime ? datetime.split("T")[0] : "";
+    };
+
+    const formatTime = (datetime) => {
+        return datetime ? datetime.split("T")[1].slice(0, 5) : "";
+    };
+
     const editForm = (event) => {
+
         setErrors({});
         setIsOpen(true);
         setEvent(event);
 
         setFormData({
             name: event.name,
-            event_date: event.event_date,
+            event_date: formatDate(event.event_date),
             type: event.type,
-            am_start: event.am_start,
-            am_end: event.am_end,
-            pm_start: event.pm_start,
-            pm_end: event.pm_end,
+            am_start: formatTime(event.am_start),
+            am_end: formatTime(event.am_end),
+            pm_start: formatTime(event.pm_start),
+            pm_end: formatTime(event.pm_end),
             sanction: event.sanction,
             status: event.status,
         });
@@ -253,7 +262,9 @@ export default function Index({ auth }) {
                                     <TableRow>
                                         <TableHead>ID</TableHead>
                                         <TableHead>Name</TableHead>
-                                        <TableHead>Description</TableHead>
+                                        <TableHead>Type</TableHead>
+                                        <TableHead>Event Date</TableHead>
+                                        <TableHead>Sanction</TableHead>
                                         <TableHead>Status</TableHead>
                                     </TableRow>
                                 </TableHeader>
@@ -261,7 +272,7 @@ export default function Index({ auth }) {
                                     {loading ? (
                                         <TableRow>
                                             <TableCell
-                                                colSpan={4}
+                                                colSpan={6}
                                                 className="text-center"
                                             >
                                                 <div className="flex flex-col gap-2">
@@ -287,6 +298,24 @@ export default function Index({ auth }) {
                                                 </TableCell>
                                                 <TableCell>
                                                     {event.name}
+                                                </TableCell>
+                                                <TableCell>
+                                                    {event.type}
+                                                </TableCell>
+                                                <TableCell>
+                                                    {new Date(
+                                                        event.event_date
+                                                    ).toLocaleDateString(
+                                                        "en-US",
+                                                        {
+                                                            year: "numeric",
+                                                            month: "long",
+                                                            day: "numeric",
+                                                        }
+                                                    )}
+                                                </TableCell>
+                                                <TableCell>
+                                                    {event.sanction}
                                                 </TableCell>
                                                 <TableCell>
                                                     {event.status === 1 ? (
@@ -422,12 +451,15 @@ export default function Index({ auth }) {
                                                     <Input
                                                         id="event_date"
                                                         type="date"
-                                                        value={formData.event_date}
+                                                        value={
+                                                            formData.event_date
+                                                        }
                                                         onChange={(e) => {
                                                             setFormData({
                                                                 ...formData,
-                                                                event_date: e.target
-                                                                    .value,
+                                                                event_date:
+                                                                    e.target
+                                                                        .value,
                                                             });
                                                         }}
                                                     />
@@ -506,114 +538,150 @@ export default function Index({ auth }) {
                                                     />
                                                 </div>
                                             </div>
-                                            <div className="flex gap-2">
-                                                <div className="w-full grid gap-2">
-                                                    <div>
-                                                        <Label htmlFor="am_start">
-                                                            AM Start
-                                                        </Label>
-                                                        <Input
-                                                            id="am_start"
-                                                            type="time"
-                                                            value={
-                                                                formData.am_start
+                                            {(formData.type === "AM" ||
+                                                formData.type === "WD") && (
+                                                <div className="flex gap-2">
+                                                    <div className="w-full grid gap-2">
+                                                        <div>
+                                                            <Label htmlFor="am_start">
+                                                                AM Start
+                                                            </Label>
+                                                            <Input
+                                                                id="am_start"
+                                                                type="time"
+                                                                min="00:00"
+                                                                max="11:59"
+                                                                value={
+                                                                    formData.am_start
+                                                                }
+                                                                onChange={(
+                                                                    e
+                                                                ) => {
+                                                                    setFormData(
+                                                                        {
+                                                                            ...formData,
+                                                                            am_start:
+                                                                                e
+                                                                                    .target
+                                                                                    .value,
+                                                                        }
+                                                                    );
+                                                                }}
+                                                            />
+                                                        </div>
+                                                        <InputError
+                                                            message={
+                                                                errors.am_start
                                                             }
-                                                            onChange={(e) => {
-                                                                setFormData({
-                                                                    ...formData,
-                                                                    am_start:
-                                                                        e.target
-                                                                            .value,
-                                                                });
-                                                            }}
                                                         />
                                                     </div>
-                                                    <InputError
-                                                        message={
-                                                            errors.am_start
-                                                        }
-                                                    />
-                                                </div>
-                                                <div className="w-full grid gap-2">
-                                                    <div>
-                                                        <Label htmlFor="am_end">
-                                                            AM End
-                                                        </Label>
-                                                        <Input
-                                                            id="am_end"
-                                                            type="time"
-                                                            value={
-                                                                formData.am_end
+                                                    <div className="w-full grid gap-2">
+                                                        <div>
+                                                            <Label htmlFor="am_end">
+                                                                AM End
+                                                            </Label>
+                                                            <Input
+                                                                id="am_end"
+                                                                type="time"
+                                                                min="00:00"
+                                                                max="11:59"
+                                                                value={
+                                                                    formData.am_end
+                                                                }
+                                                                onChange={(
+                                                                    e
+                                                                ) => {
+                                                                    setFormData(
+                                                                        {
+                                                                            ...formData,
+                                                                            am_end: e
+                                                                                .target
+                                                                                .value,
+                                                                        }
+                                                                    );
+                                                                }}
+                                                            />
+                                                        </div>
+                                                        <InputError
+                                                            message={
+                                                                errors.am_end
                                                             }
-                                                            onChange={(e) => {
-                                                                setFormData({
-                                                                    ...formData,
-                                                                    am_end: e
-                                                                        .target
-                                                                        .value,
-                                                                });
-                                                            }}
                                                         />
                                                     </div>
-                                                    <InputError
-                                                        message={errors.am_end}
-                                                    />
                                                 </div>
-                                            </div>
-                                            <div className="flex gap-2">
-                                                <div className="w-full grid gap-2">
-                                                    <div>
-                                                        <Label htmlFor="pm_start">
-                                                            PM Start
-                                                        </Label>
-                                                        <Input
-                                                            id="pm_start"
-                                                            type="time"
-                                                            value={
-                                                                formData.pm_start
+                                            )}
+                                            {(formData.type === "PM" ||
+                                                formData.type === "WD") && (
+                                                <div className="flex gap-2">
+                                                    <div className="w-full grid gap-2">
+                                                        <div>
+                                                            <Label htmlFor="pm_start">
+                                                                PM Start
+                                                            </Label>
+                                                            <Input
+                                                                id="pm_start"
+                                                                type="time"
+                                                                min="12:00"
+                                                                max="23:59"
+                                                                value={
+                                                                    formData.pm_start
+                                                                }
+                                                                onChange={(
+                                                                    e
+                                                                ) => {
+                                                                    setFormData(
+                                                                        {
+                                                                            ...formData,
+                                                                            pm_start:
+                                                                                e
+                                                                                    .target
+                                                                                    .value,
+                                                                        }
+                                                                    );
+                                                                }}
+                                                            />
+                                                        </div>
+                                                        <InputError
+                                                            message={
+                                                                errors.pm_start
                                                             }
-                                                            onChange={(e) => {
-                                                                setFormData({
-                                                                    ...formData,
-                                                                    pm_start:
-                                                                        e.target
-                                                                            .value,
-                                                                });
-                                                            }}
                                                         />
                                                     </div>
-                                                    <InputError
-                                                        message={
-                                                            errors.pm_start
-                                                        }
-                                                    />
-                                                </div>
-                                                <div className="w-full grid gap-2">
-                                                    <div>
-                                                        <Label htmlFor="pm_end">
-                                                            PM End
-                                                        </Label>
-                                                        <Input
-                                                            id="pm_end"
-                                                            type="time"
-                                                            value={
-                                                                formData.pm_end
+                                                    <div className="w-full grid gap-2">
+                                                        <div>
+                                                            <Label htmlFor="pm_end">
+                                                                PM End
+                                                            </Label>
+                                                            <Input
+                                                                id="pm_end"
+                                                                type="time"
+                                                                min="12:00"
+                                                                max="23:59"
+                                                                value={
+                                                                    formData.pm_end
+                                                                }
+                                                                onChange={(
+                                                                    e
+                                                                ) => {
+                                                                    setFormData(
+                                                                        {
+                                                                            ...formData,
+                                                                            pm_end: e
+                                                                                .target
+                                                                                .value,
+                                                                        }
+                                                                    );
+                                                                }}
+                                                            />
+                                                        </div>
+                                                        <InputError
+                                                            message={
+                                                                errors.pm_end
                                                             }
-                                                            onChange={(e) => {
-                                                                setFormData({
-                                                                    ...formData,
-                                                                    pm_end: e
-                                                                        .target
-                                                                        .value,
-                                                                });
-                                                            }}
                                                         />
                                                     </div>
-                                                    <InputError
-                                                        message={errors.pm_end}
-                                                    />
                                                 </div>
-                                            </div>
+                                            )}
 
                                             <div className="w-full grid gap-2">
                                                 <div>
