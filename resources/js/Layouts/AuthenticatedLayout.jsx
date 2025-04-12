@@ -50,8 +50,8 @@ export default function AuthenticatedLayout({ header, children }) {
 
     const studentLinks = [
         { title: "Dashboard", url: "/student/dashboard" },
-        { title: "Event", url: "/admin/event" },
-        { title: "Attendance", url: "/admin/attendance" },
+        { title: "Event", url: "/student/event" },
+        { title: "Attendance", url: "/student/attendance" },
     ];
 
     const officerLinks = [

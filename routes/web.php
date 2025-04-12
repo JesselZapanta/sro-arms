@@ -9,7 +9,9 @@ use App\Http\Controllers\Admin\AdminUserController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\Officer\OfficerDashboardController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\Student\StudentAttendanceController;
 use App\Http\Controllers\Student\StudentDashboardController;
+use App\Http\Controllers\Student\StudentEventController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -63,6 +65,10 @@ Route::middleware(['auth', 'admin'])->group(function() {
 
 Route::middleware(['auth', 'student'])->group(function() {
     Route::get('/student/dashboard', [StudentDashboardController::class, 'index'])->name('student.dashboard'); 
+
+    Route::get('/student/event', [StudentEventController::class, 'index'])->name('student.event'); 
+
+    Route::get('/student/attendance', [StudentAttendanceController::class, 'index'])->name('student.attendance'); 
 });
 
 Route::middleware(['auth', 'officer'])->group(function() {
