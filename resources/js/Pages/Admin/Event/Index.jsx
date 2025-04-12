@@ -299,7 +299,7 @@ export default function Index({ auth, academicYears }) {
                                                 <TableCell>
                                                     {event.type}
                                                 </TableCell>
-                                                {/* <TableCell>
+                                                <TableCell>
                                                     {new Date(
                                                         event.event_date
                                                     ).toLocaleDateString(
@@ -310,7 +310,7 @@ export default function Index({ auth, academicYears }) {
                                                             day: "numeric",
                                                         }
                                                     )}
-                                                </TableCell> */}
+                                                </TableCell>
                                                 <TableCell>
                                                     {event.sanction}
                                                 </TableCell>

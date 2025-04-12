@@ -67,6 +67,7 @@ Route::middleware(['auth', 'student'])->group(function() {
     Route::get('/student/dashboard', [StudentDashboardController::class, 'index'])->name('student.dashboard'); 
 
     Route::get('/student/event', [StudentEventController::class, 'index'])->name('student.event'); 
+    Route::get('/student/event/getdata', [StudentEventController::class, 'getdata']);
 
     Route::get('/student/attendance', [StudentAttendanceController::class, 'index'])->name('student.attendance'); 
 });
