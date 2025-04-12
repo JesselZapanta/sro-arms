@@ -22,6 +22,7 @@ return new class extends Migration
             $table->dateTime('pm_start')->nullable();
             $table->dateTime('pm_end')->nullable();
             $table->integer('sanction');
+            $table->foreignId('academicYear')->constrained('academic_years')->onDelete('cascade');
             $table->tinyInteger('status')->default(1); // 1 for active, 0 for inactive
             $table->timestamps();
         });

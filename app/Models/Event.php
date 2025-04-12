@@ -17,6 +17,7 @@ class Event extends Model
         'pm_start',
         'pm_end',
         'sanction',
+        'academicYear',
         'status'
     ];
     protected $casts = [
@@ -27,4 +28,8 @@ class Event extends Model
         'pm_end' => 'datetime',
     ];
     
+    public function academicYear()
+    {
+        return $this->belongsTo(AcademicYear::class, 'academicYear');
+    }
 }

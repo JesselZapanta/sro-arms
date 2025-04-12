@@ -368,18 +368,18 @@ export default function Index({ auth, institutes, organizations }) {
                                         className="flex flex-col gap-6"
                                     >
                                         <div className="flex flex-col items-center gap-2 text-center">
-                                            <h1 className="text-2xl font-bold">
+                                            <DialogTitle className="text-2xl font-bold">
                                                 {user
                                                     ? "Edit user"
                                                     : "Create a new account"}
-                                            </h1>
-                                            <p className="text-balance text-sm text-muted-foreground">
+                                            </DialogTitle>
+                                            <DialogDescription className="text-balance text-sm text-muted-foreground">
                                                 Enter the information below to
                                                 {user
                                                     ? " edit "
                                                     : " create "}{" "}
                                                 your account
-                                            </p>
+                                            </DialogDescription>
                                         </div>
 
                                         <div className="grid gap-6">

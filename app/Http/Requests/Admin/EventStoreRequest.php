@@ -30,6 +30,7 @@ class EventStoreRequest extends FormRequest
             'pm_start' => ['required_if:type,PM','required_if:type,WD', 'nullable'],
             'pm_end' => ['required_if:type,PM','required_if:type,WD','nullable', 'after:pm_start'],
             'sanction' => ['required', 'numeric', 'min:0'],
+            'academicYear' => ['required', 'exists:academic_years,id'],
             'status' => ['required', 'in:0,1'],
         ];
     }

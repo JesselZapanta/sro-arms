@@ -45,7 +45,7 @@ import InputError from "@/Components/InputError";
 import { toast } from "sonner";
 import { Textarea } from "@/Components/ui/textarea";
 
-export default function Index({ auth }) {
+export default function Index({ auth, academicYears }) {
     const [data, setData] = useState([]);
     const [loading, setLoading] = useState(false);
 
@@ -99,6 +99,7 @@ export default function Index({ auth }) {
         pm_start: "",
         pm_end: "",
         sanction: "",
+        academicYear: "",
         status: "",
     });
 
@@ -120,7 +121,6 @@ export default function Index({ auth }) {
     };
 
     const editForm = (event) => {
-
         setErrors({});
         setIsOpen(true);
         setEvent(event);
@@ -134,6 +134,7 @@ export default function Index({ auth }) {
             pm_start: formatTime(event.pm_start),
             pm_end: formatTime(event.pm_end),
             sanction: event.sanction,
+            academicYear: event.academicYear,
             status: event.status,
         });
     };
@@ -161,10 +162,7 @@ export default function Index({ auth }) {
             }
         } else {
             try {
-                const res = await axios.post(
-                    "/admin/event/store",
-                    formData
-                );
+                const res = await axios.post("/admin/event/store", formData);
 
                 if (res.data.status === "created") {
                     formCancel();
@@ -192,6 +190,7 @@ export default function Index({ auth }) {
             pm_start: "",
             pm_end: "",
             sanction: "",
+            academicYear: "",
             status: "",
         });
         getdata();
@@ -209,9 +208,7 @@ export default function Index({ auth }) {
     const destroy = async (event) => {
         setProcessing(true);
         try {
-            const res = await axios.delete(
-                `/admin/event/destroy/${event.id}`
-            );
+            const res = await axios.delete(`/admin/event/destroy/${event.id}`);
 
             if (res.data.status === "deleted") {
                 formCancel();
@@ -400,24 +397,24 @@ export default function Index({ auth }) {
                             {/* form dialog */}
 
                             <Dialog open={isOpen} onOpenChange={formCancel}>
-                                <DialogContent className="sm:max-w-[425px] max-h-[100vh] overflow-y-auto">
+                                <DialogContent className="sm:max-w-[525px] max-h-[100vh] overflow-y-auto">
                                     <form
                                         onSubmit={onSubmit}
                                         className="flex flex-col gap-6"
                                     >
                                         <div className="flex flex-col items-center gap-2 text-center">
-                                            <h1 className="text-2xl font-bold">
+                                            <DialogTitle className="text-2xl font-bold">
                                                 {event
                                                     ? "Create a new account"
                                                     : "Edit event"}
-                                            </h1>
-                                            <p className="text-balance text-sm text-muted-foreground">
+                                            </DialogTitle>
+                                            <DialogDescription className="text-balance text-sm text-muted-foreground">
                                                 Enter the information below to
                                                 {event
                                                     ? " edit "
                                                     : " create "}{" "}
                                                 your account
-                                            </p>
+                                            </DialogDescription>
                                         </div>
 
                                         <div className="grid gap-6">
@@ -683,43 +680,96 @@ export default function Index({ auth }) {
                                                 </div>
                                             )}
 
-                                            <div className="w-full grid gap-2">
-                                                <div>
-                                                    <Label htmlFor="status">
-                                                        Status
-                                                    </Label>
-                                                    <Select
-                                                        name="status"
-                                                        onValueChange={(
-                                                            value
-                                                        ) =>
-                                                            setFormData({
-                                                                ...formData,
-                                                                status: String(
-                                                                    value
-                                                                ),
-                                                            })
+                                            <div className="flex gap-2">
+                                                <div className="w-full grid gap-2">
+                                                    <div>
+                                                        <Label htmlFor="academicYear">
+                                                            Academic Year
+                                                        </Label>
+                                                        <Select
+                                                            name="academicYear"
+                                                            onValueChange={(
+                                                                value
+                                                            ) =>
+                                                                setFormData({
+                                                                    ...formData,
+                                                                    academicYear:
+                                                                        String(
+                                                                            value
+                                                                        ),
+                                                                })
+                                                            }
+                                                            value={String(
+                                                                formData.academicYear
+                                                            )}
+                                                        >
+                                                            <SelectTrigger className="w-full">
+                                                                <SelectValue />
+                                                            </SelectTrigger>
+                                                            <SelectContent>
+                                                                {academicYears.map(
+                                                                    (year) => (
+                                                                        <SelectItem
+                                                                            key={
+                                                                                year.id
+                                                                            }
+                                                                            value={String(
+                                                                                year.id
+                                                                            )}
+                                                                        >
+                                                                            {
+                                                                                year.description
+                                                                            }
+                                                                        </SelectItem>
+                                                                    )
+                                                                )}
+                                                            </SelectContent>
+                                                        </Select>
+                                                    </div>
+                                                    <InputError
+                                                        message={
+                                                            errors.institute
                                                         }
-                                                        value={String(
-                                                            formData.status
-                                                        )}
-                                                    >
-                                                        <SelectTrigger className="w-full">
-                                                            <SelectValue />
-                                                        </SelectTrigger>
-                                                        <SelectContent>
-                                                            <SelectItem value="1">
-                                                                Active
-                                                            </SelectItem>
-                                                            <SelectItem value="0">
-                                                                Inactive
-                                                            </SelectItem>
-                                                        </SelectContent>
-                                                    </Select>
+                                                    />
                                                 </div>
-                                                <InputError
-                                                    message={errors.status}
-                                                />
+                                                <div className="w-full grid gap-2">
+                                                    <div>
+                                                        <Label htmlFor="status">
+                                                            Status
+                                                        </Label>
+                                                        <Select
+                                                            name="status"
+                                                            onValueChange={(
+                                                                value
+                                                            ) =>
+                                                                setFormData({
+                                                                    ...formData,
+                                                                    status: String(
+                                                                        value
+                                                                    ),
+                                                                })
+                                                            }
+                                                            value={String(
+                                                                formData.status
+                                                            )}
+                                                        >
+                                                            <SelectTrigger className="w-full">
+                                                                <SelectValue />
+                                                            </SelectTrigger>
+                                                            <SelectContent>
+                                                                <SelectItem value="1">
+                                                                    Active
+                                                                </SelectItem>
+                                                                <SelectItem value="0">
+                                                                    Inactive
+                                                                </SelectItem>
+                                                            </SelectContent>
+                                                        </Select>
+                                                    </div>
+                                                    <InputError
+                                                        message={errors.status}
+                                                    />
+                                                </div>
                                             </div>
                                         </div>
                                         <DialogFooter className="mt-4">

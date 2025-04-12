@@ -368,18 +368,18 @@ export default function Index({ auth }) {
                                         className="flex flex-col gap-6"
                                     >
                                         <div className="flex flex-col items-center gap-2 text-center">
-                                            <h1 className="text-2xl font-bold">
+                                            <DialogTitle className="text-2xl font-bold">
                                                 {organization
                                                     ? "Edit organization"
                                                     : "Create new organization"}
-                                            </h1>
-                                            <p className="text-balance text-sm text-muted-foreground">
+                                            </DialogTitle>
+                                            <DialogDescription className="text-balance text-sm text-muted-foreground">
                                                 Enter the information below to
                                                 {organization
                                                     ? " edit "
                                                     : " create "}{" "}
                                                 organization
-                                            </p>
+                                            </DialogDescription>
                                         </div>
 
                                         <div className="grid gap-6">

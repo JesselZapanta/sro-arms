@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\EventStoreRequest;
 use App\Http\Requests\Admin\EventUpdateRequest;
+use App\Models\AcademicYear;
 use App\Models\Event;
 use Auth;
 use Illuminate\Http\Request;
@@ -14,7 +15,10 @@ class AdminEventController extends Controller
 {
     public function index()
     {
-        return inertia('Admin/Event/Index');
+        $academicYears = AcademicYear::orderBy('id', 'desc')->get();
+        return inertia('Admin/Event/Index', [
+            'academicYears' => $academicYears,
+        ]);
     }
 
     public function getdata(Request $request)
