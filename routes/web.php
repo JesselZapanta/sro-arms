@@ -73,6 +73,7 @@ Route::middleware(['auth', 'student'])->group(function() {
     Route::get('/student/attendance', [StudentAttendanceController::class, 'index'])->name('student.attendance'); 
     Route::get('/student/submit-attendance/{id}', [StudentSubmitAttendanceController::class, 'index'])->name('student.submit-attendance'); 
     Route::get('/student/submit-attendance/getevent/{id}', [StudentSubmitAttendanceController::class, 'getevent']);
+    Route::post('/student/submit-attendance/upload/{id}', [StudentSubmitAttendanceController::class, 'upload']);
 });
 
 Route::middleware(['auth', 'officer'])->group(function() {

@@ -16,16 +16,16 @@ return new class extends Migration
             $table->foreignId('user')->constrained('users')->onDelete('cascade');
             $table->foreignId('event')->constrained('events')->onDelete('cascade');
 
-            $table->dateTime('am_start')->nullable();
+            $table->dateTime('am_start_photo_at')->nullable();
             $table->string('am_start_photo')->nullable();
             
-            $table->dateTime('am_end')->nullable();
+            $table->dateTime('am_end_photo_at')->nullable();
             $table->string('am_end_photo')->nullable();
 
-            $table->dateTime('pm_start')->nullable();
+            $table->dateTime('pm_start_photo_at')->nullable();
             $table->string('pm_start_photo')->nullable();
 
-            $table->dateTime('pm_end')->nullable();
+            $table->dateTime('pm_end_photo_at')->nullable();
             $table->string('pm_end_photo')->nullable();
 
             $table->timestamps();
