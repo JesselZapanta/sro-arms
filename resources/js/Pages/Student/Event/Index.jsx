@@ -1,34 +1,9 @@
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
-import { Head } from "@inertiajs/react";
+import { Head, Link } from "@inertiajs/react";
 import { useEffect, useState } from "react";
 
-import {
-    Table,
-    TableBody,
-    TableCell,
-    TableHead,
-    TableHeader,
-    TableRow,
-} from "@/components/ui/table";
 import { Button } from "@/Components/ui/button";
-import {
-    ChevronLeft,
-    ChevronRight,
-    Pencil,
-    Trash2,
-    Loader2,
-    CirclePlus,
-    Search,
-} from "lucide-react";
-import {
-    Dialog,
-    DialogContent,
-    DialogDescription,
-    DialogHeader,
-    DialogTitle,
-    DialogTrigger,
-    DialogFooter,
-} from "@/components/ui/dialog";
+
 import {
     Select,
     SelectContent,
@@ -46,15 +21,13 @@ import {
     CardTitle,
 } from "@/components/ui/card";
 
+import { Badge } from "@/components/ui/badge";
+
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 import { Skeleton } from "@/Components/ui/skeleton";
 import { Input } from "@/Components/ui/input";
-import { Label } from "@/components/ui/label";
-import InputError from "@/Components/InputError";
-
-import { toast } from "sonner";
-import { Textarea } from "@/Components/ui/textarea";
+import { Search } from "lucide-react";
 
 export default function Index({ academicYears }) {
     const [data, setData] = useState([]);
@@ -147,7 +120,6 @@ export default function Index({ academicYears }) {
                                 />
                                 <Button onClick={getdata}>
                                     <Search />
-                                    {/* Search */}
                                 </Button>
                             </div>
                             <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
@@ -225,7 +197,10 @@ export default function Index({ academicYears }) {
                                                     </CardDescription>
 
                                                     <CardDescription>
-                                                        Event Type: {event.type}
+                                                        Event Type:{" "}
+                                                        <Badge variant="secondary">
+                                                            {event.type}
+                                                        </Badge>
                                                     </CardDescription>
                                                     <CardDescription>
                                                         Sanction:{" "}
@@ -234,8 +209,15 @@ export default function Index({ academicYears }) {
                                                 </div>
                                             </CardContent>
                                             <CardFooter className="px-4">
-                                                <Button>
-                                                    Submit Attendance
+                                                <Button asChild>
+                                                    <Link
+                                                        href={route(
+                                                            "student.submit-attendance",
+                                                            event.id
+                                                        )}
+                                                    >
+                                                        SubmitAttendance
+                                                    </Link>
                                                 </Button>
                                             </CardFooter>
                                         </Card>

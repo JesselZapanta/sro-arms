@@ -12,6 +12,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Student\StudentAttendanceController;
 use App\Http\Controllers\Student\StudentDashboardController;
 use App\Http\Controllers\Student\StudentEventController;
+use App\Http\Controllers\Student\StudentSubmitAttendanceController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -70,6 +71,8 @@ Route::middleware(['auth', 'student'])->group(function() {
     Route::get('/student/event/getdata', [StudentEventController::class, 'getdata']);
 
     Route::get('/student/attendance', [StudentAttendanceController::class, 'index'])->name('student.attendance'); 
+    Route::get('/student/submit-attendance/{id}', [StudentSubmitAttendanceController::class, 'index'])->name('student.submit-attendance'); 
+    Route::get('/student/submit-attendance/getevent/{id}', [StudentSubmitAttendanceController::class, 'getevent']);
 });
 
 Route::middleware(['auth', 'officer'])->group(function() {
