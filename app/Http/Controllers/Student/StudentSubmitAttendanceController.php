@@ -18,9 +18,15 @@ class StudentSubmitAttendanceController extends Controller
         ]);
     }
 
-    public function getevent($id)
+    public function getdata($id)
     {
-        return Event::findOrFail($id);
+        $event =  Event::findOrFail($id);
+        $attendance = Attendance::where('user', Auth::user()->id)->where('event', $event->id)->first();
+
+        return response()->json([
+            'event' => $event,
+            'attendance' => $attendance,
+        ], 200);
     }
 
 
@@ -56,6 +62,7 @@ class StudentSubmitAttendanceController extends Controller
 
         if($attendance){
             $attendance->update($data);
+
             return response()->json([
                 'status' => 'updated',
             ], 200); 

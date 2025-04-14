@@ -13,6 +13,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
+
 import { Label } from "@/Components/ui/label";
 import { Input } from "@/Components/ui/input";
 import InputError from "@/Components/InputError";
@@ -23,15 +24,17 @@ import { Loader2 } from "lucide-react";
 export default function SubmitAttendance({ id }) {
     const [loading, setLoading] = useState(false);
     const [event, setEvent] = useState({});
+    const [attendance, setAttendance] = useState({});
 
     const getEvent = async () => {
         setLoading(true);
         try {
             const res = await axios.get(
-                `/student/submit-attendance/getevent/${id}`
+                `/student/submit-attendance/getdata/${id}`
             );
             if (res.status === 200) {
-                setEvent(res.data);
+                setEvent(res.data.event);
+                setAttendance(res.data.attendance);
             }
         } catch (err) {
             console.error(err);
@@ -60,8 +63,9 @@ export default function SubmitAttendance({ id }) {
             pm_start_photo: null,
             am_end_photo: null,
         });
-        setErrors({});  
-    }
+        setErrors({});
+        getEvent();
+    };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -93,6 +97,8 @@ export default function SubmitAttendance({ id }) {
             setProcessing(false);
         }
     };
+
+    const [activeTab, setActiveTab] = useState("am_start_photo");
 
     return (
         <AuthenticatedLayout
@@ -128,6 +134,20 @@ export default function SubmitAttendance({ id }) {
                                                 </pre>
                                             </AccordionContent>
                                         </AccordionItem>
+                                        <AccordionItem value="item-2">
+                                            <AccordionTrigger>
+                                                Show Attendance Details
+                                            </AccordionTrigger>
+                                            <AccordionContent>
+                                                <pre>
+                                                    {JSON.stringify(
+                                                        attendance,
+                                                        null,
+                                                        2
+                                                    )}
+                                                </pre>
+                                            </AccordionContent>
+                                        </AccordionItem>
                                     </Accordion>
                                     <div className="mt-8">
                                         <h2>
@@ -135,192 +155,270 @@ export default function SubmitAttendance({ id }) {
                                         </h2>
                                         <div className="bg-gray-100 mt-4 p-2 rounded-md">
                                             <Tabs
-                                                defaultValue="am_start_photo
-"
+                                                onValueChange={setActiveTab}
+                                                defaultValue="am_start_photo"
                                                 className="w-full"
                                             >
                                                 <TabsList>
-                                                    <TabsTrigger value="am_start_photo
-">
-                                                        Morning In
-                                                    </TabsTrigger>
-                                                    <TabsTrigger value="am_end_photo
-">
-                                                        Morning Out
-                                                    </TabsTrigger>
-                                                    <TabsTrigger value="pm_start_photo
-">
-                                                        Afternoon In
-                                                    </TabsTrigger>
-                                                    <TabsTrigger value="pm_end_photo">
-                                                        Afternoon Out
-                                                    </TabsTrigger>
+                                                    {(event.type === "AM" ||
+                                                        event.type ===
+                                                            "WD") && (
+                                                        <>
+                                                            <TabsTrigger value="am_start_photo">
+                                                                Morning In
+                                                            </TabsTrigger>
+                                                            <TabsTrigger value="am_end_photo">
+                                                                Morning Out
+                                                            </TabsTrigger>
+                                                        </>
+                                                    )}
+                                                    {(event.type === "PM" ||
+                                                        event.type ===
+                                                            "WD") && (
+                                                        <>
+                                                            <TabsTrigger value="pm_start_photo">
+                                                                Afternoon In
+                                                            </TabsTrigger>
+                                                            <TabsTrigger value="pm_end_photo">
+                                                                Afternoon Out
+                                                            </TabsTrigger>
+                                                        </>
+                                                    )}
                                                 </TabsList>
                                                 <div className="p-2">
                                                     <form
                                                         onSubmit={handleSubmit}
                                                     >
-                                                        <TabsContent value="am_start_photo
-">
+                                                        <TabsContent value="am_start_photo">
                                                             <div className="max-w-60">
-                                                                <Label htmlFor="am_start_photo
-">
-                                                                    Morning In
-                                                                    Attendance
-                                                                </Label>
-                                                                <Input
-                                                                    name="am_start_photo
-"
-                                                                    type="file"
-                                                                    className="mt-1 block w-full"
-                                                                    onChange={(
-                                                                        e
-                                                                    ) =>
-                                                                        setFormData(
-                                                                            {
-                                                                                ...formData,
-                                                                                am_start_photo
-:
-                                                                                    e
-                                                                                        .target
-                                                                                        .files[0],
+                                                                {attendance?.am_start_photo ? (
+                                                                    <div>
+                                                                        <h2 className="py-2">
+                                                                            Attendance
+                                                                            Uploaded
+                                                                        </h2>
+                                                                        <div className="w-full h-full  overflow-hidden">
+                                                                            <img
+                                                                                src={`/storage/${attendance.am_start_photo}`}
+                                                                                className="w-full h-full rounded-xl object-cover"
+                                                                            />
+                                                                        </div>
+                                                                    </div>
+                                                                ) : (
+                                                                    <>
+                                                                        <Label htmlFor="am_start_photo">
+                                                                            Morning
+                                                                            In
+                                                                            Attendance
+                                                                        </Label>
+                                                                        <Input
+                                                                            name="am_start_photo"
+                                                                            type="file"
+                                                                            className="mt-1 block w-full"
+                                                                            onChange={(
+                                                                                e
+                                                                            ) =>
+                                                                                setFormData(
+                                                                                    {
+                                                                                        ...formData,
+                                                                                        am_start_photo:
+                                                                                            e
+                                                                                                .target
+                                                                                                .files[0],
+                                                                                    }
+                                                                                )
                                                                             }
-                                                                        )
-                                                                    }
-                                                                />
-                                                                <InputError
-                                                                    message={
-                                                                        errors.am_start_photo
-
-                                                                    }
-                                                                    className="mt-2"
-                                                                />
+                                                                        />
+                                                                        <InputError
+                                                                            message={
+                                                                                errors.am_start_photo
+                                                                            }
+                                                                            className="mt-2"
+                                                                        />
+                                                                    </>
+                                                                )}
                                                             </div>
                                                         </TabsContent>
-                                                        <TabsContent value="am_end_photo
-">
+                                                        <TabsContent value="am_end_photo">
                                                             <div className="max-w-60">
-                                                                <Label htmlFor="am_end_photo
-">
-                                                                    Morning Out
-                                                                    Attendance
-                                                                </Label>
-                                                                <Input
-                                                                    name="am_end_photo
-"
-                                                                    type="file"
-                                                                    className="mt-1 block w-full"
-                                                                    onChange={(
-                                                                        e
-                                                                    ) =>
-                                                                        setFormData(
-                                                                            {
-                                                                                ...formData,
-                                                                                am_end_photo
-:
-                                                                                    e
-                                                                                        .target
-                                                                                        .files[0],
+                                                                {attendance?.am_end_photo ? (
+                                                                    <div>
+                                                                        <h2 className="py-2">
+                                                                            Attendance
+                                                                            Uploaded
+                                                                        </h2>
+                                                                        <div className="w-full h-full  overflow-hidden">
+                                                                            <img
+                                                                                src={`/storage/${attendance.am_end_photo}`}
+                                                                                className="w-full h-full rounded-xl object-cover"
+                                                                            />
+                                                                        </div>
+                                                                    </div>
+                                                                ) : (
+                                                                    <>
+                                                                        <Label htmlFor="am_end_photo">
+                                                                            Morning
+                                                                            Out
+                                                                            Attendance
+                                                                        </Label>
+                                                                        <Input
+                                                                            name="am_end_photo"
+                                                                            type="file"
+                                                                            className="mt-1 block w-full"
+                                                                            onChange={(
+                                                                                e
+                                                                            ) =>
+                                                                                setFormData(
+                                                                                    {
+                                                                                        ...formData,
+                                                                                        am_end_photo:
+                                                                                            e
+                                                                                                .target
+                                                                                                .files[0],
+                                                                                    }
+                                                                                )
                                                                             }
-                                                                        )
-                                                                    }
-                                                                />
-                                                                <InputError
-                                                                    message={
-                                                                        errors.am_end_photo
-
-                                                                    }
-                                                                    className="mt-2"
-                                                                />
+                                                                        />
+                                                                        <InputError
+                                                                            message={
+                                                                                errors.am_end_photo
+                                                                            }
+                                                                            className="mt-2"
+                                                                        />
+                                                                    </>
+                                                                )}
                                                             </div>
                                                         </TabsContent>
-                                                        <TabsContent value="pm_start_photo
-">
+                                                        <TabsContent value="pm_start_photo">
                                                             <div className="max-w-60">
-                                                                <Label htmlFor="pm_start_photo
-">
-                                                                    Afternoon In
-                                                                    Attendance
-                                                                </Label>
-                                                                <Input
-                                                                    name="pm_start_photo
-"
-                                                                    type="file"
-                                                                    className="mt-1 block w-full"
-                                                                    onChange={(
-                                                                        e
-                                                                    ) =>
-                                                                        setFormData(
-                                                                            {
-                                                                                ...formData,
-                                                                                pm_start_photo
-:
-                                                                                    e
-                                                                                        .target
-                                                                                        .files[0],
+                                                                {attendance?.pm_start_photo ? (
+                                                                    <div>
+                                                                        <h2 className="py-2">
+                                                                            Attendance
+                                                                            Uploaded
+                                                                        </h2>
+                                                                        <div className="w-full h-full  overflow-hidden">
+                                                                            <img
+                                                                                src={`/storage/${attendance.pm_start_photo}`}
+                                                                                className="w-full h-full rounded-xl object-cover"
+                                                                            />
+                                                                        </div>
+                                                                    </div>
+                                                                ) : (
+                                                                    <>
+                                                                        <Label htmlFor="pm_start_photo">
+                                                                            Afternoon
+                                                                            In
+                                                                            Attendance
+                                                                        </Label>
+                                                                        <Input
+                                                                            name="pm_start_photo"
+                                                                            type="file"
+                                                                            className="mt-1 block w-full"
+                                                                            onChange={(
+                                                                                e
+                                                                            ) =>
+                                                                                setFormData(
+                                                                                    {
+                                                                                        ...formData,
+                                                                                        pm_start_photo:
+                                                                                            e
+                                                                                                .target
+                                                                                                .files[0],
+                                                                                    }
+                                                                                )
                                                                             }
-                                                                        )
-                                                                    }
-                                                                />
-                                                                <InputError
-                                                                    message={
-                                                                        errors.pm_start_photo
-
-                                                                    }
-                                                                    className="mt-2"
-                                                                />
+                                                                        />
+                                                                        <InputError
+                                                                            message={
+                                                                                errors.pm_start_photo
+                                                                            }
+                                                                            className="mt-2"
+                                                                        />
+                                                                    </>
+                                                                )}
                                                             </div>
                                                         </TabsContent>
                                                         <TabsContent value="pm_end_photo">
                                                             <div className="max-w-60">
-                                                                <Label htmlFor="pm_end_photo">
-                                                                    Afternoon
-                                                                    Out
-                                                                    Attendance
-                                                                </Label>
-                                                                <Input
-                                                                    name="pm_end_photo"
-                                                                    type="file"
-                                                                    className="mt-1 block w-full"
-                                                                    onChange={(
-                                                                        e
-                                                                    ) =>
-                                                                        setFormData(
-                                                                            {
-                                                                                ...formData,
-                                                                                pm_end_photo:
-                                                                                    e
-                                                                                        .target
-                                                                                        .files[0],
+                                                                {attendance?.pm_end_photo ? (
+                                                                    <div>
+                                                                        <h2 className="py-2">
+                                                                            Attendance
+                                                                            Uploaded
+                                                                        </h2>
+                                                                        <div className="w-full h-full  overflow-hidden">
+                                                                            <img
+                                                                                src={`/storage/${attendance.pm_end_photo}`}
+                                                                                className="w-full h-full rounded-xl object-cover"
+                                                                            />
+                                                                        </div>
+                                                                    </div>
+                                                                ) : (
+                                                                    <>
+                                                                        <Label htmlFor="pm_end_photo">
+                                                                            Afternoon
+                                                                            Out
+                                                                            Attendance
+                                                                        </Label>
+                                                                        <Input
+                                                                            name="pm_end_photo"
+                                                                            type="file"
+                                                                            className="mt-1 block w-full"
+                                                                            onChange={(
+                                                                                e
+                                                                            ) =>
+                                                                                setFormData(
+                                                                                    {
+                                                                                        ...formData,
+                                                                                        pm_end_photo:
+                                                                                            e
+                                                                                                .target
+                                                                                                .files[0],
+                                                                                    }
+                                                                                )
                                                                             }
-                                                                        )
-                                                                    }
-                                                                />
-                                                                <InputError
-                                                                    message={
-                                                                        errors.pm_end_photo
-                                                                    }
-                                                                    className="mt-2"
-                                                                />
+                                                                        />
+                                                                        <InputError
+                                                                            message={
+                                                                                errors.pm_end_photo
+                                                                            }
+                                                                            className="mt-2"
+                                                                        />
+                                                                    </>
+                                                                )}
                                                             </div>
                                                         </TabsContent>
                                                         <div className="mt-4">
-                                                            <Button
-                                                                type="submit"
-                                                                disabled={
-                                                                    processing
-                                                                }
-                                                            >
-                                                                {processing ? (
-                                                                    <span className="flex items-center gap-2">
-                                                                        <Loader2 className="animate-spin" />
-                                                                        Please
-                                                                        wait
-                                                                    </span>
-                                                                ) : (
-                                                                    "Submit"
-                                                                )}
-                                                            </Button>
+                                                            {((activeTab ===
+                                                                "am_start_photo" &&
+                                                                !attendance?.am_start_photo) ||
+                                                                (activeTab ===
+                                                                    "am_end_photo" &&
+                                                                    !attendance?.am_end_photo) ||
+                                                                (activeTab ===
+                                                                    "pm_start_photo" &&
+                                                                    !attendance?.pm_start_photo) ||
+                                                                (activeTab ===
+                                                                    "pm_end_photo" &&
+                                                                    !attendance?.pm_end_photo)) && (
+                                                                <Button
+                                                                    type="submit"
+                                                                    disabled={
+                                                                        processing
+                                                                    }
+                                                                >
+                                                                    {processing ? (
+                                                                        <span className="flex items-center gap-2">
+                                                                            <Loader2 className="animate-spin" />
+                                                                            Please
+                                                                            wait
+                                                                        </span>
+                                                                    ) : (
+                                                                        "Submit"
+                                                                    )}
+                                                                </Button>
+                                                            )}
                                                         </div>
                                                     </form>
                                                 </div>
