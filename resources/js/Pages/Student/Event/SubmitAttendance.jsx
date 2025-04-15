@@ -20,6 +20,7 @@ import InputError from "@/Components/InputError";
 import { Button } from "@/Components/ui/button";
 import { toast } from "sonner";
 import { Loader2 } from "lucide-react";
+import { Badge } from "@/Components/ui/badge";
 
 export default function SubmitAttendance({ id }) {
     const [loading, setLoading] = useState(false);
@@ -99,6 +100,15 @@ export default function SubmitAttendance({ id }) {
     };
 
     const [activeTab, setActiveTab] = useState("am_start_photo");
+
+    function formatTime(datetimeString) {
+        const date = new Date(datetimeString);
+        return date.toLocaleTimeString([], {
+            hour: "2-digit",
+            minute: "2-digit",
+            hour12: true,
+        });
+    }
 
     return (
         <AuthenticatedLayout
@@ -193,16 +203,25 @@ export default function SubmitAttendance({ id }) {
                                                             <div className="max-w-60">
                                                                 {attendance?.am_start_photo ? (
                                                                     <div>
-                                                                        <h2 className="py-2">
+                                                                        <h2>
                                                                             Attendance
                                                                             Uploaded
                                                                         </h2>
-                                                                        <div className="w-full h-full  overflow-hidden">
+                                                                        <div className="w-full h-full my-2 overflow-hidden">
                                                                             <img
                                                                                 src={`/storage/${attendance.am_start_photo}`}
-                                                                                className="w-full h-full rounded-xl object-cover"
+                                                                                className="w-full h-60 rounded-xl object-cover"
                                                                             />
                                                                         </div>
+                                                                        <p>
+                                                                            Uploaded
+                                                                            at:{" "}
+                                                                            <Badge>
+                                                                                {formatTime(
+                                                                                    attendance.am_start_photo_at
+                                                                                )}
+                                                                            </Badge>
+                                                                        </p>
                                                                     </div>
                                                                 ) : (
                                                                     <>
@@ -243,16 +262,25 @@ export default function SubmitAttendance({ id }) {
                                                             <div className="max-w-60">
                                                                 {attendance?.am_end_photo ? (
                                                                     <div>
-                                                                        <h2 className="py-2">
+                                                                        <h2>
                                                                             Attendance
                                                                             Uploaded
                                                                         </h2>
-                                                                        <div className="w-full h-full  overflow-hidden">
+                                                                        <div className="w-full h-full my-2 overflow-hidden">
                                                                             <img
                                                                                 src={`/storage/${attendance.am_end_photo}`}
-                                                                                className="w-full h-full rounded-xl object-cover"
+                                                                                className="w-full h-60 rounded-xl object-cover"
                                                                             />
                                                                         </div>
+                                                                        <p>
+                                                                            Uploaded
+                                                                            at:{" "}
+                                                                            <Badge>
+                                                                                {formatTime(
+                                                                                    attendance.am_end_photo_at
+                                                                                )}
+                                                                            </Badge>
+                                                                        </p>
                                                                     </div>
                                                                 ) : (
                                                                     <>
@@ -293,16 +321,25 @@ export default function SubmitAttendance({ id }) {
                                                             <div className="max-w-60">
                                                                 {attendance?.pm_start_photo ? (
                                                                     <div>
-                                                                        <h2 className="py-2">
+                                                                        <h2>
                                                                             Attendance
                                                                             Uploaded
                                                                         </h2>
-                                                                        <div className="w-full h-full  overflow-hidden">
+                                                                        <div className="w-full h-full my-2 overflow-hidden">
                                                                             <img
                                                                                 src={`/storage/${attendance.pm_start_photo}`}
-                                                                                className="w-full h-full rounded-xl object-cover"
+                                                                                className="w-full h-60 rounded-xl object-cover"
                                                                             />
                                                                         </div>
+                                                                        <p>
+                                                                            Uploaded
+                                                                            at:{" "}
+                                                                            <Badge>
+                                                                                {formatTime(
+                                                                                    attendance.pm_start_photo_at
+                                                                                )}
+                                                                            </Badge>
+                                                                        </p>
                                                                     </div>
                                                                 ) : (
                                                                     <>
@@ -343,16 +380,25 @@ export default function SubmitAttendance({ id }) {
                                                             <div className="max-w-60">
                                                                 {attendance?.pm_end_photo ? (
                                                                     <div>
-                                                                        <h2 className="py-2">
+                                                                        <h2>
                                                                             Attendance
                                                                             Uploaded
                                                                         </h2>
-                                                                        <div className="w-full h-full  overflow-hidden">
+                                                                        <div className="w-full h-full my-2 overflow-hidden">
                                                                             <img
                                                                                 src={`/storage/${attendance.pm_end_photo}`}
-                                                                                className="w-full h-full rounded-xl object-cover"
+                                                                                className="w-full h-60 rounded-xl object-cover"
                                                                             />
                                                                         </div>
+                                                                        <p>
+                                                                            Uploaded
+                                                                            at:{" "}
+                                                                            <Badge>
+                                                                                {formatTime(
+                                                                                    attendance.pm_end_photo_at
+                                                                                )}
+                                                                            </Badge>
+                                                                        </p>
                                                                     </div>
                                                                 ) : (
                                                                     <>
