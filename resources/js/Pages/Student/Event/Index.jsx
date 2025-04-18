@@ -39,8 +39,8 @@ export default function Index({ academicYears }) {
     const [sortOrder, setSortOrder] = useState("desc");
 
     const [year, setYear] = useState(() => 
-    academicYears.length > 0 ? String(academicYears[0].id) : ""
-);
+        academicYears.length > 0 ? String(academicYears[0].id) : ""
+    );
 
 
     const [search, setSearch] = useState("");

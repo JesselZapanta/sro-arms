@@ -32,6 +32,8 @@ class AdminEventController extends Controller
     {
         $data = $request->validated();
 
+        // return $request;
+
         $eventDate = $data['event_date'];
 
         if ($data['type'] === 'AM') {
@@ -44,6 +46,11 @@ class AdminEventController extends Controller
             $data['pm_end'] = Carbon::parse("{$eventDate} {$data['pm_end']}");
             $data['am_start'] = null;
             $data['am_end'] = null;
+        } else if($data['type'] === "WD"){
+            $data['am_start'] = Carbon::parse("{$eventDate} {$data['am_start']}");
+            $data['am_end'] = Carbon::parse("{$eventDate} {$data['am_end']}");
+            $data['pm_start'] = Carbon::parse("{$eventDate} {$data['pm_start']}");
+            $data['pm_end'] = Carbon::parse("{$eventDate} {$data['pm_end']}");
         }
         // return $data;
         
@@ -71,6 +78,11 @@ class AdminEventController extends Controller
             $data['pm_end'] = Carbon::parse("{$eventDate} {$data['pm_end']}");
             $data['am_start'] = null;
             $data['am_end'] = null;
+        } else if($data['type'] === "WD"){
+            $data['am_start'] = Carbon::parse("{$eventDate} {$data['am_start']}");
+            $data['am_end'] = Carbon::parse("{$eventDate} {$data['am_end']}");
+            $data['pm_start'] = Carbon::parse("{$eventDate} {$data['pm_start']}");
+            $data['pm_end'] = Carbon::parse("{$eventDate} {$data['pm_end']}");
         }
         // return $data;
         $event->update($data);

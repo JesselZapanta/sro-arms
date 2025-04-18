@@ -20,13 +20,6 @@ class Event extends Model
         'academicYear',
         'status'
     ];
-    protected $casts = [
-        'event_date' => 'date',
-        'am_start' => 'datetime',
-        'am_end' => 'datetime',
-        'pm_start' => 'datetime',
-        'pm_end' => 'datetime',
-    ];
     
     public function academicYear()
     {

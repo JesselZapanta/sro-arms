@@ -7,6 +7,7 @@ use App\Http\Requests\Student\SubmitAttendanceStoreRequest;
 use App\Models\Attendance;
 use App\Models\Event;
 use Illuminate\Http\Request;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
 
 class StudentSubmitAttendanceController extends Controller
@@ -41,23 +42,24 @@ class StudentSubmitAttendanceController extends Controller
         $data['event'] = $event->id;
 
         if($request->hasFile('am_start_photo')) {
+            if($event->am_start)
             $data['am_start_photo'] = $request->file('am_start_photo')->store('attendances', 'public');
-            $data['am_start_photo_at'] = now();
+            $data['am_start_photo_at'] = Carbon::now()->setTimezone('Asia/Manila');
         }
 
         if($request->hasFile('am_end_photo')) {
             $data['am_end_photo'] = $request->file('am_end_photo')->store('attendances', 'public');
-            $data['am_end_photo_at'] = now();
+            $data['am_end_photo_at'] = Carbon::now()->setTimezone('Asia/Manila');
         }
 
         if($request->hasFile('pm_start_photo')) {
             $data['pm_start_photo'] = $request->file('pm_start_photo')->store('attendances', 'public');
-            $data['pm_start_photo_at'] = now();
+            $data['pm_start_photo_at'] = Carbon::now()->setTimezone('Asia/Manila');
         }
 
         if($request->hasFile('pm_end_photo')) {
             $data['pm_end_photo'] = $request->file('pm_end_photo')->store('attendances', 'public');
-            $data['pm_end_photo_at'] = now();
+            $data['pm_end_photo_at'] = Carbon::now()->setTimezone('Asia/Manila');
         }
 
         if($attendance){

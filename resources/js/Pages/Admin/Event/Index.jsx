@@ -117,7 +117,7 @@ export default function Index({ auth, academicYears }) {
     };
 
     const formatTime = (datetime) => {
-        return datetime ? datetime.split("T")[1].slice(0, 5) : "";
+        return datetime ? datetime.slice(11, 16) : ""
     };
 
     const editForm = (event) => {
@@ -127,7 +127,7 @@ export default function Index({ auth, academicYears }) {
 
         setFormData({
             name: event.name,
-            event_date: formatDate(event.event_date),
+            event_date: event.event_date,
             type: event.type,
             am_start: formatTime(event.am_start),
             am_end: formatTime(event.am_end),
@@ -300,16 +300,7 @@ export default function Index({ auth, academicYears }) {
                                                     {event.type}
                                                 </TableCell>
                                                 <TableCell>
-                                                    {new Date(
-                                                        event.event_date
-                                                    ).toLocaleDateString(
-                                                        "en-US",
-                                                        {
-                                                            year: "numeric",
-                                                            month: "long",
-                                                            day: "numeric",
-                                                        }
-                                                    )}
+                                                    {event.event_date}
                                                 </TableCell>
                                                 <TableCell>
                                                     {event.sanction}
@@ -354,7 +345,7 @@ export default function Index({ auth, academicYears }) {
                                     ) : (
                                         <TableRow>
                                             <TableCell
-                                                colSpan="4"
+                                                colSpan="7"
                                                 className="py-12 text-center"
                                             >
                                                 No data found
@@ -405,17 +396,23 @@ export default function Index({ auth, academicYears }) {
                                         <div className="flex flex-col items-center gap-2 text-center">
                                             <DialogTitle className="text-2xl font-bold">
                                                 {event
-                                                    ? "Create a new account"
-                                                    : "Edit event"}
+                                                    ? "Edit event"
+                                                    : "Create new event"}
                                             </DialogTitle>
                                             <DialogDescription className="text-balance text-sm text-muted-foreground">
                                                 Enter the information below to
                                                 {event
                                                     ? " edit "
                                                     : " create "}{" "}
-                                                your account
+                                                event
                                             </DialogDescription>
                                         </div>
+
+                                        {/* {event && (
+                                            <pre>
+                                                {JSON.stringify(event, null, 2)}
+                                            </pre>
+                                        )} */}
 
                                         <div className="grid gap-6">
                                             <div className="w-full grid gap-2">
@@ -728,7 +725,7 @@ export default function Index({ auth, academicYears }) {
                                                     </div>
                                                     <InputError
                                                         message={
-                                                            errors.institute
+                                                            errors.academicYear
                                                         }
                                                     />
                                                 </div>

@@ -98,17 +98,21 @@ export default function SubmitAttendance({ id }) {
 
     const [activeTab, setActiveTab] = useState("am_start_photo");
 
-    function formatTime(datetimeString) {
-        const date = new Date(datetimeString);
-        return date.toLocaleTimeString([], {
-            hour: "2-digit",
-            minute: "2-digit",
-            hour12: true,
-        });
+    function formatTime(datetime) {
+        return datetime ? datetime.slice(11, 16) : "";
+    }
+
+    function addMins(time, added){
+        const [hour, minutes] = time.split(":").map(Number);
+        const date = new Date();
+        date.setHours(hour, minutes + added);
+        return date.toTimeString().slice(0, 5);
     }
     
     const eventDate = new Date(event?.event_date).toLocaleDateString();
     const today = new Date().toLocaleDateString();
+    
+
 
     return (
         <AuthenticatedLayout
@@ -206,6 +210,31 @@ export default function SubmitAttendance({ id }) {
                                                         >
                                                             <TabsContent value="am_start_photo">
                                                                 <div className="max-w-60">
+                                                                    <div className="h-16">
+                                                                        <div>
+                                                                            Attendance
+                                                                            begins
+                                                                            at:{" "}
+                                                                            <Badge>
+                                                                                {formatTime(
+                                                                                    event.am_start
+                                                                                )}
+                                                                            </Badge>
+                                                                        </div>
+                                                                        <div>
+                                                                            Attendance
+                                                                            end
+                                                                            at:{" "}
+                                                                            <Badge variant="destructive">
+                                                                                {addMins(
+                                                                                    formatTime(
+                                                                                        event.am_start
+                                                                                    ),
+                                                                                    30
+                                                                                )}
+                                                                            </Badge>
+                                                                        </div>
+                                                                    </div>
                                                                     {attendance?.am_start_photo ? (
                                                                         <div>
                                                                             <h2>
@@ -265,6 +294,31 @@ export default function SubmitAttendance({ id }) {
                                                             </TabsContent>
                                                             <TabsContent value="am_end_photo">
                                                                 <div className="max-w-60">
+                                                                    <div className="h-16">
+                                                                        <div>
+                                                                            Attendance
+                                                                            begins
+                                                                            at:{" "}
+                                                                            <Badge>
+                                                                                {formatTime(
+                                                                                    event.am_end
+                                                                                )}
+                                                                            </Badge>
+                                                                        </div>
+                                                                        <div>
+                                                                            Attendance
+                                                                            end
+                                                                            at:{" "}
+                                                                            <Badge variant="destructive">
+                                                                                {addMins(
+                                                                                    formatTime(
+                                                                                        event.am_end
+                                                                                    ),
+                                                                                    30
+                                                                                )}
+                                                                            </Badge>
+                                                                        </div>
+                                                                    </div>
                                                                     {attendance?.am_end_photo ? (
                                                                         <div>
                                                                             <h2>
@@ -324,6 +378,31 @@ export default function SubmitAttendance({ id }) {
                                                             </TabsContent>
                                                             <TabsContent value="pm_start_photo">
                                                                 <div className="max-w-60">
+                                                                    <div className="h-16">
+                                                                        <div>
+                                                                            Attendance
+                                                                            begins
+                                                                            at:{" "}
+                                                                            <Badge>
+                                                                                {formatTime(
+                                                                                    event.pm_start
+                                                                                )}
+                                                                            </Badge>
+                                                                        </div>
+                                                                        <div>
+                                                                            Attendance
+                                                                            end
+                                                                            at:{" "}
+                                                                            <Badge variant="destructive">
+                                                                                {addMins(
+                                                                                    formatTime(
+                                                                                        event.pm_start
+                                                                                    ),
+                                                                                    30
+                                                                                )}
+                                                                            </Badge>
+                                                                        </div>
+                                                                    </div>
                                                                     {attendance?.pm_start_photo ? (
                                                                         <div>
                                                                             <h2>
@@ -383,6 +462,31 @@ export default function SubmitAttendance({ id }) {
                                                             </TabsContent>
                                                             <TabsContent value="pm_end_photo">
                                                                 <div className="max-w-60">
+                                                                    <div className="h-16">
+                                                                        <div>
+                                                                            Attendance
+                                                                            begins
+                                                                            at:{" "}
+                                                                            <Badge>
+                                                                                {formatTime(
+                                                                                    event.pm_end
+                                                                                )}
+                                                                            </Badge>
+                                                                        </div>
+                                                                        <div>
+                                                                            Attendance
+                                                                            end
+                                                                            at:{" "}
+                                                                            <Badge variant="destructive">
+                                                                                {addMins(
+                                                                                    formatTime(
+                                                                                        event.pm_end
+                                                                                    ),
+                                                                                    30
+                                                                                )}
+                                                                            </Badge>
+                                                                        </div>
+                                                                    </div>
                                                                     {attendance?.pm_end_photo ? (
                                                                         <div>
                                                                             <h2>
@@ -478,9 +582,9 @@ export default function SubmitAttendance({ id }) {
                                         </div>
                                     ) : (
                                         <>
-                                        <div className="w-full mt-8 text-center">
-                                            No attendance 
-                                        </div>
+                                            <div className="w-full mt-8 text-center">
+                                                No attendance
+                                            </div>
                                         </>
                                     )}
                                 </>
