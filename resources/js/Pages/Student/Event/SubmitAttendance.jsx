@@ -9,6 +9,15 @@ import {
     AccordionTrigger,
 } from "@/components/ui/accordion";
 
+import {
+    Table,
+    TableBody,
+    TableCell,
+    TableHead,
+    TableHeader,
+    TableRow,
+} from "@/components/ui/table";
+
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 import { Label } from "@/Components/ui/label";
@@ -149,13 +158,37 @@ export default function SubmitAttendance({ id }) {
                                                 Show Event Details
                                             </AccordionTrigger>
                                             <AccordionContent>
-                                                <pre>
+                                                {/* <pre>
                                                     {JSON.stringify(
                                                         event,
                                                         null,
                                                         2
                                                     )}
-                                                </pre>
+                                                </pre> */}
+                                                <Table>
+                                                    <TableHeader>
+                                                        <TableRow>
+                                                            <TableHead>Name</TableHead>
+                                                            <TableHead>Event Date</TableHead>
+                                                            <TableHead>Event Type</TableHead>
+                                                            <TableHead>AM Start</TableHead>
+                                                            <TableHead>AM End</TableHead>
+                                                            <TableHead>PM Start</TableHead>
+                                                            <TableHead>PM End</TableHead>
+                                                        </TableRow>
+                                                    </TableHeader>
+                                                    <TableBody>
+                                                        <TableRow>
+                                                            <TableCell>{event.name}</TableCell>
+                                                            <TableCell>{event.event_date}</TableCell>
+                                                            <TableCell>{event.type}</TableCell>
+                                                            <TableCell>{formatTime(event.am_start)}</TableCell>
+                                                            <TableCell>{formatTime(event.am_end)}</TableCell>
+                                                            <TableCell>{formatTime(event.pm_start)}</TableCell>
+                                                            <TableCell>{formatTime(event.pm_end)}</TableCell>
+                                                        </TableRow>
+                                                    </TableBody>
+                                                </Table>
                                             </AccordionContent>
                                         </AccordionItem>
                                         {/* <AccordionItem value="item-2">
