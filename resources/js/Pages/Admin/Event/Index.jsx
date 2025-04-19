@@ -1,5 +1,5 @@
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
-import { Head } from "@inertiajs/react";
+import { Head, router } from "@inertiajs/react";
 import { useEffect, useState } from "react";
 
 import {
@@ -19,6 +19,7 @@ import {
     Loader2,
     CirclePlus,
     Search,
+    AlignLeft,
 } from "lucide-react";
 import {
     Dialog,
@@ -318,6 +319,13 @@ export default function Index({ auth, academicYears }) {
                                                 </TableCell>
                                                 <TableCell className="flex justify-end">
                                                     <div className="flex gap-2">
+                                                        <Button
+                                                            variant="secondary"
+                                                            size="icon"
+                                                            onClick={() => router.visit(route('admin.attendance', event.id))}
+                                                        >
+                                                            <AlignLeft />
+                                                        </Button>
                                                         <Button
                                                             variant="outline"
                                                             size="icon"

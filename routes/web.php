@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Admin\AdminAcademicYearController;
+use App\Http\Controllers\Admin\AdminAttendanceController;
 use App\Http\Controllers\Admin\AdminDashboardController;
 use App\Http\Controllers\Admin\AdminEventController;
 use App\Http\Controllers\Admin\AdminInstituteController;
@@ -62,6 +63,10 @@ Route::middleware(['auth', 'admin'])->group(function() {
     Route::post('/admin/event/store', [AdminEventController::class, 'store']);
     Route::put('/admin/event/update/{id}', [AdminEventController::class, 'update']);
     Route::delete('/admin/event/destroy/{id}',[AdminEventController::class, 'destroy']);
+
+    Route::get('/admin/attendance/{id}', [AdminAttendanceController::class, 'index'])->name('admin.attendance');
+    // Route::get('/admin/attendance/getdata/{id}', [AdminAttendanceController::class, 'getdata']);
+    Route::get('/admin/attendance/getdata', [AdminAttendanceController::class, 'getdata']);
 });
 
 Route::middleware(['auth', 'student'])->group(function() {
