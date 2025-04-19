@@ -111,7 +111,17 @@ export default function SubmitAttendance({ id }) {
     
     const eventDate = new Date(event?.event_date).toLocaleDateString();
     const today = new Date().toLocaleDateString();
-    
+
+
+    function isWithinTimeLimit(time) {
+        //startTime + 30 mins
+        const startTime = formatTime(time);
+        const endTime = addMins(startTime, 30);
+
+        const currentTime = new Date().toTimeString().slice(0, 5);
+
+        return currentTime >= startTime && currentTime <= endTime;
+    }
 
 
     return (
@@ -148,7 +158,7 @@ export default function SubmitAttendance({ id }) {
                                                 </pre>
                                             </AccordionContent>
                                         </AccordionItem>
-                                        <AccordionItem value="item-2">
+                                        {/* <AccordionItem value="item-2">
                                             <AccordionTrigger>
                                                 Show Attendance Details
                                             </AccordionTrigger>
@@ -161,7 +171,7 @@ export default function SubmitAttendance({ id }) {
                                                     )}
                                                 </pre>
                                             </AccordionContent>
-                                        </AccordionItem>
+                                        </AccordionItem> */}
                                     </Accordion>
                                     {eventDate === today ? (
                                         <div className="mt-8">
@@ -259,35 +269,47 @@ export default function SubmitAttendance({ id }) {
                                                                         </div>
                                                                     ) : (
                                                                         <>
-                                                                            <Label htmlFor="am_start_photo">
-                                                                                Morning
-                                                                                In
-                                                                                Attendance
-                                                                            </Label>
-                                                                            <Input
-                                                                                name="am_start_photo"
-                                                                                type="file"
-                                                                                className="mt-1 block w-full"
-                                                                                onChange={(
-                                                                                    e
-                                                                                ) =>
-                                                                                    setFormData(
-                                                                                        {
-                                                                                            ...formData,
-                                                                                            am_start_photo:
-                                                                                                e
-                                                                                                    .target
-                                                                                                    .files[0],
+                                                                            {isWithinTimeLimit(
+                                                                                event.am_start
+                                                                            ) ? (
+                                                                                <>
+                                                                                    <Label htmlFor="am_start_photo">
+                                                                                        Morning
+                                                                                        In
+                                                                                        Attendance
+                                                                                    </Label>
+                                                                                    <Input
+                                                                                        name="am_start_photo"
+                                                                                        type="file"
+                                                                                        className="mt-1 block w-full"
+                                                                                        onChange={(
+                                                                                            e
+                                                                                        ) =>
+                                                                                            setFormData(
+                                                                                                {
+                                                                                                    ...formData,
+                                                                                                    am_start_photo:
+                                                                                                        e
+                                                                                                            .target
+                                                                                                            .files[0],
+                                                                                                }
+                                                                                            )
                                                                                         }
-                                                                                    )
-                                                                                }
-                                                                            />
-                                                                            <InputError
-                                                                                message={
-                                                                                    errors.am_start_photo
-                                                                                }
-                                                                                className="mt-2"
-                                                                            />
+                                                                                    />
+                                                                                    <InputError
+                                                                                        message={
+                                                                                            errors.am_start_photo
+                                                                                        }
+                                                                                        className="mt-2"
+                                                                                    />
+                                                                                </>
+                                                                            ) : (
+                                                                                <div>
+                                                                                    Attendance
+                                                                                    not
+                                                                                    available
+                                                                                </div>
+                                                                            )}
                                                                         </>
                                                                     )}
                                                                 </div>
@@ -343,35 +365,47 @@ export default function SubmitAttendance({ id }) {
                                                                         </div>
                                                                     ) : (
                                                                         <>
-                                                                            <Label htmlFor="am_end_photo">
-                                                                                Morning
-                                                                                Out
-                                                                                Attendance
-                                                                            </Label>
-                                                                            <Input
-                                                                                name="am_end_photo"
-                                                                                type="file"
-                                                                                className="mt-1 block w-full"
-                                                                                onChange={(
-                                                                                    e
-                                                                                ) =>
-                                                                                    setFormData(
-                                                                                        {
-                                                                                            ...formData,
-                                                                                            am_end_photo:
-                                                                                                e
-                                                                                                    .target
-                                                                                                    .files[0],
+                                                                            {isWithinTimeLimit(
+                                                                                event.am_end
+                                                                            ) ? (
+                                                                                <>
+                                                                                    <Label htmlFor="am_end_photo">
+                                                                                        Morning
+                                                                                        Out
+                                                                                        Attendance
+                                                                                    </Label>
+                                                                                    <Input
+                                                                                        name="am_end_photo"
+                                                                                        type="file"
+                                                                                        className="mt-1 block w-full"
+                                                                                        onChange={(
+                                                                                            e
+                                                                                        ) =>
+                                                                                            setFormData(
+                                                                                                {
+                                                                                                    ...formData,
+                                                                                                    am_end_photo:
+                                                                                                        e
+                                                                                                            .target
+                                                                                                            .files[0],
+                                                                                                }
+                                                                                            )
                                                                                         }
-                                                                                    )
-                                                                                }
-                                                                            />
-                                                                            <InputError
-                                                                                message={
-                                                                                    errors.am_end_photo
-                                                                                }
-                                                                                className="mt-2"
-                                                                            />
+                                                                                    />
+                                                                                    <InputError
+                                                                                        message={
+                                                                                            errors.am_end_photo
+                                                                                        }
+                                                                                        className="mt-2"
+                                                                                    />
+                                                                                </>
+                                                                            ) : (
+                                                                                <div>
+                                                                                    Attendance
+                                                                                    not
+                                                                                    available
+                                                                                </div>
+                                                                            )}
                                                                         </>
                                                                     )}
                                                                 </div>
@@ -427,35 +461,47 @@ export default function SubmitAttendance({ id }) {
                                                                         </div>
                                                                     ) : (
                                                                         <>
-                                                                            <Label htmlFor="pm_start_photo">
-                                                                                Afternoon
-                                                                                In
-                                                                                Attendance
-                                                                            </Label>
-                                                                            <Input
-                                                                                name="pm_start_photo"
-                                                                                type="file"
-                                                                                className="mt-1 block w-full"
-                                                                                onChange={(
-                                                                                    e
-                                                                                ) =>
-                                                                                    setFormData(
-                                                                                        {
-                                                                                            ...formData,
-                                                                                            pm_start_photo:
-                                                                                                e
-                                                                                                    .target
-                                                                                                    .files[0],
+                                                                            {isWithinTimeLimit(
+                                                                                event.pm_start
+                                                                            ) ? (
+                                                                                <>
+                                                                                    <Label htmlFor="pm_start_photo">
+                                                                                        Afternoon
+                                                                                        In
+                                                                                        Attendance
+                                                                                    </Label>
+                                                                                    <Input
+                                                                                        name="pm_start_photo"
+                                                                                        type="file"
+                                                                                        className="mt-1 block w-full"
+                                                                                        onChange={(
+                                                                                            e
+                                                                                        ) =>
+                                                                                            setFormData(
+                                                                                                {
+                                                                                                    ...formData,
+                                                                                                    pm_start_photo:
+                                                                                                        e
+                                                                                                            .target
+                                                                                                            .files[0],
+                                                                                                }
+                                                                                            )
                                                                                         }
-                                                                                    )
-                                                                                }
-                                                                            />
-                                                                            <InputError
-                                                                                message={
-                                                                                    errors.pm_start_photo
-                                                                                }
-                                                                                className="mt-2"
-                                                                            />
+                                                                                    />
+                                                                                    <InputError
+                                                                                        message={
+                                                                                            errors.pm_start_photo
+                                                                                        }
+                                                                                        className="mt-2"
+                                                                                    />
+                                                                                </>
+                                                                            ) : (
+                                                                                <div>
+                                                                                    Attendance
+                                                                                    not
+                                                                                    available
+                                                                                </div>
+                                                                            )}
                                                                         </>
                                                                     )}
                                                                 </div>
@@ -511,35 +557,43 @@ export default function SubmitAttendance({ id }) {
                                                                         </div>
                                                                     ) : (
                                                                         <>
-                                                                            <Label htmlFor="pm_end_photo">
-                                                                                Afternoon
-                                                                                Out
-                                                                                Attendance
-                                                                            </Label>
-                                                                            <Input
-                                                                                name="pm_end_photo"
-                                                                                type="file"
-                                                                                className="mt-1 block w-full"
-                                                                                onChange={(
-                                                                                    e
-                                                                                ) =>
-                                                                                    setFormData(
-                                                                                        {
-                                                                                            ...formData,
-                                                                                            pm_end_photo:
-                                                                                                e
-                                                                                                    .target
-                                                                                                    .files[0],
+                                                                            {isWithinTimeLimit(
+                                                                                event.pm_end
+                                                                            ) ? (
+                                                                                <>
+                                                                                    <Label htmlFor="pm_end_photo">
+                                                                                        Afternoon
+                                                                                        Out
+                                                                                        Attendance
+                                                                                    </Label>
+                                                                                    <Input
+                                                                                        name="pm_end_photo"
+                                                                                        type="file"
+                                                                                        className="mt-1 block w-full"
+                                                                                        onChange={(
+                                                                                            e
+                                                                                        ) =>
+                                                                                            setFormData(
+                                                                                                {
+                                                                                                    ...formData,
+                                                                                                    pm_end_photo:
+                                                                                                        e
+                                                                                                            .target
+                                                                                                            .files[0],
+                                                                                                }
+                                                                                            )
                                                                                         }
-                                                                                    )
-                                                                                }
-                                                                            />
-                                                                            <InputError
-                                                                                message={
-                                                                                    errors.pm_end_photo
-                                                                                }
-                                                                                className="mt-2"
-                                                                            />
+                                                                                    />
+                                                                                    <InputError
+                                                                                        message={
+                                                                                            errors.pm_end_photo
+                                                                                        }
+                                                                                        className="mt-2"
+                                                                                    />
+                                                                                </>
+                                                                            ) : (
+                                                                                <div>Attendance not available</div>
+                                                                            )}
                                                                         </>
                                                                     )}
                                                                 </div>
@@ -547,16 +601,28 @@ export default function SubmitAttendance({ id }) {
                                                             <div className="mt-4">
                                                                 {((activeTab ===
                                                                     "am_start_photo" &&
-                                                                    !attendance?.am_start_photo) ||
+                                                                    !attendance?.am_start_photo &&
+                                                                    isWithinTimeLimit(
+                                                                        event.am_start
+                                                                    )) ||
                                                                     (activeTab ===
                                                                         "am_end_photo" &&
-                                                                        !attendance?.am_end_photo) ||
+                                                                        !attendance?.am_end_photo &&
+                                                                        isWithinTimeLimit(
+                                                                            event.am_end
+                                                                        )) ||
                                                                     (activeTab ===
                                                                         "pm_start_photo" &&
-                                                                        !attendance?.pm_start_photo) ||
+                                                                        !attendance?.pm_start_photo &&
+                                                                        isWithinTimeLimit(
+                                                                            event.pm_start
+                                                                        )) ||
                                                                     (activeTab ===
                                                                         "pm_end_photo" &&
-                                                                        !attendance?.pm_end_photo)) && (
+                                                                        !attendance?.pm_end_photo &&
+                                                                        isWithinTimeLimit(
+                                                                            event.pm_end
+                                                                        ))) && (
                                                                     <Button
                                                                         type="submit"
                                                                         disabled={
