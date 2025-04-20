@@ -65,8 +65,7 @@ Route::middleware(['auth', 'admin'])->group(function() {
     Route::delete('/admin/event/destroy/{id}',[AdminEventController::class, 'destroy']);
 
     Route::get('/admin/attendance/{id}', [AdminAttendanceController::class, 'index'])->name('admin.attendance');
-    // Route::get('/admin/attendance/getdata/{id}', [AdminAttendanceController::class, 'getdata']);
-    Route::get('/admin/attendance/getdata', [AdminAttendanceController::class, 'getdata']);
+    Route::get('/admin/attendance/getdata/{id}', [AdminAttendanceController::class, 'getdata']);
 });
 
 Route::middleware(['auth', 'student'])->group(function() {

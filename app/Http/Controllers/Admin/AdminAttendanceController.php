@@ -16,17 +16,16 @@ class AdminAttendanceController extends Controller
         ]);
     }
 
-    public function getdata(Request $request)
+    public function getdata(Request $request, $id)
     {
-        return $request;
+        return Attendance::with([ 'event', 'user'])
+                        ->where('event', $id)
+                        ->whereHas('user', function($query) use ($request) {
+                            $query->where('firstname', 'like', "%{$request->search}%")
+                                ->orWhere('lastname', 'like', "%{$request->search}%")
+                                ->orWhere('studentId', 'like', "%{$request->search}%");
+                        })
+                        ->orderBy($request->sortField, $request->sortOrder)
+                        ->paginate(10);
     }
-
-    
-    // public function getdata(Request $request)
-    // {
-    //     return Attendance::with('users')
-    //                 ->where('name', 'like', "%{$request->search}%")
-    //                 ->orderBy($request->sortField, $request->sortOrder)   
-    //                 ->paginate(10); 
-    // }
 }
