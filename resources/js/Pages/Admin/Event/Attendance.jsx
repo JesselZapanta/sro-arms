@@ -1,5 +1,6 @@
 import { Button } from "@/Components/ui/button";
 import { Input } from "@/Components/ui/input";
+import { Skeleton } from "@/Components/ui/skeleton";
 import {
     Table,
     TableBody,
@@ -11,7 +12,7 @@ import {
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { Head } from "@inertiajs/react";
 import axios from "axios";
-import { Search } from "lucide-react";
+import { Check, ChevronLeft, ChevronRight, OctagonAlert, Search, X } from "lucide-react";
 import React, { useEffect, useState } from "react";
 
 export default function Attendance({ id }) {
@@ -53,6 +54,14 @@ export default function Attendance({ id }) {
         getdata();
     }, [page, sortField, sortOrder]);
 
+    function timeformat(datetime) {
+        return datetime ? datetime.slice(11, 16) : "Absent";
+    }
+
+    function iconformat(attendance){
+        return attendance ? <Check /> : <X />;
+    }
+
     return (
         <AuthenticatedLayout>
             <Head title="List of Attendance" />
@@ -90,24 +99,130 @@ export default function Attendance({ id }) {
                                 </TableHeader>
                                 <TableBody>
                                     {loading ? (
-                                        <div>Data is loading</div>
+                                        <TableRow>
+                                            <TableCell
+                                                colSpan={7}
+                                                className="text-center"
+                                            >
+                                                <div className="flex flex-col gap-2">
+                                                    <Skeleton className="h-11 w-full" />
+                                                    <Skeleton className="h-11 w-full" />
+                                                    <Skeleton className="h-11 w-full" />
+                                                    <Skeleton className="h-11 w-full" />
+                                                    <Skeleton className="h-11 w-full" />
+                                                    <Skeleton className="h-11 w-full" />
+                                                    <Skeleton className="h-11 w-full" />
+                                                    <Skeleton className="h-11 w-full" />
+                                                    <Skeleton className="h-11 w-full" />
+                                                    <Skeleton className="h-11 w-full" />
+                                                </div>
+                                                {/* <Loader2 className="animate-spin" /> */}
+                                            </TableCell>
+                                        </TableRow>
                                     ) : data.length > 0 ? (
                                         data.map((attendance) => (
                                             <TableRow>
-                                                <TableCell>{attendance.user.studentId}</TableCell>
-                                                <TableCell>{attendance.user.firstname}</TableCell>
-                                                <TableCell>{attendance.user.lastname}</TableCell>
-                                                <TableCell>{attendance.am_start_photo_at}</TableCell>
-                                                <TableCell>{attendance.am_end_photo_at}</TableCell>
-                                                <TableCell>{attendance.pm_start_photo}</TableCell>
-                                                <TableCell>{attendance.pm_end_photo}</TableCell>
+                                                <TableCell>
+                                                    {attendance?.user.studentId}
+                                                </TableCell>
+                                                <TableCell>
+                                                    {attendance?.user.firstname}
+                                                </TableCell>
+                                                <TableCell>
+                                                    {attendance?.user.lastname}
+                                                </TableCell>
+                                                <TableCell>
+                                                    {attendance?.event.type ===
+                                                        "AM" ||
+                                                    attendance?.event.type ===
+                                                        "WD" ? (
+                                                        iconformat(
+                                                            attendance?.am_start_photo_at
+                                                        )
+                                                    ) : (
+                                                        <OctagonAlert />
+                                                    )}
+                                                </TableCell>
+                                                <TableCell>
+                                                    {attendance?.event.type ===
+                                                        "AM" ||
+                                                    attendance?.event.type ===
+                                                        "WD" ? (
+                                                        iconformat(
+                                                            attendance?.am_end_photo_at
+                                                        )
+                                                    ) : (
+                                                        <OctagonAlert />
+                                                    )}
+                                                </TableCell>
+                                                <TableCell>
+                                                    {attendance?.event.type ===
+                                                        "PM" ||
+                                                    attendance?.event.type ===
+                                                        "WD" ? (
+                                                        iconformat(
+                                                            attendance?.pm_start_photo_at
+                                                        )
+                                                    ) : (
+                                                        <OctagonAlert />
+                                                    )}
+                                                </TableCell>
+                                                <TableCell>
+                                                    {attendance?.event.type ===
+                                                        "PM" ||
+                                                    attendance?.event.type ===
+                                                        "WD" ? (
+                                                        iconformat(
+                                                            attendance?.pm_end_photo_at
+                                                        )
+                                                    ) : (
+                                                        <OctagonAlert />
+                                                    )}
+                                                </TableCell>
                                             </TableRow>
                                         ))
                                     ) : (
-                                        <div>No data is found</div>
+                                        <TableRow>
+                                            <TableCell
+                                                colSpan={7}
+                                                className="text-center"
+                                            >
+                                                No attendance found
+                                            </TableCell>
+                                        </TableRow>
                                     )}
                                 </TableBody>
                             </Table>
+                            {/* Pagination Controls */}
+                            <div className="flex justify-end gap-4 items-center mt-4">
+                                <Button
+                                    variant="outline"
+                                    size="icon"
+                                    onClick={() =>
+                                        setPage((prev) => Math.max(prev - 1, 1))
+                                    }
+                                    disabled={page === 1}
+                                >
+                                    <ChevronLeft />
+                                </Button>
+
+                                <span>
+                                    Page {page} of {lastpage}
+                                </span>
+
+                                <Button
+                                    variant="outline"
+                                    size="icon"
+                                    onClick={() =>
+                                        setPage((prev) =>
+                                            Math.min(prev + 1, lastpage)
+                                        )
+                                    }
+                                    disabled={page === lastpage}
+                                >
+                                    <ChevronRight />
+                                </Button>
+                            </div>
                         </div>
                     </div>
                 </div>
