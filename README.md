@@ -21,14 +21,14 @@ Ensure the following software is installed on your system:
 Ensure you have the necessary permissions to clone the repository. Run the following command:
 
 ```bash
-https://github.com/JesselZapanta/tcepms.git
+https://github.com/JesselZapanta/sro-arms.git
 ```
 
 ### Step 2: Navigate to the Repository
 Change your directory to the project folder:
 
 ```bash
-cd tcepms
+cd sro-arms
 ```
 
 ### Step 3: Install Dependencies
