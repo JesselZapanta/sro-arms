@@ -14,6 +14,7 @@ import { Head } from "@inertiajs/react";
 import axios from "axios";
 import { Check, ChevronLeft, ChevronRight, OctagonAlert, Search, X } from "lucide-react";
 import React, { useEffect, useState } from "react";
+import Format from "./Format";
 
 export default function Attendance({ id }) {
     const [data, setData] = useState([]);
@@ -58,9 +59,9 @@ export default function Attendance({ id }) {
         return datetime ? datetime.slice(11, 16) : "Absent";
     }
 
-    function iconformat(attendance){
-        return attendance ? <Check /> : <X />;
-    }
+    function iconformat(time, image){
+        return time ? <Format time={time} image={image} /> : <X />;
+    } 
 
     return (
         <AuthenticatedLayout>
@@ -89,7 +90,7 @@ export default function Attendance({ id }) {
                                 <TableHeader className="bg-emerald-100">
                                     <TableRow>
                                         <TableHead>ID</TableHead>
-                                        <TableHead>FirstName</TableHead>
+                                        <TableHead>Firstname</TableHead>
                                         <TableHead>Lastname</TableHead>
                                         <TableHead>AM IN</TableHead>
                                         <TableHead>AM OUT</TableHead>
@@ -137,7 +138,8 @@ export default function Attendance({ id }) {
                                                     attendance?.event.type ===
                                                         "WD" ? (
                                                         iconformat(
-                                                            attendance?.am_start_photo_at
+                                                            attendance?.am_start_photo_at,
+                                                            attendance?.am_start_photo
                                                         )
                                                     ) : (
                                                         <OctagonAlert />
@@ -149,7 +151,20 @@ export default function Attendance({ id }) {
                                                     attendance?.event.type ===
                                                         "WD" ? (
                                                         iconformat(
-                                                            attendance?.am_end_photo_at
+                                                            attendance?.am_end_photo_at,
+                                                            attendance?.am_end_photo                                                        )
+                                                    ) : (
+                                                        <OctagonAlert />
+                                                    )}
+                                                </TableCell>
+                                                <TableCell>
+                                                    {attendance?.event.type ===
+                                                        "PM" ||
+                                                    attendance?.event.type ===
+                                                        "WD" ? (
+                                                        iconformat(
+                                                            attendance?.pm_start_photo_at,
+                                                            attendance?.pm_start_photo
                                                         )
                                                     ) : (
                                                         <OctagonAlert />
@@ -161,19 +176,8 @@ export default function Attendance({ id }) {
                                                     attendance?.event.type ===
                                                         "WD" ? (
                                                         iconformat(
-                                                            attendance?.pm_start_photo_at
-                                                        )
-                                                    ) : (
-                                                        <OctagonAlert />
-                                                    )}
-                                                </TableCell>
-                                                <TableCell>
-                                                    {attendance?.event.type ===
-                                                        "PM" ||
-                                                    attendance?.event.type ===
-                                                        "WD" ? (
-                                                        iconformat(
-                                                            attendance?.pm_end_photo_at
+                                                            attendance?.pm_end_photo_at,
+                                                            attendance?.pm_end_photo
                                                         )
                                                     ) : (
                                                         <OctagonAlert />

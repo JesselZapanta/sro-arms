@@ -105,22 +105,23 @@ export default function SubmitAttendance({ id }) {
         }
     };
 
-    const [activeTab, setActiveTab] = useState("am_start_photo");
+    const [activeTab, setActiveTab] = useState("pm_start_photo");
+    // const [activeTab, setActiveTab] = useState(event.type === "PM" ? "pm_start_photo" : "am_start_photo");
+    console.log(activeTab);
 
     function formatTime(datetime) {
         return datetime ? datetime.slice(11, 16) : "";
     }
 
-    function addMins(time, added){
+    function addMins(time, added) {
         const [hour, minutes] = time.split(":").map(Number);
         const date = new Date();
         date.setHours(hour, minutes + added);
         return date.toTimeString().slice(0, 5);
     }
-    
+
     const eventDate = new Date(event?.event_date).toLocaleDateString();
     const today = new Date().toLocaleDateString();
-
 
     function isWithinTimeLimit(time) {
         //startTime + 30 mins
@@ -131,7 +132,6 @@ export default function SubmitAttendance({ id }) {
 
         return currentTime >= startTime && currentTime <= endTime;
     }
-
 
     return (
         <AuthenticatedLayout
@@ -168,24 +168,62 @@ export default function SubmitAttendance({ id }) {
                                                 <Table>
                                                     <TableHeader>
                                                         <TableRow>
-                                                            <TableHead>Name</TableHead>
-                                                            <TableHead>Event Date</TableHead>
-                                                            <TableHead>Event Type</TableHead>
-                                                            <TableHead>AM Start</TableHead>
-                                                            <TableHead>AM End</TableHead>
-                                                            <TableHead>PM Start</TableHead>
-                                                            <TableHead>PM End</TableHead>
+                                                            <TableHead>
+                                                                Name
+                                                            </TableHead>
+                                                            <TableHead>
+                                                                Event Date
+                                                            </TableHead>
+                                                            <TableHead>
+                                                                Event Type
+                                                            </TableHead>
+                                                            <TableHead>
+                                                                AM Start
+                                                            </TableHead>
+                                                            <TableHead>
+                                                                AM End
+                                                            </TableHead>
+                                                            <TableHead>
+                                                                PM Start
+                                                            </TableHead>
+                                                            <TableHead>
+                                                                PM End
+                                                            </TableHead>
                                                         </TableRow>
                                                     </TableHeader>
                                                     <TableBody>
                                                         <TableRow>
-                                                            <TableCell>{event.name}</TableCell>
-                                                            <TableCell>{event.event_date}</TableCell>
-                                                            <TableCell>{event.type}</TableCell>
-                                                            <TableCell>{formatTime(event.am_start)}</TableCell>
-                                                            <TableCell>{formatTime(event.am_end)}</TableCell>
-                                                            <TableCell>{formatTime(event.pm_start)}</TableCell>
-                                                            <TableCell>{formatTime(event.pm_end)}</TableCell>
+                                                            <TableCell>
+                                                                {event.name}
+                                                            </TableCell>
+                                                            <TableCell>
+                                                                {
+                                                                    event.event_date
+                                                                }
+                                                            </TableCell>
+                                                            <TableCell>
+                                                                {event.type}
+                                                            </TableCell>
+                                                            <TableCell>
+                                                                {formatTime(
+                                                                    event.am_start
+                                                                )}
+                                                            </TableCell>
+                                                            <TableCell>
+                                                                {formatTime(
+                                                                    event.am_end
+                                                                )}
+                                                            </TableCell>
+                                                            <TableCell>
+                                                                {formatTime(
+                                                                    event.pm_start
+                                                                )}
+                                                            </TableCell>
+                                                            <TableCell>
+                                                                {formatTime(
+                                                                    event.pm_end
+                                                                )}
+                                                            </TableCell>
                                                         </TableRow>
                                                     </TableBody>
                                                 </Table>
@@ -214,6 +252,7 @@ export default function SubmitAttendance({ id }) {
                                             </h2>
                                             <div className="bg-gray-100 mt-4 p-2 rounded-md">
                                                 <Tabs
+                                                    value={activeTab}
                                                     onValueChange={setActiveTab}
                                                     defaultValue="am_start_photo"
                                                     className="w-full"
@@ -625,7 +664,11 @@ export default function SubmitAttendance({ id }) {
                                                                                     />
                                                                                 </>
                                                                             ) : (
-                                                                                <div>Attendance not available</div>
+                                                                                <div>
+                                                                                    Attendance
+                                                                                    not
+                                                                                    available
+                                                                                </div>
                                                                             )}
                                                                         </>
                                                                     )}
