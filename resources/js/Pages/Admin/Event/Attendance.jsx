@@ -15,6 +15,8 @@ import axios from "axios";
 import { Check, ChevronLeft, ChevronRight, OctagonAlert, Search, X } from "lucide-react";
 import React, { useEffect, useState } from "react";
 import Format from "./Format";
+import Absent from "./Absent";
+import Undefined from "./Undefined";
 
 export default function Attendance({ id }) {
     const [data, setData] = useState([]);
@@ -60,7 +62,7 @@ export default function Attendance({ id }) {
     }
 
     function iconformat(time, image){
-        return time ? <Format time={time} image={image} /> : <X />;
+        return time ? <Format time={time} image={image} /> : <Absent />;
     } 
 
     return (
@@ -142,7 +144,7 @@ export default function Attendance({ id }) {
                                                             attendance?.am_start_photo
                                                         )
                                                     ) : (
-                                                        <OctagonAlert />
+                                                        <Undefined />
                                                     )}
                                                 </TableCell>
                                                 <TableCell>
@@ -152,9 +154,10 @@ export default function Attendance({ id }) {
                                                         "WD" ? (
                                                         iconformat(
                                                             attendance?.am_end_photo_at,
-                                                            attendance?.am_end_photo                                                        )
+                                                            attendance?.am_end_photo
+                                                        )
                                                     ) : (
-                                                        <OctagonAlert />
+                                                        <Undefined />
                                                     )}
                                                 </TableCell>
                                                 <TableCell>
@@ -167,7 +170,7 @@ export default function Attendance({ id }) {
                                                             attendance?.pm_start_photo
                                                         )
                                                     ) : (
-                                                        <OctagonAlert />
+                                                        <Undefined />
                                                     )}
                                                 </TableCell>
                                                 <TableCell>
@@ -180,7 +183,7 @@ export default function Attendance({ id }) {
                                                             attendance?.pm_end_photo
                                                         )
                                                     ) : (
-                                                        <OctagonAlert />
+                                                        <Undefined />
                                                     )}
                                                 </TableCell>
                                             </TableRow>
