@@ -17,6 +17,7 @@ import React, { useEffect, useState } from "react";
 import Format from "./Format";
 import Absent from "./Absent";
 import Undefined from "./Undefined";
+import ExportExcel from "./ExportExcel";
 
 export default function Attendance({ id }) {
     const [data, setData] = useState([]);
@@ -65,6 +66,11 @@ export default function Attendance({ id }) {
         return time ? <Format time={time} image={image} /> : <Absent />;
     } 
 
+    const test = [
+        { id: 1, name: "John Doe", age: 30, profession: "Developer" },
+        { id: 2, name: "Jane Smith", age: 25, profession: "Designer" },
+    ];
+
     return (
         <AuthenticatedLayout>
             <Head title="List of Attendance" />
@@ -83,7 +89,7 @@ export default function Attendance({ id }) {
                                 <Button onClick={getdata}>
                                     <Search />
                                 </Button>
-                                <Button>Export</Button>
+                                <ExportExcel data={data} fileName="event_attendance"/>
                             </div>
 
                             {/* <pre>{JSON.stringify(data, null, 2)}</pre> */}
@@ -124,7 +130,7 @@ export default function Attendance({ id }) {
                                         </TableRow>
                                     ) : data.length > 0 ? (
                                         data.map((attendance) => (
-                                            <TableRow>
+                                            <TableRow key={attendance.id}>
                                                 <TableCell>
                                                     {attendance?.user.studentId}
                                                 </TableCell>
