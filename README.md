@@ -1,4 +1,4 @@
-# SRO Attendance and Reciept Monitoring System
+# SRO Attendance and Reciept Monitoring System (ARMS)
 
 A web-based system for tracking attendance and managing receipts in the Student Recognized Organization (SRO).
 
