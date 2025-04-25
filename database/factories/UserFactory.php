@@ -24,10 +24,17 @@ class UserFactory extends Factory
     public function definition(): array
     {
         return [
-            'name' => fake()->name(),
+            'firstName' => fake()->firstName(),
+            'middlename' => fake()->lastName(),
+            'lastname' => fake()->lastName(),
+            'institute' => fake()->randomElement(['ICJE', 'IBFS', 'IHS','IAS','ITE', 'ICS']),
+            'organization' => fake()->randomElement(['JAMEX','VOSS','TMS FIL','TEEMS','PSC','JPEG.COM','AYOA']),
+            'studentId' => fake()->unique()->numberBetween(10000, 99999),
             'email' => fake()->unique()->safeEmail(),
             'email_verified_at' => now(),
             'password' => static::$password ??= Hash::make('password'),
+            'role' => 1,
+            'status' => 1,
             'remember_token' => Str::random(10),
         ];
     }
@@ -42,3 +49,17 @@ class UserFactory extends Factory
         ]);
     }
 }
+
+
+// [
+//                 'firstname' => 'ARMS',
+//                 'middlename' => null,
+//                 'lastname' => 'Student',
+//                 'institute' => 'ICS',
+//                 'organization' => 'JPEG.COM',
+//                 'studentId' => '123',
+//                 'email' => 'student@gmail.com',
+//                 'password' => Hash::make('student'),
+//                 'role' => 2, // 1: Student
+//                 'status' => 1, // 1: active
+//             ],

@@ -19,11 +19,11 @@ class EventSeeder extends Seeder
                 'event_date' => '2025-04-25',
                 'type' => 'AM',
                 'am_start' => '2025-04-25 07:00:00',
-                'am_end' => '2025-04-25 11:30:00',
+                'am_end' => '2025-04-25 5:30:00',
                 'pm_start' => null,
                 'pm_end' => null,
                 'sanction' => '20',
-                'academicYear' => 11,
+                'academicYear' => 5,
                 'status' => 1,
             ],
             [
@@ -35,7 +35,7 @@ class EventSeeder extends Seeder
                 'pm_start' => '2025-05-25 13:00:00',
                 'pm_end' => '2025-05-25 17:00:00',
                 'sanction' => '20',
-                'academicYear' => 11,
+                'academicYear' => 5,
                 'status' => 1,
             ],
             [
@@ -47,7 +47,7 @@ class EventSeeder extends Seeder
                 'pm_start' => '2025-06-25 13:00:00',
                 'pm_end' => '2025-06-25 17:00:00',
                 'sanction' => '20',
-                'academicYear' => 11,
+                'academicYear' => 5,
                 'status' => 1,
             ],
         ];
