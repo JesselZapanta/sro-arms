@@ -24,7 +24,8 @@ class DatabaseSeeder extends Seeder
             // InstituteSeeder::class,
             // OrganizationSeeder::class,
             // UserSeeder::class,
-            AcademicYearSeeder::class,
+            // AcademicYearSeeder::class,
+            EventSeeder::class
         ]);
     }
 }
