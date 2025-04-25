@@ -66,11 +66,6 @@ export default function Attendance({ id }) {
         return time ? <Format time={time} image={image} /> : <Absent />;
     } 
 
-    const test = [
-        { id: 1, name: "John Doe", age: 30, profession: "Developer" },
-        { id: 2, name: "Jane Smith", age: 25, profession: "Designer" },
-    ];
-
     return (
         <AuthenticatedLayout>
             <Head title="List of Attendance" />
