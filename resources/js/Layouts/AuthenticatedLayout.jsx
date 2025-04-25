@@ -45,7 +45,7 @@ export default function AuthenticatedLayout({ header, children }) {
         { title: "Institute", url: "/admin/institute" },
         { title: "Organization", url: "/admin/organization" },
         { title: "Event", url: "/admin/event" },
-        { title: "Receipt", url: "/receipt" },
+        { title: "Receipt", url: "/admin/receipt" },
     ];
 
     const studentLinks = [

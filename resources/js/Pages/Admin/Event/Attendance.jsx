@@ -34,6 +34,7 @@ export default function Attendance({ id }) {
         setLoading(true);
 
         const params = [
+            `page=${page}`,
             `sortField=${sortField}`,
             `sortOrder=${sortOrder}`,
             `search=${search}`,
@@ -84,7 +85,10 @@ export default function Attendance({ id }) {
                                 <Button onClick={getdata}>
                                     <Search />
                                 </Button>
-                                <ExportExcel data={data} fileName="event_attendance"/>
+                                <ExportExcel
+                                    data={data}
+                                    fileName="event_attendance"
+                                />
                             </div>
 
                             {/* <pre>{JSON.stringify(data, null, 2)}</pre> */}

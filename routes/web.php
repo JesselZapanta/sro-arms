@@ -6,6 +6,7 @@ use App\Http\Controllers\Admin\AdminDashboardController;
 use App\Http\Controllers\Admin\AdminEventController;
 use App\Http\Controllers\Admin\AdminInstituteController;
 use App\Http\Controllers\Admin\AdminOrganizationController;
+use App\Http\Controllers\Admin\AdminRecieptController;
 use App\Http\Controllers\Admin\AdminUserController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\Officer\OfficerDashboardController;
@@ -66,6 +67,9 @@ Route::middleware(['auth', 'admin'])->group(function() {
 
     Route::get('/admin/attendance/{id}', [AdminAttendanceController::class, 'index'])->name('admin.attendance');
     Route::get('/admin/attendance/getdata/{id}', [AdminAttendanceController::class, 'getdata']);
+
+    //receipt
+    Route::get('/admin/receipt', [AdminRecieptController::class, 'index'])->name('admin.receipt');
 });
 
 Route::middleware(['auth', 'student'])->group(function() {
