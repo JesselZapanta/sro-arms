@@ -21,50 +21,50 @@ class AdminRecieptController extends Controller
         return AcademicYear::orderBy('id', 'desc')
                         ->get(['id','code','description']);
     }
-    
+
     public function getdata(Request $request)
     {
-        //search id, firstname or last name on user based on request->search
-        //get all the events under the selected academic year
-        //get all the attendance on the event in the selected user
-        //calculate the total absent and the total sanction
-
-        $search =  $request->search;
+        $search = $request->search;
         $academicYearId = $request->selectedYear;
 
-        $user = User::where('studentId', 'like', "%$search%")
-                    ->orWhere('firstname', 'like', "%$search%")
-                    ->orWhere('lastname', 'like', "%$search%")
-                    ->first();
+        if ($search) {
+            $user = User::where('studentId', 'like', "%$search%")
+                ->orWhere('firstname', 'like', "%$search%")
+                ->orWhere('lastname', 'like', "%$search%")
+                ->first();
+        } else {
+            $user = null;
+        }
 
-        if(!$user){
+        if (!$user || !$academicYearId) {
             return response()->json([
                 'status' => 'notfound'
-            ],404);
+            ], 404);
         }
 
         $events = Event::where('academicYear', $academicYearId)->get();
-        $attendances = Attendance::where('user', $user->id)
-                                ->whereIn('event', $events->pluck('id'))
-                                ->get()
-                                ->keyBy('event');
+        
+        $attendances = Attendance::with('event:id,name')
+            ->where('user', $user->id)
+            ->whereIn('event', $events->pluck('id'))
+            ->get()
+            ->keyBy(keyBy: 'event'); // event id as key
 
         $totalAbsent = 0;
         $totalSanction = 0;
 
-        foreach ($events as $event) {
+        $typeRequiredPhotos = [
+            'WD' => ['am_start_photo_at', 'am_end_photo_at', 'pm_start_photo_at','pm_end_photo_at'],
+            'AM' => ['am_start_photo_at', 'am_end_photo_at'],
+            'PM' => ['pm_start_photo_at','pm_end_photo_at'],
+        ];
+
+        foreach($events as $event){
             $attendance = $attendances->get($event->id);
+
             $missingPhotos = 0;
 
-            if($event->type == 'WD'){
-                $required = ['am_start_photo_at', 'am_end_photo_at','pm_start_photo_at','pm_end_photo_at'];
-            }elseif($event->type == 'AM'){
-                $required = ['am_start_photo_at', 'am_end_photo_at'];
-            }elseif($event->type == 'PM'){
-                $required = ['pm_start_photo_at','pm_end_photo_at'];
-            }else{
-                $required = [];
-            }
+            $required = $typeRequiredPhotos[$event->type] ?? [];
 
             foreach($required as $field){
                 if(!$attendance || !$attendance->$field){
@@ -74,16 +74,17 @@ class AdminRecieptController extends Controller
 
             if($missingPhotos > 0){
                 $totalAbsent += $missingPhotos;
-                $totalSanction = $missingPhotos * $event->sanction;
+                $totalSanction += $missingPhotos * $event->sanction;
             }
         }
 
         return response()->json([
             'user' => $user,
+            'events' => $events,
+            'attendances' => $attendances,
             'total_absent' => $totalAbsent,
             'total_sanction' => $totalSanction,
-            'attendances' => $attendances,
-        ]);
+        ], 200);
     }
+
 }
-//77656

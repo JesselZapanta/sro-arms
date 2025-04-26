@@ -13,7 +13,18 @@ import {
     SelectValue,
 } from "@/components/ui/select";
 
+import {
+    Table,
+    TableBody,
+    TableCell,
+    TableHead,
+    TableHeader,
+    TableRow,
+} from "@/components/ui/table";
+import { Skeleton } from "@/Components/ui/skeleton";
+
 export default function Index() {
+    const [data, setData] = useState([]);
     const [academicYears, setAcademicYears] = useState([]);
     const [selectedYear, setSelectedYear] = useState("");
 
@@ -24,19 +35,18 @@ export default function Index() {
         //do something
         // console.log(search);
         // console.log(selectedYear);
-        setLoading(true)
+        setLoading(true);
         const params = [
             `selectedYear=${selectedYear}`,
             `search=${search}`,
         ].join("&");
-        try{
+        try {
             const res = await axios.get(`/admin/receipt/getdata?${params}`);
-
-            
-        }catch(err){
+            setData(res.data);
+        } catch (err) {
             console.log(err);
-        }finally{
-        setLoading(false);
+        } finally {
+            setLoading(false);
         }
     };
 
@@ -53,11 +63,20 @@ export default function Index() {
     };
 
     useEffect(() => {
-        getdata();
         getyears();
     }, []);
 
     // console.log(academicYears);
+
+
+    function formatDateTime(datetime) {
+        const options = { dateStyle: "medium", timeStyle: "short" };
+        return new Date(datetime).toLocaleString(undefined, options);
+    }
+
+    function EmptyCell() {
+        return <span className="text-muted-foreground italic">No Record</span>;
+    }
 
     return (
         <AuthenticatedLayout>
@@ -96,6 +115,12 @@ export default function Index() {
                                 <Button onClick={getdata}>
                                     <Search />
                                 </Button>
+                            </div>
+                            <div className="">
+                                <pre>{JSON.stringify(data, null, 2)}</pre>
+                                
+                                <div>Total Absent: {data.total_absent}</div>
+                                <div>Total Sanction: {data.total_sanction}</div>
                             </div>
                         </div>
                     </div>
