@@ -70,6 +70,8 @@ Route::middleware(['auth', 'admin'])->group(function() {
 
     //receipt
     Route::get('/admin/receipt', [AdminRecieptController::class, 'index'])->name('admin.receipt');
+    Route::get('/admin/receipt/getacedemicyears', [AdminRecieptController::class, 'getacedemicyears']);
+    Route::get('/admin/receipt/getdata', [AdminRecieptController::class, 'getdata']);
 });
 
 Route::middleware(['auth', 'student'])->group(function() {
