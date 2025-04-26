@@ -13,15 +13,9 @@ import {
     SelectValue,
 } from "@/components/ui/select";
 
-import {
-    Table,
-    TableBody,
-    TableCell,
-    TableHead,
-    TableHeader,
-    TableRow,
-} from "@/components/ui/table";
-import { Skeleton } from "@/Components/ui/skeleton";
+
+import { toast } from "sonner";
+import TableData from "./TableData";
 
 export default function Index() {
     const [data, setData] = useState([]);
@@ -32,9 +26,6 @@ export default function Index() {
     const [search, setSearch] = useState("");
 
     const getdata = async () => {
-        //do something
-        // console.log(search);
-        // console.log(selectedYear);
         setLoading(true);
         const params = [
             `selectedYear=${selectedYear}`,
@@ -45,6 +36,12 @@ export default function Index() {
             setData(res.data);
         } catch (err) {
             console.log(err);
+            if (err && err.response.data.status === "user-notfound") {
+                toast.error("The student not found.");
+            }
+            if (err && err.response.data.status === "ay-notfound") {
+                toast.error("Please select an academic year.");
+            }
         } finally {
             setLoading(false);
         }
@@ -67,16 +64,6 @@ export default function Index() {
     }, []);
 
     // console.log(academicYears);
-
-
-    function formatDateTime(datetime) {
-        const options = { dateStyle: "medium", timeStyle: "short" };
-        return new Date(datetime).toLocaleString(undefined, options);
-    }
-
-    function EmptyCell() {
-        return <span className="text-muted-foreground italic">No Record</span>;
-    }
 
     return (
         <AuthenticatedLayout>
@@ -117,10 +104,8 @@ export default function Index() {
                                 </Button>
                             </div>
                             <div className="">
-                                <pre>{JSON.stringify(data, null, 2)}</pre>
-                                
-                                <div>Total Absent: {data.total_absent}</div>
-                                <div>Total Sanction: {data.total_sanction}</div>
+                                {/* <pre>{JSON.stringify(data, null, 2)}</pre> */}
+                                <TableData data={data} loading={loading} />
                             </div>
                         </div>
                     </div>

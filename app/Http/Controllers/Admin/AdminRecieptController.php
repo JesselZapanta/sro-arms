@@ -36,9 +36,15 @@ class AdminRecieptController extends Controller
             $user = null;
         }
 
-        if (!$user || !$academicYearId) {
+        if (!$user) {
             return response()->json([
-                'status' => 'notfound'
+                'status' => 'user-notfound'
+            ], 404);
+        }
+
+        if (!$academicYearId) {
+            return response()->json([
+                'status' => 'ay-notfound'
             ], 404);
         }
 
