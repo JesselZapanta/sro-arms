@@ -13,7 +13,9 @@ export default function Absent() {
         <div>
             <TooltipProvider>
                 <Tooltip>
-                    <TooltipTrigger><X/></TooltipTrigger>
+                    <TooltipTrigger>
+                        <X className="text-red-400" />
+                    </TooltipTrigger>
                     <TooltipContent className="bg-red-400">
                         <p>Absent</p>
                     </TooltipContent>

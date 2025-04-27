@@ -1,4 +1,4 @@
-import React from 'react'
+import React from "react";
 import {
     Table,
     TableBody,
@@ -8,27 +8,36 @@ import {
     TableRow,
 } from "@/components/ui/table";
 import { Skeleton } from "@/Components/ui/skeleton";
+import { Check, OctagonAlert } from "lucide-react";
+import Undefined from "../Event/Undefined";
+import Absent from "../Event/Absent";
 
-export default function TableData({data, loading}) {
-    function formatDateTime(datetime) {
-        const options = { dateStyle: "medium", timeStyle: "short" };
-        return new Date(datetime).toLocaleString(undefined, options);
-    }
+export default function TableData({ data, loading }) {
 
-    function EmptyCell() {
-        return <span className="text-muted-foreground italic">No Record</span>;
-    }
+
+    const formatAttendance = (eventType, isAM, timestamp) => {
+        if ((eventType === "AM" && !isAM) || (eventType === "PM" && isAM)) {
+            return <Undefined />;
+        }
+        return timestamp ? <Check className="text-green-400"/> : <Absent />
+    };
+
+    const columns = [
+        { label: "AM Start", key: "am_start_photo_at", isAM: true },
+        { label: "AM End", key: "am_end_photo_at", isAM: true },
+        { label: "PM Start", key: "pm_start_photo_at", isAM: false },
+        { label: "PM End", key: "pm_end_photo_at", isAM: false },
+    ];
 
     return (
         <>
             <Table>
-                <TableHeader>
+                <TableHeader className="bg-emerald-100">
                     <TableRow>
                         <TableHead>Event Name</TableHead>
-                        <TableHead>AM Start</TableHead>
-                        <TableHead>AM End</TableHead>
-                        <TableHead>PM Start</TableHead>
-                        <TableHead>PM End</TableHead>
+                        {columns.map((col) => (
+                            <TableHead key={col.key}>{col.label}</TableHead>
+                        ))}
                     </TableRow>
                 </TableHeader>
                 <TableBody>
@@ -48,49 +57,18 @@ export default function TableData({data, loading}) {
                                 data.attendances || {}
                             ).find((att) => att.event.id === event.id);
 
-                            // AM Start
-                            const amStart =
-                                event.type === "PM"
-                                    ? "No Attendance"
-                                    : attendance?.am_start_photo_at
-                                    ? formatDateTime(
-                                          attendance.am_start_photo_at
-                                      )
-                                    : "Absent";
-
-                            // AM End
-                            const amEnd =
-                                event.type === "PM"
-                                    ? "No Attendance"
-                                    : attendance?.am_end_photo_at
-                                    ? formatDateTime(attendance.am_end_photo_at)
-                                    : "Absent";
-
-                            // PM Start
-                            const pmStart =
-                                event.type === "AM"
-                                    ? "No Attendance"
-                                    : attendance?.pm_start_photo_at
-                                    ? formatDateTime(
-                                          attendance.pm_start_photo_at
-                                      )
-                                    : "Absent";
-
-                            // PM End
-                            const pmEnd =
-                                event.type === "AM"
-                                    ? "No Attendance"
-                                    : attendance?.pm_end_photo_at
-                                    ? formatDateTime(attendance.pm_end_photo_at)
-                                    : "Absent";
-
                             return (
                                 <TableRow key={event.id}>
                                     <TableCell>{event.name}</TableCell>
-                                    <TableCell>{amStart}</TableCell>
-                                    <TableCell>{amEnd}</TableCell>
-                                    <TableCell>{pmStart}</TableCell>
-                                    <TableCell>{pmEnd}</TableCell>
+                                    {columns.map((col) => (
+                                        <TableCell key={col.key}>
+                                            {formatAttendance(
+                                                event.type,
+                                                col.isAM,
+                                                attendance?.[col.key]
+                                            )}
+                                        </TableCell>
+                                    ))}
                                 </TableRow>
                             );
                         })
@@ -98,16 +76,18 @@ export default function TableData({data, loading}) {
                         <TableRow>
                             <TableCell
                                 colSpan={5}
-                                className="py-12 text-center"
+                                className="py-12 text-center text-muted-foreground italic"
                             >
-                                No attendance found
+                                No event and attendance found
                             </TableCell>
                         </TableRow>
                     )}
                 </TableBody>
             </Table>
-            <div>Total Absent: {data.total_absent}</div>
-            <div>Total Sanction: {data.total_sanction}</div>
+            <div className="mt-4 text-md font-bold">
+                <p>Total Absent: {data.total_absent}</p>
+                <p>Total Sanction: {data.total_sanction}</p>
+            </div>
         </>
     );
 }

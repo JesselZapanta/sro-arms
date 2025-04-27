@@ -28,9 +28,9 @@ class AdminRecieptController extends Controller
         $academicYearId = $request->selectedYear;
 
         if ($search) {
-            $user = User::where('studentId', 'like', "%$search%")
-                ->orWhere('firstname', 'like', "%$search%")
-                ->orWhere('lastname', 'like', "%$search%")
+            $user = User::where('studentId',  $search)
+                ->orWhere('firstname',  $search)
+                ->orWhere('lastname',  $search)
                 ->first();
         } else {
             $user = null;
