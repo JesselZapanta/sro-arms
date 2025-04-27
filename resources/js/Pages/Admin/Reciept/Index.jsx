@@ -122,7 +122,9 @@ export default function Index() {
                                     <div>
                                         Student Name:{" "}
                                         <span>{data?.user.firstname}</span>
-                                        <span  className="ml-2">{data?.user.lastname}</span>
+                                        <span className="ml-2">
+                                            {data?.user.lastname}
+                                        </span>
                                     </div>
                                     <div>
                                         Institute:{" "}
@@ -136,7 +138,7 @@ export default function Index() {
                             )}
                             {data?.events && (
                                 <TableData data={data} loading={loading} />
-                            )}
+                            )}            
                         </div>
                     </div>
                 </div>
