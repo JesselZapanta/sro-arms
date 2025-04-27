@@ -11,15 +11,23 @@ import { Skeleton } from "@/Components/ui/skeleton";
 import { Check, OctagonAlert } from "lucide-react";
 import Undefined from "../Event/Undefined";
 import Absent from "../Event/Absent";
+import Format from "../Event/Format";
 
 export default function TableData({ data, loading }) {
 
 
-    const formatAttendance = (eventType, isAM, timestamp) => {
+    const formatAttendance = (eventType, isAM, timestamp, photo) => {
+        console.log(photo);
         if ((eventType === "AM" && !isAM) || (eventType === "PM" && isAM)) {
             return <Undefined />;
         }
-        return timestamp ? <Check className="text-green-400"/> : <Absent />
+        return timestamp ? (
+            <Format time={timestamp} image={photo} />
+        ) : (
+            <Absent />
+        );
+
+        
     };
 
     const columns = [
@@ -65,7 +73,9 @@ export default function TableData({ data, loading }) {
                                             {formatAttendance(
                                                 event.type,
                                                 col.isAM,
-                                                attendance?.[col.key]
+                                                attendance?.[col.key],
+                                                attendance?.[`${col.key.replace('_at', '')}`]
+                                                //add the photo
                                             )}
                                         </TableCell>
                                     ))}
