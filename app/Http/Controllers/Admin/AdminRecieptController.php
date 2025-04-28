@@ -92,5 +92,5 @@ class AdminRecieptController extends Controller
             'total_sanction' => $totalSanction,
         ], 200);
     }
-
+    
 }

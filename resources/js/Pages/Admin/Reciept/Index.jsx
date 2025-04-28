@@ -115,30 +115,35 @@ export default function Index() {
                             {/* <pre>{JSON.stringify(data, null, 2)}</pre> */}
                             {data?.user && (
                                 <div className="p-4 my-4 bg-gray-100 rounded-md">
-                                    <div>
-                                        Student Id:{" "}
-                                        <span>{data?.user.studentId}</span>
-                                    </div>
-                                    <div>
-                                        Student Name:{" "}
-                                        <span>{data?.user.firstname}</span>
-                                        <span className="ml-2">
-                                            {data?.user.lastname}
-                                        </span>
-                                    </div>
-                                    <div>
-                                        Institute:{" "}
-                                        <span>{data?.user.institute}</span>
-                                    </div>
-                                    <div>
-                                        Organization:{" "}
-                                        <span>{data?.user.organization}</span>
+                                    <h2 className="font-bold">Student Information:</h2>
+                                    <div className="pl-4 mt-2">
+                                        <div>
+                                            Student Id:{" "}
+                                            <span>{data?.user.studentId}</span>
+                                        </div>
+                                        <div>
+                                            Student Name:{" "}
+                                            <span>{data?.user.firstname}</span>
+                                            <span className="ml-2">
+                                                {data?.user.lastname}
+                                            </span>
+                                        </div>
+                                        <div>
+                                            Institute:{" "}
+                                            <span>{data?.user.institute}</span>
+                                        </div>
+                                        <div>
+                                            Organization:{" "}
+                                            <span>
+                                                {data?.user.organization}
+                                            </span>
+                                        </div>
                                     </div>
                                 </div>
                             )}
                             {data?.events && (
                                 <TableData data={data} loading={loading} />
-                            )}            
+                            )}
                         </div>
                     </div>
                 </div>
