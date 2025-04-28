@@ -67,3 +67,28 @@
     @apply bg-background text-foreground;
   }
 }
+
+@media screen {
+  .print-container{
+    display: none;
+  }
+}
+
+@media print{
+  .print-container{
+    display: block;
+  }
+  .page{
+    position: relative;
+    height: 1056px;
+    width: 816px;
+  }
+  @page{
+    size: 816px 1056px;
+    margin: 0 !important;
+  }
+  .no-margin{
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+}

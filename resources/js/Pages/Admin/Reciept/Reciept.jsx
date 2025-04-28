@@ -25,8 +25,8 @@ export default function Reciept({ data }) {
                         <Button onClick={handlePrint}>Print Reciept</Button>
                     </div>
                 </div>
-                <div ref={componentRef}>
-                    <div className="w-[700px] h-[288px] bg-gray-200 rounded-md p-6">
+                <div className="print-container" ref={componentRef}>
+                    <div className="w-full h-[288px] bg-gray-50 rounded-md p-6">
                         <h2 className="text-center font-bold text-3xl tracking-[20px]">
                             RECEIPT
                         </h2>
