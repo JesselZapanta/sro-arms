@@ -6,8 +6,10 @@ use App\Http\Controllers\Controller;
 use App\Models\AcademicYear;
 use App\Models\Attendance;
 use App\Models\Event;
+use App\Models\GenerateReciept;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Carbon;
 
 class AdminRecieptController extends Controller
 {
@@ -93,4 +95,52 @@ class AdminRecieptController extends Controller
         ], 200);
     }
     
+    // ayaw nalng mag get id - save it first 
+    // public function getId()
+    // {
+    //     $receipt =  GenerateReciept::orderBy('id', 'desc')->limit(1);
+
+    //     if($receipt){
+    //         $no = $receipt->no + 1;
+    //     } else {
+    //         $no = 100000;
+    //     }
+
+    //     return response()->json([
+    //         'no' => $no,
+    //     ], 200);    
+    // }
+
+    public function store(Request $request)
+    {   
+        $request->validate([
+            'name' => ['required'],
+            'amount' => ['required', 'numeric'],
+        ]);
+
+        //check if there is a similar name and amount in db, if true dont insert 
+
+        $existingReceipt  = GenerateReciept::where('name', $request['name'])
+                                    ->where('amount',$request['amount'])
+                                    ->first();
+
+        if($existingReceipt){
+            return response()->json([
+                'status' => 'created',
+                'receipt' => $existingReceipt->id
+            ], 200);
+        }
+
+        $receipt  = GenerateReciept::create([
+                'date' => Carbon::now()->setTimezone('Asia/Manila'),
+                'name' => $request->name,
+                'amount' => $request->amount,
+            ]);
+
+        return response()->json([
+            'status' => 'created',
+            'receipt' => $receipt->id
+        ], 200);
+    }
+
 }

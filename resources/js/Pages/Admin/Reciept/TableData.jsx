@@ -17,9 +17,7 @@ import { Button } from "@/Components/ui/button";
 import { numberToWords } from "amount-to-words";
 import Reciept from "./Reciept";
 
-export default function TableData({ data, loading }) {
-
-
+export default function TableData({ data, loading, receipt, setReceipt }) {
     const formatAttendance = (eventType, isAM, timestamp, photo) => {
         console.log(photo);
         if ((eventType === "AM" && !isAM) || (eventType === "PM" && isAM)) {
@@ -30,8 +28,6 @@ export default function TableData({ data, loading }) {
         ) : (
             <Absent />
         );
-
-        
     };
 
     const columns = [
@@ -102,7 +98,7 @@ export default function TableData({ data, loading }) {
                     )}
                 </TableBody>
             </Table>
-            <Reciept data={data} />
+            <Reciept data={data} receipt={receipt} setReceipt={setReceipt}/>
         </>
     );
 }

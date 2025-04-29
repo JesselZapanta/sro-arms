@@ -32,8 +32,11 @@ export default function Index() {
     const [loading, setLoading] = useState(false);
     const [search, setSearch] = useState("");
 
+    const [receipt, setReceipt] = useState();
+
     const getdata = async () => {
         setLoading(true);
+        setReceipt();
         const params = [
             `selectedYear=${selectedYear}`,
             `search=${search}`,
@@ -115,7 +118,9 @@ export default function Index() {
                             {/* <pre>{JSON.stringify(data, null, 2)}</pre> */}
                             {data?.user && (
                                 <div className="p-4 my-4 bg-gray-100 rounded-md">
-                                    <h2 className="font-bold">Student Information:</h2>
+                                    <h2 className="font-bold">
+                                        Student Information:
+                                    </h2>
                                     <div className="pl-4 mt-2">
                                         <div>
                                             Student Id:{" "}
@@ -142,7 +147,12 @@ export default function Index() {
                                 </div>
                             )}
                             {data?.events && (
-                                <TableData data={data} loading={loading} />
+                                <TableData
+                                    receipt={receipt}
+                                    setReceipt={setReceipt}
+                                    data={data}
+                                    loading={loading}
+                                />
                             )}
                         </div>
                     </div>

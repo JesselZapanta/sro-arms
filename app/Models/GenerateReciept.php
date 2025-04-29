@@ -9,9 +9,8 @@ class GenerateReciept extends Model
     protected $table = 'generate_reciepts';
 
     protected $fillable = [
-        'no',
         'date',
         'name',
-        'amount ',
+        'amount',
     ];
 }
