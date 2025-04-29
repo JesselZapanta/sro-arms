@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('generate_reciepts', function (Blueprint $table) {
             $table->id();
             $table->integer('no')->startingValue(100000);
+            $table->dateTime('date');
             $table->string('name');
             $table->integer('amount');
             $table->timestamps();

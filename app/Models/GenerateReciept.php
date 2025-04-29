@@ -10,6 +10,7 @@ class GenerateReciept extends Model
 
     protected $fillable = [
         'no',
+        'date',
         'name',
         'amount ',
     ];
