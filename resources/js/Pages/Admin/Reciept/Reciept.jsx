@@ -9,7 +9,7 @@ export default function Reciept({ data }) {
     const componentRef = useRef(null);
 
     const handlePrint = useReactToPrint({
-        documentTitle: "Title",
+        documentTitle: "Reciept",
         contentRef: componentRef,
     });
 
