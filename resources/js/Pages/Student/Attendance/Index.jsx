@@ -12,19 +12,8 @@ import {
     SelectValue,
 } from "@/components/ui/select";
 
-import {
-    Accordion,
-    AccordionContent,
-    AccordionItem,
-    AccordionTrigger,
-} from "@/components/ui/accordion";
-
 import { toast } from "sonner";
-// import TableData from "./TableData";
-import { Input } from "@/Components/ui/input";
-import { Label } from "@/components/ui/label";
 import TableData from "./TableData";
-
 
 export default function Index() {
     const [data, setData] = useState([]);
@@ -33,11 +22,8 @@ export default function Index() {
 
     const [loading, setLoading] = useState(false);
 
-    const [receipt, setReceipt] = useState();
-
     const getdata = async () => {
         setLoading(true);
-        setReceipt();
 
         const params = [
             `selectedYear=${selectedYear}`,
