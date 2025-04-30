@@ -86,14 +86,15 @@ Route::middleware(['auth', 'student'])->group(function() {
     Route::get('/student/event', [StudentEventController::class, 'index'])->name('student.event'); 
     Route::get('/student/event/getdata', [StudentEventController::class, 'getdata']);
 
-    Route::get('/student/attendance', [StudentAttendanceController::class, 'index'])->name('student.attendance'); 
+    //submit attendance
     Route::get('/student/submit-attendance/{id}', [StudentSubmitAttendanceController::class, 'index'])->name('student.submit-attendance'); 
     Route::get('/student/submit-attendance/getdata/{id}', [StudentSubmitAttendanceController::class, 'getdata']);
     Route::post('/student/submit-attendance/upload/{id}', [StudentSubmitAttendanceController::class, 'upload']);
-});
 
-Route::middleware(['auth', 'officer'])->group(function() {
-    Route::get('/officer/dashboard', [OfficerDashboardController::class, 'index'])->name('officer.dashboard'); 
+    //attendance
+    Route::get('/student/attendance', [StudentAttendanceController::class, 'index'])->name('student.attendance'); 
+    Route::get('/student/attendance/getacedemicyears', [StudentAttendanceController::class, 'getacedemicyears']);
+    Route::get('/student/attendance/getdata', [StudentAttendanceController::class, 'getdata']);
 });
 
 Route::middleware('auth')->group(function () {
