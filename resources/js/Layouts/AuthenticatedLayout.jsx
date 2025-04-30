@@ -25,8 +25,6 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
     Sheet,
     SheetContent,
-    SheetDescription,
-    SheetHeader,
     SheetTitle,
     SheetTrigger,
 } from "@/components/ui/sheet";
@@ -46,6 +44,7 @@ export default function AuthenticatedLayout({ header, children }) {
         { title: "Organization", url: "/admin/organization" },
         { title: "Event", url: "/admin/event" },
         { title: "Receipt", url: "/admin/receipt" },
+        { title: "Saved Receipt", url: "/admin/saved-receipt" },
     ];
 
     const studentLinks = [

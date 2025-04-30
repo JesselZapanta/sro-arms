@@ -7,6 +7,7 @@ use App\Http\Controllers\Admin\AdminEventController;
 use App\Http\Controllers\Admin\AdminInstituteController;
 use App\Http\Controllers\Admin\AdminOrganizationController;
 use App\Http\Controllers\Admin\AdminRecieptController;
+use App\Http\Controllers\Admin\AdminSavedReceiptController;
 use App\Http\Controllers\Admin\AdminUserController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\Officer\OfficerDashboardController;
@@ -74,6 +75,9 @@ Route::middleware(['auth', 'admin'])->group(function() {
     Route::get('/admin/receipt/getdata', [AdminRecieptController::class, 'getdata']);
     Route::get('/admin/receipt/getid', [AdminRecieptController::class, 'getId']);
     Route::post('/admin/receipt/store', [AdminRecieptController::class, 'store']);
+
+    Route::get('/admin/saved-receipt', [AdminSavedReceiptController::class, 'index'])->name('admin.saved-receipt');
+    Route::get('/admin/saved-receipt/getdata', [AdminSavedReceiptController::class, 'getdata']);
 });
 
 Route::middleware(['auth', 'student'])->group(function() {

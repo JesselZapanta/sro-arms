@@ -22,7 +22,7 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
-            $table->tinyInteger('role')->default(2); // 1: admin, 2: student, 3: officer
+            $table->tinyInteger('role')->default(2); // 1: admin, 2: student
             $table->tinyInteger('status')->default(0); // 0: inactive, 1: active
             $table->rememberToken();
             $table->timestamps();

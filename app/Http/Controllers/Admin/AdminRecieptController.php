@@ -139,7 +139,7 @@ class AdminRecieptController extends Controller
 
         return response()->json([
             'status' => 'created',
-            'receipt' => $receipt->id
+            'receipt' => $receipt->id// pasa ang id sa newly created receipt
         ], 200);
     }
 
