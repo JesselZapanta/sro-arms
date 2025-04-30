@@ -5,6 +5,9 @@ import TextInput from '@/Components/TextInput';
 import { Transition } from '@headlessui/react';
 import { Link, useForm, usePage } from '@inertiajs/react';
 
+import { Input } from "@/Components/ui/input";
+import { Label } from "@/components/ui/label";
+
 export default function UpdateProfileInformation({
     mustVerifyEmail,
     status,
@@ -14,7 +17,9 @@ export default function UpdateProfileInformation({
 
     const { data, setData, patch, errors, processing, recentlySuccessful } =
         useForm({
-            name: user.name,
+            firstname: user.firstname,
+            middlename: user.middlename,
+            lastname: user.lastname,
             email: user.email,
         });
 
@@ -38,32 +43,56 @@ export default function UpdateProfileInformation({
 
             <form onSubmit={submit} className="mt-6 space-y-6">
                 <div>
-                    <InputLabel htmlFor="name" value="Name" />
+                    <Label htmlFor="firstname">Firstname</Label>
 
-                    <TextInput
-                        id="name"
+                    <Input
+                        id="firstname"
                         className="mt-1 block w-full"
-                        value={data.name}
-                        onChange={(e) => setData('name', e.target.value)}
-                        required
-                        isFocused
-                        autoComplete="name"
+                        value={data.firstname}
+                        onChange={(e) => setData("firstname", e.target.value)}
+                        autoComplete="firstname"
                     />
 
                     <InputError className="mt-2" message={errors.name} />
                 </div>
 
                 <div>
-                    <InputLabel htmlFor="email" value="Email" />
+                    <Label htmlFor="middlename">Middlename</Label>
 
-                    <TextInput
+                    <Input
+                        id="middlename"
+                        className="mt-1 block w-full"
+                        value={data.middlename}
+                        onChange={(e) => setData("middlename", e.target.value)}
+                        autoComplete="middlename"
+                    />
+
+                    <InputError className="mt-2" message={errors.middlename} />
+                </div>
+
+                <div>
+                    <Label htmlFor="lastname">Lastname</Label>
+
+                    <Input
+                        id="lastname"
+                        className="mt-1 block w-full"
+                        value={data.lastname}
+                        onChange={(e) => setData("lastname", e.target.value)}
+                        autoComplete="lastname"
+                    />
+
+                    <InputError className="mt-2" message={errors.lastname} />
+                </div>
+
+                <div>
+                    <Label htmlFor="email">Email</Label>
+
+                    <Input
                         id="email"
                         type="email"
                         className="mt-1 block w-full"
                         value={data.email}
-                        onChange={(e) => setData('email', e.target.value)}
-                        required
-                        autoComplete="username"
+                        onChange={(e) => setData("email", e.target.value)}
                     />
 
                     <InputError className="mt-2" message={errors.email} />
@@ -74,7 +103,7 @@ export default function UpdateProfileInformation({
                         <p className="mt-2 text-sm text-gray-800">
                             Your email address is unverified.
                             <Link
-                                href={route('verification.send')}
+                                href={route("verification.send")}
                                 method="post"
                                 as="button"
                                 className="rounded-md text-sm text-gray-600 underline hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
@@ -83,7 +112,7 @@ export default function UpdateProfileInformation({
                             </Link>
                         </p>
 
-                        {status === 'verification-link-sent' && (
+                        {status === "verification-link-sent" && (
                             <div className="mt-2 text-sm font-medium text-green-600">
                                 A new verification link has been sent to your
                                 email address.
@@ -102,9 +131,7 @@ export default function UpdateProfileInformation({
                         leave="transition ease-in-out"
                         leaveTo="opacity-0"
                     >
-                        <p className="text-sm text-gray-600">
-                            Saved.
-                        </p>
+                        <p className="text-sm text-gray-600">Saved.</p>
                     </Transition>
                 </div>
             </form>
