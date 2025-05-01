@@ -60,9 +60,9 @@ export default function Welcome({ auth }) {
                     SRO Attendance and Reaciept <br /> Monitoring System
                 </h2>
                 <p className="py-2 text-md sm:text-xl font-light text-gray-800">
-                    A web-based app for tracking products, organizing
-                    categories,
-                    <br /> managing suppliers, and controlling user access.
+                    A web-based system for tracking attendance and managing
+                    receipts
+                    <br /> in the Student Recognized Organization (SRO).
                 </p>
                 <div className="mt-4">
                     <img src="/images/home3.svg" alt="Ims" className="h-96" />
@@ -81,53 +81,54 @@ export default function Welcome({ auth }) {
                     <div>
                         <div className="mt-4 flex flex-col">
                             <img
-                                src="/images/user.svg"
-                                alt="Ims"
+                                src="/images/category.svg"
+                                alt="Event Management"
                                 className="h-24"
                             />
                         </div>
                         <h3 className="py-2 font-bold text-lg">
-                            User Management
+                            Event Management
                         </h3>
                         <p className="text-gray-600 text-justify">
-                            Manage user within the system. Ensure secure
-                            authentication and authorization for different user
-                            levels.
+                            Create, schedule, and manage events efficiently.
+                            Monitor event details and
+                            ensure seamless organization for successful
+                            implementation.
                         </p>
                     </div>
+
                     <div>
                         <div className="mt-4 flex flex-col">
                             <img
-                                src="/images/category.svg"
-                                alt="Ims"
+                                src="/images/user.svg"
+                                alt="Attendance Submission"
                                 className="h-24"
                             />
                         </div>
                         <h3 className="py-2 font-bold text-lg">
-                            Category Management
+                            Submit Attendance
                         </h3>
                         <p className="text-gray-600 text-justify">
-                            Organize products efficiently by assigning them to
-                            specific categories. Simplify searching and
-                            filtering by grouping related items.
+                            Allow participants to submit their attendance
+                            digitally. Track attendee records in real time and
+                            ensure accurate participation logs for every event.
                         </p>
                     </div>
+
                     <div>
                         <div className="mt-4 flex flex-col">
                             <img
                                 src="/images/supplier.svg"
-                                alt="Ims"
+                                alt="Receipt Management"
                                 className="h-24"
                             />
                         </div>
                         <h3 className="py-2 font-bold text-lg">
-                            Supplier Management
+                            Receipt Management
                         </h3>
                         <p className="text-gray-600 text-justify">
-                            Maintain detailed records of suppliers, including
-                            contact information and transaction history.
-                            Streamline procurement by tracking supplier
-                            relationships and order history.
+                            Monitor and store receipts related to event
+                            expenses. Ensure transparency and accountability.
                         </p>
                     </div>
                 </div>
