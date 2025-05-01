@@ -17,13 +17,13 @@ import { useEffect, useState } from 'react';
 import axios from 'axios';
 
 // Example dummy data
-const eventAttendanceData = [
-    { name: "Orientation", attendees: 120 },
-    { name: "Sportsfest", attendees: 300 },
-    { name: "Seminar", attendees: 180 },
-    { name: "Hackathon", attendees: 95 },
-    { name: "Closing Ceremony", attendees: 250 },
-];
+// const attendanceData = [
+//     { name: "Orientation", attendees: 120 },
+//     { name: "Sportsfest", attendees: 300 },
+//     { name: "Seminar", attendees: 180 },
+//     { name: "Hackathon", attendees: 95 },
+//     { name: "Closing Ceremony", attendees: 250 },
+// ];
 
 export default function Dashboard() {
 
@@ -48,7 +48,11 @@ export default function Dashboard() {
         getdata()
     }, [])
 
-    console.log(data);
+    const attendanceData = data?.attendanceData?.map((item) => ({
+        name: item.name,
+        attendees: item.attendances_count,
+    }));
+
     
     return (
         <AuthenticatedLayout>
@@ -102,7 +106,7 @@ export default function Dashboard() {
                                     </p>
                                 </CardContent>
                             </Card>
-
+                            {/* <pre>{JSON.stringify(data, null, 2)}</pre> */}
                             {/* Line Chart - Daily Attendance Trend */}
                             <Card className="col-span-1 md:col-span-3">
                                 <CardHeader>
@@ -115,7 +119,7 @@ export default function Dashboard() {
                                         width="100%"
                                         height="100%"
                                     >
-                                        <LineChart data={eventAttendanceData}>
+                                        <LineChart data={attendanceData}>
                                             <CartesianGrid strokeDasharray="3 3" />
                                             <XAxis dataKey="name" />
                                             <YAxis />

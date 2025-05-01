@@ -17,8 +17,8 @@ class AttendanceFactory extends Factory
     public function definition(): array
     {
         return [
-            'user' => fake()->numberBetween(1,100),
-            'event' => 3,
+            'user' => fake()->numberBetween(1,50),
+            'event' => 1,
 
             'am_start_photo_at' => '2025-06-25 07:00:00',
             'am_start_photo' => "attendances/OUy3P2Szw3RI9NpYUIw3ZinOSRrfoaMAWfy12vgy.png",

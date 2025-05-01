@@ -33,8 +33,9 @@ class AdminDashboardController extends Controller
                             $query->where('status', 1);
         })  
         ->count();
-
-        $attendanceData = Event::withCount('attendances')
+        
+        $attendanceData = Event::select('id', 'name')
+                            ->withCount('attendances')
                             ->whereHas('academicYear', function ($query) {
                                 $query->where('status', 1);
                             })

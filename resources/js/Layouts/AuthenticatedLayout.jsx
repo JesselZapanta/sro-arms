@@ -140,11 +140,16 @@ export default function AuthenticatedLayout({ header, children }) {
                                         </DropdownMenuTrigger>
                                         <DropdownMenuContent>
                                             <DropdownMenuSeparator />
-                                            <DropdownMenuItem>
+                                            {/* <DropdownMenuItem>
                                                 Notification
-                                            </DropdownMenuItem>
+                                            </DropdownMenuItem> */}
                                             <DropdownMenuItem>
-                                                Profile
+                                                <Link
+                                                    href={route("profile.edit")}
+                                                    as="button"
+                                                >
+                                                    Profile
+                                                </Link>
                                             </DropdownMenuItem>
                                             <DropdownMenuItem>
                                                 <Link
