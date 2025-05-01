@@ -13,25 +13,43 @@ import {
     Tooltip,
     ResponsiveContainer,
 } from "recharts";
+import { useEffect, useState } from 'react';
+import axios from 'axios';
 
 // Example dummy data
-const dailyAttendanceData = [
-    { date: "Apr 1", present: 95 },
-    { date: "Apr 2", present: 98 },
-    { date: "Apr 3", present: 92 },
-    { date: "Apr 4", present: 96 },
-    { date: "Apr 5", present: 99 },
-    ]
-
-    const weeklyAttendanceData = [
-    { week: "Week 1", present: 480, absent: 20 },
-    { week: "Week 2", present: 470, absent: 30 },
-    { week: "Week 3", present: 460, absent: 40 },
-    { week: "Week 4", present: 490, absent: 10 },
-]
-
+const eventAttendanceData = [
+    { name: "Orientation", attendees: 120 },
+    { name: "Sportsfest", attendees: 300 },
+    { name: "Seminar", attendees: 180 },
+    { name: "Hackathon", attendees: 95 },
+    { name: "Closing Ceremony", attendees: 250 },
+];
 
 export default function Dashboard() {
+
+    const [data, setData] = useState([]);
+    const [loading, setLoading] = useState(false);
+
+    const getdata = async () => {
+        setLoading(true);
+        try{
+            const res = await axios.get('/admin/dashboard/getdata')
+
+            setData(res.data)
+
+        }catch(err){
+            console.log(err);
+        }finally{
+            setLoading(false);
+        }
+    }
+
+    useEffect(() => {
+        getdata()
+    }, [])
+
+    console.log(data);
+    
     return (
         <AuthenticatedLayout>
             <Head title="Dashboard" />
@@ -47,38 +65,40 @@ export default function Dashboard() {
                                 </CardHeader>
                                 <CardContent>
                                     <div className="text-3xl font-bold">
-                                        500
+                                        {data.totalUsers}
                                     </div>
                                     <p className="text-sm text-muted-foreground">
-                                        Across all sections
+                                        Across all Institute
                                     </p>
                                 </CardContent>
                             </Card>
 
                             <Card>
                                 <CardHeader>
-                                    <CardTitle>Present Today</CardTitle>
+                                    <CardTitle>Total Events</CardTitle>
                                 </CardHeader>
                                 <CardContent>
                                     <div className="text-3xl font-bold text-green-600">
-                                        485
+                                        {data.totalEvents}
                                     </div>
                                     <p className="text-sm text-muted-foreground">
-                                        Updated at 10:00 AM
+                                        Updated at{" "}
+                                        {new Date().toLocaleDateString()}
                                     </p>
                                 </CardContent>
                             </Card>
 
                             <Card>
                                 <CardHeader>
-                                    <CardTitle>Absent Today</CardTitle>
+                                    <CardTitle>Total Attendees</CardTitle>
                                 </CardHeader>
                                 <CardContent>
-                                    <div className="text-3xl font-bold text-red-600">
-                                        15
+                                    <div className="text-3xl font-bold text-indigo-600">
+                                        {data.totalAttendance}
                                     </div>
                                     <p className="text-sm text-muted-foreground">
-                                        Excused and unexcused
+                                        Updated at{" "}
+                                        {new Date().toLocaleDateString()}
                                     </p>
                                 </CardContent>
                             </Card>
@@ -87,7 +107,7 @@ export default function Dashboard() {
                             <Card className="col-span-1 md:col-span-3">
                                 <CardHeader>
                                     <CardTitle>
-                                        Daily Attendance Trend
+                                        Event Attendance Overview
                                     </CardTitle>
                                 </CardHeader>
                                 <CardContent className="h-72">
@@ -95,16 +115,17 @@ export default function Dashboard() {
                                         width="100%"
                                         height="100%"
                                     >
-                                        <LineChart data={dailyAttendanceData}>
+                                        <LineChart data={eventAttendanceData}>
                                             <CartesianGrid strokeDasharray="3 3" />
-                                            <XAxis dataKey="date" />
+                                            <XAxis dataKey="name" />
                                             <YAxis />
                                             <Tooltip />
                                             <Line
                                                 type="monotone"
-                                                dataKey="present"
-                                                stroke="#3b82f6"
-                                                strokeWidth={2}
+                                                dataKey="attendees"
+                                                stroke="#4f46e5"
+                                                strokeWidth={3}
+                                                dot={{ r: 4 }}
                                             />
                                         </LineChart>
                                     </ResponsiveContainer>
@@ -112,7 +133,7 @@ export default function Dashboard() {
                             </Card>
 
                             {/* Bar Chart - Weekly Attendance Summary */}
-                            {/* <Card className="col-span-1 md:col-span-2">
+                            {/* <Card className="col-span-1 md:col-span-3">
                                 <CardHeader>
                                     <CardTitle>
                                         Weekly Attendance Summary
