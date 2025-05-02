@@ -1,16 +1,9 @@
-import { Button } from "@/Components/ui/button";
-import { Head, Link } from "@inertiajs/react";
+import { Link } from "@inertiajs/react";
 
 import {
     NavigationMenu,
-    NavigationMenuContent,
-    NavigationMenuIndicator,
-    NavigationMenuItem,
-    NavigationMenuLink,
     NavigationMenuList,
-    NavigationMenuTrigger,
     navigationMenuTriggerStyle,
-    NavigationMenuViewport,
 } from "@/components/ui/navigation-menu";
 
 
